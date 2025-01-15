@@ -11,6 +11,108 @@
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
+    <style>
+      /* Personnalisation des couleurs */
+      :root {
+        --blue-light: #66b3ff;
+        --blue-dark: #338de6;
+        --gray-light: #f1f5f9;
+        --gray-dark: #2d3748;
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+
+      /* Conteneur de la page */
+      .layout-container {
+        background-color: var(--gray-light);
+      }
+
+      .header {
+        background-color: var(--blue-light);
+        padding: 20px;
+        border-bottom: 1px solid #e8edf3;
+        color: #fff;
+      }
+
+      .header svg {
+        fill: #fff;
+      }
+
+      .tab {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .tab:hover {
+        border-color: var(--blue-dark);
+      }
+
+      .tab-active {
+        border-color: var(--blue-dark);
+        color: var(--blue-dark);
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #d0dbe6;
+        background-color: #fff;
+        margin-bottom: 15px;
+        font-size: 16px;
+        color: var(--gray-dark);
+      }
+
+      .button-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--blue-dark);
+        color: white;
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .button-primary:hover {
+        background-color: var(--blue-light);
+      }
+
+      .button-secondary {
+        width: 100%;
+        padding: 12px;
+        background-color: #e8edf3;
+        color: var(--blue-dark);
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .button-secondary:hover {
+        background-color: var(--blue-light);
+      }
+
+      .footer {
+        text-align: center;
+        padding: 15px 0;
+        font-size: 14px;
+        color: var(--gray-dark);
+      }
+
+      .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--gray-dark);
+        text-align: center;
+        margin-bottom: 30px;
+      }
+    </style>
+
     <script>
       // Fonction pour changer l'onglet actif
       function changeTab(tab) {
@@ -21,17 +123,17 @@
 
         // Réinitialisation de l'état des onglets
         if (tab === 'client') {
-          clientTab.classList.add('border-b-[#338de6]');
-          clientTab.classList.remove('border-b-transparent');
-          ownerTab.classList.add('border-b-transparent');
-          ownerTab.classList.remove('border-b-[#338de6]');
+          clientTab.classList.add('tab-active');
+          clientTab.classList.remove('tab');
+          ownerTab.classList.add('tab');
+          ownerTab.classList.remove('tab-active');
           clientContent.style.display = 'block';
           ownerContent.style.display = 'none';
         } else {
-          ownerTab.classList.add('border-b-[#338de6]');
-          ownerTab.classList.remove('border-b-transparent');
-          clientTab.classList.add('border-b-transparent');
-          clientTab.classList.remove('border-b-[#338de6]');
+          ownerTab.classList.add('tab-active');
+          ownerTab.classList.remove('tab');
+          clientTab.classList.add('tab');
+          clientTab.classList.remove('tab-active');
           ownerContent.style.display = 'block';
           clientContent.style.display = 'none';
         }
@@ -43,103 +145,72 @@
       }
     </script>
   </head>
+
   <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-[#f8fafb] group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8edf3] px-10 py-3">
-          <div class="flex items-center gap-4 text-[#0e141b]">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor"></path>
-              </svg>
+    <div class="layout-container flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+      <header class="header flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <svg viewBox="0 0 48 48" width="30px" height="30px">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor"></path>
+          </svg>
+          <h2 class="text-lg font-bold">AirLockUnlock</h2>
+        </div>
+      </header>
+      <div class="flex justify-center py-10">
+        <div class="flex flex-col w-[500px] max-w-[500px] p-5 bg-white rounded-xl shadow-lg">
+          <h3 class="section-title">Bienvenue</h3>
+
+          <!-- Onglets pour Client et Propriétaire -->
+          <div class="flex gap-8 border-b-2">
+            <div id="clientTab" class="tab tab-active" onclick="changeTab('client')">
+              Client
             </div>
-            <h2 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em]">AirLockUnlock</h2>
+            <div id="ownerTab" class="tab" onclick="changeTab('owner')">
+              Propriétaire
+            </div>
           </div>
-        </header>
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
-            <h3 class="text-[#0e141b] tracking-light text-2xl font-bold leading-tight px-4 text-center pb-2 pt-5">Bienvenue</h3>
-            <div class="pb-3">
-              <div class="flex border-b border-[#d0dbe6] px-4 gap-8">
-                <a id="clientTab" class="flex flex-col items-center justify-center border-b-[3px] border-b-[#338de6] text-[#0e141b] pb-[13px] pt-4" href="javascript:void(0);" onclick="changeTab('client')">
-                  <p class="text-[#0e141b] text-sm font-bold leading-normal tracking-[0.015em]">Client</p>
-                </a>
-                <a id="ownerTab" class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f7396] pb-[13px] pt-4" href="javascript:void(0);" onclick="changeTab('owner')">
-                  <p class="text-[#4f7396] text-sm font-bold leading-normal tracking-[0.015em]">Propriétaire</p>
-                </a>
-              </div>
-            </div>
-            
-            <!-- Formulaire pour Client -->
-            <div id="clientContent" class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-[#0e141b] text-base font-medium leading-normal pb-2">Adresse e-mail</p>
-                <input
-                  placeholder="Email"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0e141b] focus:outline-0 focus:ring-0 border border-[#d0dbe6] bg-[#f8fafb] focus:border-[#d0dbe6] h-14 placeholder:text-[#4f7396] p-[15px] text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-[#0e141b] text-base font-medium leading-normal pb-2">Mot de passe</p>
-                <input
-                  placeholder="Mot de passe"
-                  type="password"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0e141b] focus:outline-0 focus:ring-0 border border-[#d0dbe6] bg-[#f8fafb] focus:border-[#d0dbe6] h-14 placeholder:text-[#4f7396] p-[15px] text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-            </div>
 
-            <!-- Formulaire pour Propriétaire -->
-            <div id="ownerContent" class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3" style="display: none;">
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-[#0e141b] text-base font-medium leading-normal pb-2">Adresse e-mail (Propriétaire)</p>
-                <input
-                  placeholder="Email"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0e141b] focus:outline-0 focus:ring-0 border border-[#d0dbe6] bg-[#f8fafb] focus:border-[#d0dbe6] h-14 placeholder:text-[#4f7396] p-[15px] text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-[#0e141b] text-base font-medium leading-normal pb-2">Mot de passe (Propriétaire)</p>
-                <input
-                  placeholder="Mot de passe"
-                  type="password"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0e141b] focus:outline-0 focus:ring-0 border border-[#d0dbe6] bg-[#f8fafb] focus:border-[#d0dbe6] h-14 placeholder:text-[#4f7396] p-[15px] text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-            </div>
+          <!-- Formulaire Client -->
+          <div id="clientContent" class="mt-6">
+            <label class="flex flex-col mb-4">
+              <span class="text-sm font-medium">Adresse e-mail</span>
+              <input type="email" placeholder="Email" class="input-field" />
+            </label>
+            <label class="flex flex-col mb-4">
+              <span class="text-sm font-medium">Mot de passe</span>
+              <input type="password" placeholder="Mot de passe" class="input-field" />
+            </label>
+            <button class="button-primary">Connexion</button>
+          </div>
 
-            <div class="flex px-4 py-3">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-[#338de6] text-[#f8fafb] text-sm font-bold leading-normal tracking-[0.015em]"
-              >
-                <span class="truncate">Connexion</span>
-              </button>
-            </div>
-            <p class="text-[#4f7396] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">OU</p>
-            <div class="flex px-4 py-3">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-[#e8edf3] text-[#0e141b] gap-2 pl-4 text-sm font-bold leading-normal tracking-[0.015em]"
-              >
-                <div class="text-[#0e141b]" data-icon="GoogleLogo" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M224,128a96,96,0,1,1-21.95-61.09,8,8,0,1,1-12.33,10.18A80,80,0,1,0,207.6,136H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128Z"></path>
-                  </svg>
-                </div>
-                <span class="truncate">Continuer avec Google</span>
-              </button>
-            </div>
-            <p class="text-[#4f7396] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">Pas de compte ?</p>
-            <div class="flex px-4 py-3">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-[#e8edf3] text-[#0e141b] text-sm font-bold leading-normal tracking-[0.015em]"
-              >
-                <span class="truncate">Créer un compte</span>
-              </button>
-            </div>
+          <!-- Formulaire Propriétaire -->
+          <div id="ownerContent" class="mt-6" style="display: none;">
+            <label class="flex flex-col mb-4">
+              <span class="text-sm font-medium">Adresse e-mail (Propriétaire)</span>
+              <input type="email" placeholder="Email" class="input-field" />
+            </label>
+            <label class="flex flex-col mb-4">
+              <span class="text-sm font-medium">Mot de passe (Propriétaire)</span>
+              <input type="password" placeholder="Mot de passe" class="input-field" />
+            </label>
+            <button class="button-primary">Connexion</button>
+          </div>
+
+          <div class="flex justify-center mt-6">
+            <p class="text-sm text-center text-gray-500">OU</p>
+          </div>
+
+          <div class="mt-4">
+            <button class="button-secondary flex justify-center items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M224,128a96,96,0,1,1-21.95-61.09,8,8,0,1,1-12.33,10.18A80,80,0,1,0,207.6,136H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128Z"></path>
+              </svg>
+              Continuer avec Google
+            </button>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500">Pas de compte ? <a href="#" class="text-blue-500">Créer un compte</a></p>
           </div>
         </div>
       </div>
