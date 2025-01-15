@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lockwise - Trouver un bien à louer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        header .btn-host {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            margin-bottom: 2rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .popular-areas, .top-rated {
+            margin-bottom: 2rem;
+        }
+
+        .popular-areas ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .popular-areas ul li {
+            background-color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .top-rated .properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .property {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .property:hover {
+            transform: scale(1.02);
+        }
+
+        .property img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .property-details {
+            padding: 1rem;
+        }
+
+        .property-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-details p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .property-details span {
+            font-weight: bold;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Lockwise</div>
+        <nav>
+            <a href="#">Appartements</a>
+            <a href="#">Maison</a>
+            <a href="#">Bureaux</a>
+            <a href="#">Stockage</a>
+            <a href="#">Découvrir</a>
+        </nav>
+        <a href="#" class="btn-host">Devenir hôte</a>
+    </header>
+
+    <div class="container">
+        <h1>Trouver un bien à louer</h1>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Paris, France">
+        </div>
+
+        <div class="popular-areas">
+            <h2>Quartiers populaires</h2>
+            <ul>
+                <li>Le Marais</li>
+                <li>Châtelet</li>
+                <li>République</li>
+                <li>Bastille</li>
+                <li>Belleville</li>
+                <li>Pigalle</li>
+                <li>Montmartre</li>
+                <li>Opéra</li>
+                <li>Saint-Germain-des-Prés</li>
+                <li>Les Halles</li>
+            </ul>
+        </div>
+
+        <div class="top-rated">
+            <h2>Bien notés</h2>
+            <div class="properties">
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Appartement moderne">
+                    <div class="property-details">
+                        <h3>Appartement moderne</h3>
+                        <p><span>4.9</span> (120 avis): Paris</p>
+                    </div>
+                </div>
+
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Maison de famille">
+                    <div class="property-details">
+                        <h3>Maison de famille</h3>
+                        <p><span>4.8</span> (95 avis): Bordeaux</p>
+                    </div>
+                </div>
+
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Studio lumineux">
+                    <div class="property-details">
+                        <h3>Studio lumineux</h3>
+                        <p><span>4.7</span> (80 avis): Lyon</p>
+                    </div>
+                </div>
+
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Loft spacieux">
+                    <div class="property-details">
+                        <h3>Loft spacieux</h3>
+                        <p><span>4.9</span> (110 avis): Marseille</p>
+                    </div>
+                </div>
+
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Duplex cosy">
+                    <div class="property-details">
+                        <h3>Duplex cosy</h3>
+                        <p><span>4.6</span> (70 avis): Lille</p>
+                    </div>
+                </div>
+
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Villa d'architecte">
+                    <div class="property-details">
+                        <h3>Villa d'architecte</h3>
+                        <p><span>4.8</span> (60 avis): Toulouse</p>
+                    </div>
+                </div>
+
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Penthouse avec vue">
+                    <div class="property-details">
+                        <h3>Penthouse avec vue</h3>
+                        <p><span>4.5</span> (40 avis): Nice</p>
+                    </div>
+                </div>
+
+                <div class="property">
+                    <img src="https://via.placeholder.com/250x150" alt="Chalet au calme">
+                    <div class="property-details">
+                        <h3>Chalet au calme</h3>
+                        <p><span>4.9</span> (100 avis): Strasbourg</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
