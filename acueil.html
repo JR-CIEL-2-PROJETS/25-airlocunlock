@@ -18,7 +18,7 @@
         }
 
         header {
-            background-color: #fff;
+            background-color: #007BFF;
             padding: 1rem;
             border-bottom: 1px solid #ddd;
             display: flex;
@@ -33,13 +33,13 @@
 
         header nav a {
             text-decoration: none;
-            color: #333;
+            color: #fff;
             font-weight: bold;
         }
 
         header .btn-host {
-            background-color: #007BFF;
-            color: #fff;
+            background-color: #fff;
+            color: #007BFF;
             padding: 0.5rem 1rem;
             border: none;
             border-radius: 5px;
@@ -55,6 +55,7 @@
         h1 {
             font-size: 2rem;
             margin-bottom: 1rem;
+            color: #007BFF;
         }
 
         .search-bar {
@@ -86,6 +87,12 @@
             border: 1px solid #ddd;
             cursor: pointer;
             font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .popular-areas ul li:hover {
+            background-color: #007BFF;
+            color: #fff;
         }
 
         .top-rated .properties {
@@ -108,7 +115,7 @@
 
         .property img {
             width: 100%;
-            height: 150px;
+            height: 200px;
             object-fit: cover;
         }
 
@@ -130,11 +137,28 @@
             font-weight: bold;
             color: #007BFF;
         }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: #007BFF;
+            color: #fff;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
     </style>
 </head>
+
 <body>
+
     <header>
-        <div class="logo">Lockwise</div>
+        <div class="logo" style="color: white; font-size: 1.5rem; font-weight: bold;">Lockwise</div>
         <nav>
             <a href="#">Appartements</a>
             <a href="#">Maison</a>
@@ -172,7 +196,8 @@
             <h2>Bien notés</h2>
             <div class="properties">
                 <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Appartement moderne">
+                    <!-- Image ajoutée ici -->
+                    <img src="images/chloe-lefleur-vNuKSwYKvcw-unsplash.jpg" alt="Appartement moderne">
                     <div class="property-details">
                         <h3>Appartement moderne</h3>
                         <p><span>4.9</span> (120 avis): Paris</p>
@@ -180,7 +205,7 @@
                 </div>
 
                 <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Maison de famille">
+                    <img src="https://images.unsplash.com/photo-1563221446-cdb98a5b5e9b?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjEyOXwwfDF8c2VhY2h8Mnx8bG9mdHxlbnwwfHx8fHwxNjcwMjkwNzA4&ixlib=rb-1.2.1&q=80&w=1080" alt="Maison de famille">
                     <div class="property-details">
                         <h3>Maison de famille</h3>
                         <p><span>4.8</span> (95 avis): Bordeaux</p>
@@ -188,7 +213,7 @@
                 </div>
 
                 <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Studio lumineux">
+                    <img src="https://images.unsplash.com/photo-1571107843787-6f9b37cae8b7?crop=entropy&cs=tinysrgb&fit=max&ixid=MXwyMDg2OXwwfDF8c2VhY2h8Mnx8c3VwaW91c3xlbnwwfHx8fDE2NzAyODk0NzE&ixlib=rb-1.2.1&q=80&w=1080" alt="Studio lumineux">
                     <div class="property-details">
                         <h3>Studio lumineux</h3>
                         <p><span>4.7</span> (80 avis): Lyon</p>
@@ -196,7 +221,7 @@
                 </div>
 
                 <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Loft spacieux">
+                    <img src="https://images.unsplash.com/photo-1584115379714-fd77b0600e84?crop=entropy&cs=tinysrgb&fit=max&ixid=MXwyMDg2OXwwfDF8c2VhY2h8N3x8bHV4dXJ5fGVufDB8fHx8fDE2NzAyODk1NzQ&ixlib=rb-1.2.1&q=80&w=1080" alt="Loft spacieux">
                     <div class="property-details">
                         <h3>Loft spacieux</h3>
                         <p><span>4.9</span> (110 avis): Marseille</p>
@@ -204,38 +229,20 @@
                 </div>
 
                 <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Duplex cosy">
-                    <div class="property-details">
-                        <h3>Duplex cosy</h3>
-                        <p><span>4.6</span> (70 avis): Lille</p>
-                    </div>
-                </div>
-
-                <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Villa d'architecte">
+                    <img src="https://images.unsplash.com/photo-1588771226185-58b0b23a7798?crop=entropy&cs=tinysrgb&fit=max&ixid=MXwyMDg2OXwwfDF8c2VhY2h8N3x8dmlsYSBkJ2FydGNoaXRlY3R1cmV8ZW58MHx8fHwxNjcwMjkwNzMw&ixlib=rb-1.2.1&q=80&w=1080" alt="Villa d'architecte">
                     <div class="property-details">
                         <h3>Villa d'architecte</h3>
                         <p><span>4.8</span> (60 avis): Toulouse</p>
                     </div>
                 </div>
-
-                <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Penthouse avec vue">
-                    <div class="property-details">
-                        <h3>Penthouse avec vue</h3>
-                        <p><span>4.5</span> (40 avis): Nice</p>
-                    </div>
-                </div>
-
-                <div class="property">
-                    <img src="https://via.placeholder.com/250x150" alt="Chalet au calme">
-                    <div class="property-details">
-                        <h3>Chalet au calme</h3>
-                        <p><span>4.9</span> (100 avis): Strasbourg</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 Lockwise. Tous droits réservés.</p>
+        <p><a href="#">Politique de confidentialité</a> | <a href="#">Conditions d'utilisation</a></p>
+    </footer>
+
 </body>
 </html>

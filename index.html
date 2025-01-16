@@ -1,6 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr">
   <head>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link
       rel="stylesheet"
       as="style"
@@ -139,8 +142,14 @@
         }
       }
 
+      // Fonction de connexion
+      function login(type) {
+        // Ici, on effectue simplement une redirection
+        window.location.href = "acueil.html";
+      }
+
       // Initialisation au chargement de la page
-      window.onload = function() {
+      window.onload = function () {
         changeTab('client');
       }
     </script>
@@ -151,11 +160,17 @@
       <header class="header flex items-center justify-between">
         <div class="flex items-center gap-4">
           <svg viewBox="0 0 48 48" width="30px" height="30px">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor"></path>
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z"
+              fill="currentColor"
+            ></path>
           </svg>
           <h2 class="text-lg font-bold">AirLockUnlock</h2>
         </div>
       </header>
+
       <div class="flex justify-center py-10">
         <div class="flex flex-col w-[500px] max-w-[500px] p-5 bg-white rounded-xl shadow-lg">
           <h3 class="section-title">Bienvenue</h3>
@@ -174,26 +189,26 @@
           <div id="clientContent" class="mt-6">
             <label class="flex flex-col mb-4">
               <span class="text-sm font-medium">Adresse e-mail</span>
-              <input type="email" placeholder="Email" class="input-field" />
+              <input type="email" id="clientEmail" placeholder="Email" class="input-field" required />
             </label>
             <label class="flex flex-col mb-4">
               <span class="text-sm font-medium">Mot de passe</span>
-              <input type="password" placeholder="Mot de passe" class="input-field" />
+              <input type="password" id="clientPassword" placeholder="Mot de passe" class="input-field" required />
             </label>
-            <button class="button-primary">Connexion</button>
+            <button type="button" class="button-primary" onclick="login('client')">Connexion</button>
           </div>
 
           <!-- Formulaire Propriétaire -->
           <div id="ownerContent" class="mt-6" style="display: none;">
             <label class="flex flex-col mb-4">
               <span class="text-sm font-medium">Adresse e-mail (Propriétaire)</span>
-              <input type="email" placeholder="Email" class="input-field" />
+              <input type="email" id="ownerEmail" placeholder="Email" class="input-field" required />
             </label>
             <label class="flex flex-col mb-4">
               <span class="text-sm font-medium">Mot de passe (Propriétaire)</span>
-              <input type="password" placeholder="Mot de passe" class="input-field" />
+              <input type="password" id="ownerPassword" placeholder="Mot de passe" class="input-field" required />
             </label>
-            <button class="button-primary">Connexion</button>
+            <button type="button" class="button-primary" onclick="login('owner')">Connexion</button>
           </div>
 
           <div class="flex justify-center mt-6">
@@ -210,10 +225,4 @@
           </div>
 
           <div class="mt-6 text-center">
-            <p class="text-sm text-gray-500">Pas de compte ? <a href="#" class="text-blue-500">Créer un compte</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
+            <p class="text-sm text-gray-500">Pas de compte ? <a href="#" class="text-blue-500">Créer

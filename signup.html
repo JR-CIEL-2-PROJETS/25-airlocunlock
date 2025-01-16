@@ -1,0 +1,271 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+    <title>AirLockUnlock - Inscription</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      :root {
+        --blue-light: #bae6fd;
+        --blue-dark: #38bdf8;
+        --blue-muted: #e0f2fe;
+        --gray-light: #e5e7eb;
+        --gray-dark: #374151;
+        --red-error: #f87171;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--blue-muted);
+      }
+
+      .layout-container {
+        background-color: var(--blue-muted);
+      }
+
+      .header {
+        background-color: var(--blue-dark);
+        padding: 20px;
+        color: var(--white);
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid var(--gray-light);
+        background-color: var(--white);
+        margin-bottom: 5px;
+        font-size: 16px;
+        color: var(--gray-dark);
+      }
+
+      .input-field:focus {
+        outline: none;
+        border-color: var(--blue-light);
+        box-shadow: 0 0 4px var(--blue-light);
+      }
+
+      .error-message {
+        color: var(--red-error);
+        font-size: 12px;
+        margin-bottom: 15px;
+        display: none;
+      }
+
+      .button-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--blue-dark);
+        color: var(--white);
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .button-primary:hover {
+        background-color: var(--blue-light);
+        transform: translateY(-2px);
+      }
+
+      .button-primary:disabled {
+        background-color: var(--gray-light);
+        cursor: not-allowed;
+      }
+
+      .section-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--blue-dark);
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .tab {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        text-align: center;
+        flex: 1;
+      }
+
+      .tab:hover {
+        border-color: var(--blue-dark);
+      }
+
+      .tab-active {
+        border-color: var(--blue-dark);
+        color: var(--blue-dark);
+      }
+    </style>
+    <script>
+      // Validation pour l'email
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      // Validation pour le mot de passe
+      function validatePassword(password) {
+        const passwordRegex = /^(?=.*[A-Z]).{8,}$/; // 8 caractères minimum, 1 majuscule
+        return passwordRegex.test(password);
+      }
+
+      // Gérer la validation et afficher les messages d'erreur
+      async function submitForm(type) {
+        let emailInput, passwordInput, emailError, passwordError;
+
+        if (type === 'client') {
+          emailInput = document.getElementById('clientEmail');
+          passwordInput = document.getElementById('clientPassword');
+          emailError = document.getElementById('clientEmailError');
+          passwordError = document.getElementById('clientPasswordError');
+        } else {
+          emailInput = document.getElementById('ownerEmail');
+          passwordInput = document.getElementById('ownerPassword');
+          emailError = document.getElementById('ownerEmailError');
+          passwordError = document.getElementById('ownerPasswordError');
+        }
+
+        let isValid = true;
+
+        if (!validateEmail(emailInput.value)) {
+          emailError.style.display = 'block';
+          isValid = false;
+        } else {
+          emailError.style.display = 'none';
+        }
+
+        if (!validatePassword(passwordInput.value)) {
+          passwordError.style.display = 'block';
+          isValid = false;
+        } else {
+          passwordError.style.display = 'none';
+        }
+
+        if (isValid) {
+          const endpoint =
+            type === 'client'
+              ? 'https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/inscription/client'
+              : 'https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/inscription/client';
+
+          // Envoyer les données au serveur mock
+          try {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: emailInput.value,
+                password: passwordInput.value,
+              }),
+            });
+
+            if (response.ok) {
+              alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+              window.location.href = 'index.html'; // Rediriger vers la page de connexion
+            } else {
+              alert('Une erreur est survenue. Veuillez réessayer.');
+            }
+          } catch (error) {
+            alert('Impossible de contacter le serveur. Vérifiez votre connexion.');
+          }
+        }
+      }
+
+      // Changer l'onglet actif
+      function changeTab(tab) {
+        const clientTab = document.getElementById('clientTab');
+        const ownerTab = document.getElementById('ownerTab');
+        const clientContent = document.getElementById('clientContent');
+        const ownerContent = document.getElementById('ownerContent');
+
+        if (tab === 'client') {
+          clientTab.classList.add('tab-active');
+          ownerTab.classList.remove('tab-active');
+          clientContent.style.display = 'block';
+          ownerContent.style.display = 'none';
+        } else {
+          ownerTab.classList.add('tab-active');
+          clientTab.classList.remove('tab-active');
+          ownerContent.style.display = 'block';
+          clientContent.style.display = 'none';
+        }
+      }
+
+      // Initialisation de l'onglet par défaut
+      window.onload = function () {
+        changeTab('client');
+      };
+    </script>
+  </head>
+
+  <body>
+    <div class="layout-container flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+      <header class="header flex items-center justify-between">
+        <h2 class="text-lg font-bold">AirLockUnlock - Inscription</h2>
+      </header>
+      <div class="flex justify-center py-10">
+        <div class="flex flex-col w-[500px] max-w-[500px] p-5 bg-white rounded-xl shadow-lg">
+          <h3 class="section-title">Créer un compte</h3>
+
+          <!-- Tabs -->
+          <div class="flex gap-4 border-b-2 mb-6">
+            <div id="clientTab" class="tab tab-active" onclick="changeTab('client')">Client</div>
+            <div id="ownerTab" class="tab" onclick="changeTab('owner')">Propriétaire</div>
+          </div>
+
+          <!-- Formulaire Client -->
+          <div id="clientContent">
+            <label class="flex flex-col mb-2">
+              <span class="text-sm font-medium">Adresse e-mail</span>
+              <input type="email" id="clientEmail" placeholder="Email" class="input-field" />
+              <span id="clientEmailError" class="error-message">Veuillez entrer une adresse e-mail valide.</span>
+            </label>
+            <label class="flex flex-col mb-2">
+              <span class="text-sm font-medium">Mot de passe</span>
+              <input type="password" id="clientPassword" placeholder="Mot de passe" class="input-field" />
+              <span id="clientPasswordError" class="error-message">
+                Mot de passe : au moins 8 caractères et 1 majuscule.
+              </span>
+            </label>
+            <button class="button-primary" onclick="submitForm('client')">Inscription Client</button>
+          </div>
+
+          <!-- Formulaire Propriétaire -->
+          <div id="ownerContent" style="display: none;">
+            <label class="flex flex-col mb-2">
+              <span class="text-sm font-medium">Adresse e-mail (Propriétaire)</span>
+              <input type="email" id="ownerEmail" placeholder="Email" class="input-field" />
+              <span id="ownerEmailError" class="error-message">Veuillez entrer une adresse e-mail valide.</span>
+            </label>
+            <label class="flex flex-col mb-2">
+              <span class="text-sm font-medium">Mot de passe (Propriétaire)</span>
+              <input type="password" id="ownerPassword" placeholder="Mot de passe" class="input-field" />
+              <span id="ownerPasswordError" class="error-message">
+                Mot de passe : au moins 8 caractères et 1 majuscule.
+              </span>
+            </label>
+            <button class="button-primary" onclick="submitForm('owner')">Inscription Propriétaire</button>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500">
+              Déjà un compte ?
+              <a href="index.html" class="text-blue-dark font-bold">Se connecter</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
