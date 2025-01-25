@@ -15,32 +15,35 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <style>
-      /* Personnalisation des couleurs */
       :root {
-        --blue-light: #66b3ff;
-        --blue-dark: #338de6;
+        --blue-light: #4682b4; /* Bleu */
+        --blue-dark: #338de6; /* Bleu foncé */
         --gray-light: #f1f5f9;
         --gray-dark: #2d3748;
       }
 
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
+        background-image: url('still-life-keys-new-home.jpg'); /* Remplacez par l'URL de votre image */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
-      /* Conteneur de la page */
       .layout-container {
-        background-color: var(--gray-light);
+        background-color: rgba(241, 245, 249, 0.8); /* Légère transparence pour que l'arrière-plan soit visible */
       }
 
       .header {
-        background-color: var(--blue-light);
+        background-color: var(--blue-light); /* Bleu */
         padding: 20px;
         border-bottom: 1px solid #e8edf3;
         color: #fff;
       }
 
-      .header svg {
-        fill: #fff;
+      .header img {
+        width: 30px;
+        height: 30px;
       }
 
       .tab {
@@ -51,12 +54,12 @@
       }
 
       .tab:hover {
-        border-color: var(--blue-dark);
+        border-color: var(--blue-dark); /* Bleu foncé */
       }
 
       .tab-active {
-        border-color: var(--blue-dark);
-        color: var(--blue-dark);
+        border-color: var(--blue-dark); /* Bleu foncé */
+        color: var(--blue-dark); /* Bleu foncé */
       }
 
       .input-field {
@@ -73,7 +76,7 @@
       .button-primary {
         width: 100%;
         padding: 12px;
-        background-color: var(--blue-dark);
+        background-color: var(--blue-dark); /* Bleu foncé */
         color: white;
         border-radius: 12px;
         font-weight: bold;
@@ -82,14 +85,14 @@
       }
 
       .button-primary:hover {
-        background-color: var(--blue-light);
+        background-color: var(--blue-light); /* Bleu clair */
       }
 
       .button-secondary {
         width: 100%;
         padding: 12px;
         background-color: #e8edf3;
-        color: var(--blue-dark);
+        color: var(--blue-dark); /* Bleu foncé */
         border-radius: 12px;
         font-weight: bold;
         cursor: pointer;
@@ -97,7 +100,7 @@
       }
 
       .button-secondary:hover {
-        background-color: var(--blue-light);
+        background-color: var(--blue-light); /* Bleu clair */
       }
 
       .footer {
@@ -117,14 +120,12 @@
     </style>
 
     <script>
-      // Fonction pour changer l'onglet actif
       function changeTab(tab) {
         const clientTab = document.getElementById('clientTab');
         const ownerTab = document.getElementById('ownerTab');
         const clientContent = document.getElementById('clientContent');
         const ownerContent = document.getElementById('ownerContent');
 
-        // Réinitialisation de l'état des onglets
         if (tab === 'client') {
           clientTab.classList.add('tab-active');
           clientTab.classList.remove('tab');
@@ -142,13 +143,10 @@
         }
       }
 
-      // Fonction de connexion
       function login(type) {
-        // Ici, on effectue simplement une redirection
         window.location.href = "acueil.html";
       }
 
-      // Initialisation au chargement de la page
       window.onload = function () {
         changeTab('client');
       }
@@ -159,14 +157,7 @@
     <div class="layout-container flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
       <header class="header flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <svg viewBox="0 0 48 48" width="30px" height="30px">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z"
-              fill="currentColor"
-            ></path>
-          </svg>
+          <img src="logo (2).png" alt="Logo">
           <h2 class="text-lg font-bold">AirLockUnlock</h2>
         </div>
       </header>
@@ -175,7 +166,6 @@
         <div class="flex flex-col w-[500px] max-w-[500px] p-5 bg-white rounded-xl shadow-lg">
           <h3 class="section-title">Bienvenue</h3>
 
-          <!-- Onglets pour Client et Propriétaire -->
           <div class="flex gap-8 border-b-2">
             <div id="clientTab" class="tab tab-active" onclick="changeTab('client')">
               Client
@@ -185,7 +175,6 @@
             </div>
           </div>
 
-          <!-- Formulaire Client -->
           <div id="clientContent" class="mt-6">
             <label class="flex flex-col mb-4">
               <span class="text-sm font-medium">Adresse e-mail</span>
@@ -198,7 +187,6 @@
             <button type="button" class="button-primary" onclick="login('client')">Connexion</button>
           </div>
 
-          <!-- Formulaire Propriétaire -->
           <div id="ownerContent" class="mt-6" style="display: none;">
             <label class="flex flex-col mb-4">
               <span class="text-sm font-medium">Adresse e-mail (Propriétaire)</span>
@@ -225,4 +213,10 @@
           </div>
 
           <div class="mt-6 text-center">
-            <p class="text-sm text-gray-500">Pas de compte ? <a href="#" class="text-blue-500">Créer
+            <p class="text-sm text-gray-500">Pas de compte ? <a href="signup.html" class="text-blue-500">Créer un compte</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+    "clients": [
+      {
+        "email": "client@example.com",
+        "password": "clientpassword"
+      }
+    ],
+    "owners": [
+      {
+        "email": "owner@example.com",
+        "password": "ownerpassword"
+      }
+    ]
+  }
+  
