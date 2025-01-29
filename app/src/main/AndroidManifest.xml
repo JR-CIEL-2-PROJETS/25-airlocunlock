@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.projetairlocunlock">
+
+    <!-- Permission pour l'accès à Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/logofondbleu"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logofondbleu"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ProjetAirLocUnlock"
+        tools:targetApi="31">
+
+        <!-- Déclare LoginActivity comme activité de lancement -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ProjetAirLocUnlock">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Déclare HomeActivity -->
+        <activity android:name=".HomeActivity" />
+
+        <!-- Déclare InstructionsActivity -->
+        <activity android:name=".InstructionsActivity" />
+    </application>
+</manifest>
