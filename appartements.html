@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirLockUnlock - Appartements à louer</title>
+    <style>
+        /* CSS commun pour tous les fichiers */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #FFBB33;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        header .logo span {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header .btn-host {
+            background-color: #fff;
+            color: #007BFF;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        header .btn-host:hover {
+            background-color: #FFBB33;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #007BFF;
+            text-align: center;
+        }
+
+        .properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .property {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .property:hover {
+            transform: scale(1.05);
+        }
+
+        .property img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .property-details {
+            padding: 1rem;
+        }
+
+        .property-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-details p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .property-details span {
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: #007BFF;
+            color: #fff;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #FFBB33;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="img/logo (2).png" alt="Logo AirLockUnlock">
+            <span>AirLockUnlock</span>
+        </div>
+        <nav>
+            <a href="appartements.html">Appartements</a>
+            <a href="maisons.html">Maison</a>
+            <a href="bureaux.html">Bureaux</a>
+            <a href="stockage.html">Stockage</a>
+            <a href="decouvrir.html">Découvrir</a>
+        </nav>
+        <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a>
+    </header>
+
+    <div class="container">
+        <h1>Appartements à louer</h1>
+
+        <div class="properties">
+            <!-- Propriétés à afficher -->
+            <div class="property">
+                <img src="img/appartementparis.PNG" alt="Appartement moderne">
+                <div class="property-details">
+                    <h3>Appartement Cosy</h3>
+                    <p><span>4.9</span> (120 avis): Paris</p>
+                </div>
+            </div>
+
+            <div class="property">
+                <img src="img/appartementmoderne.avif" alt="Appartement moderne">
+                <div class="property-details">
+                    <h3>Appartement Spacieux</h3>
+                    <p><span>4.7</span> (85 avis): Lyon</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
+        <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p>
+    </footer>
+
+</body>
+</html>

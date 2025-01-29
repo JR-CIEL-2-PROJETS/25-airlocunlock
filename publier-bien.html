@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Publier un bien - AirLockUnlock</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-image: url('img/still-life-keys-new-home.jpg');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .header {
+        background-color: rgba(70, 130, 180, 0.8);
+        padding: 20px;
+        border-bottom: 1px solid #e8edf3;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .form-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e0;
+        margin-bottom: 15px;
+        font-size: 14px;
+      }
+
+      .button-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: #4682b4;
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+
+      .button-primary:hover {
+        background-color: #2c5282;
+      }
+
+      .cancel-button {
+        width: 100%;
+        padding: 12px;
+        background-color: #f5f5f5;
+        color: #4682b4;
+        border-radius: 8px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .cancel-button:hover {
+        background-color: #e2e8f0;
+      }
+    </style>
+    <script>
+      function submitProperty() {
+        // Récupérer les valeurs du formulaire
+        const propertyName = document.getElementById("propertyName").value;
+        const propertyDescription = document.getElementById("propertyDescription").value;
+        const propertyPrice = document.getElementById("propertyPrice").value;
+        const propertyLocation = document.getElementById("propertyLocation").value;
+
+        // Simuler une soumission (log dans la console pour l'exemple)
+        console.log("Nom du bien:", propertyName);
+        console.log("Description du bien:", propertyDescription);
+        console.log("Prix:", propertyPrice);
+        console.log("Emplacement:", propertyLocation);
+
+        // Redirection vers la page d'accueil après la soumission
+        setTimeout(() => {
+          window.location.href = 'accueil.html'; // Redirection vers l'accueil après la soumission
+        }, 500); // Délais de 500ms avant la redirection
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Barre de navigation -->
+    <header class="header">
+      <div class="flex items-center gap-4">
+        <img src="img/logo (2).png" alt="Logo" />
+        <h1 class="text-xl font-bold">AirLockUnlock</h1>
+      </div>
+    </header>
+
+    <!-- Formulaire de publication -->
+    <div class="flex justify-center items-center flex-1">
+      <div class="form-container">
+        <div class="section-title">Publier un bien</div>
+        <form>
+          <input
+            id="propertyName"
+            type="text"
+            placeholder="Nom du bien"
+            class="input-field"
+            required
+          />
+          <textarea
+            id="propertyDescription"
+            placeholder="Description du bien"
+            class="input-field"
+            rows="4"
+            required
+          ></textarea>
+          <input
+            id="propertyPrice"
+            type="number"
+            placeholder="Prix en €"
+            class="input-field"
+            required
+          />
+          <input
+            id="propertyLocation"
+            type="text"
+            placeholder="Emplacement du bien"
+            class="input-field"
+            required
+          />
+          <button
+            type="button"
+            class="button-primary"
+            onclick="submitProperty()"
+          >
+            Publier le bien
+          </button>
+        </form>
+
+        <!-- Bouton annuler -->
+        <button
+          type="button"
+          class="cancel-button"
+          onclick="window.location.href='accueil.html';"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

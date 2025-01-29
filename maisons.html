@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirLockUnlock - Maisons</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF; /* Bleu en haut */
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #fff; /* Texte blanc pour les liens */
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #FFBB33; /* Or en survol */
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        header .logo span {
+            color: #fff; /* Texte blanc */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header .btn-host {
+            background-color: #FFBB33; /* Or pour le bouton */
+            color: #007BFF;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        header .btn-host:hover {
+            background-color: #FF9E00; /* Or plus foncé */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .property-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+
+        .property-card:hover {
+            transform: scale(1.05);
+        }
+
+        .property-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .property-details {
+            padding: 1.5rem;
+        }
+
+        .property-details h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .property-details p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: #007BFF; /* Bleu pour le pied de page */
+            color: #fff;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #FFBB33; /* Or en survol */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="img/logo (2).png" alt="Logo AirLockUnlock">
+            <span>AirLockUnlock</span>
+        </div>
+        <nav>
+            <a href="accueil.html">Accueil</a>
+            <a href="appartements.html">Appartements</a>
+            <a href="bureaux.html">Bureaux</a>
+            <a href="stockage.html">Stockage</a>
+            <a href="decouvrir.html">Découvrir</a>
+        </nav>
+        <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a>
+    </header>
+
+    <div class="container">
+        <h1>Maisons à louer</h1>
+        
+        <!-- Exemple de cartes de propriétés sans prix -->
+        <div class="property-card">
+            <img src="img/maisonfamiliale.jpg" alt="Maison à Paris">
+            <div class="property-details">
+                <h3>Maison Familiale à Paris</h3>
+                <p>4 chambres, 2 salles de bain, 150 m²</p>
+                <p>Quartier : Montmartre, Paris</p>
+            </div>
+        </div>
+
+        <div class="property-card">
+            <img src="img/maisoncampagne.webp" alt="Maison en Dordogne">
+            <div class="property-details">
+                <h3>Maison de campagne en Dordogne</h3>
+                <p>3 chambres, 1 salle de bain, 120 m²</p>
+                <p>Quartier : Campagne, Dordogne</p>
+            </div>
+        </div>
+
+        <div class="property-card">
+            <img src="img/maisonmoderne.jpg" alt="Maison à Bordeaux">
+            <div class="property-details">
+                <h3>Maison moderne à Bordeaux</h3>
+                <p>3 chambres, 2 salles de bain, 140 m²</p>
+                <p>Quartier : Centre-ville, Bordeaux</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
+        <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p>
+    </footer>
+
+</body>
+</html>

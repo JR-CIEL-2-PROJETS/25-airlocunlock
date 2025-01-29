@@ -35,6 +35,11 @@
             text-decoration: none;
             color: #fff;
             font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #FFBB33;
         }
 
         header .logo {
@@ -61,6 +66,12 @@
             border: none;
             border-radius: 5px;
             text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        header .btn-host:hover {
+            background-color: #FFBB33;
+            color: white;
         }
 
         .container {
@@ -73,17 +84,25 @@
             font-size: 2rem;
             margin-bottom: 1rem;
             color: #007BFF;
+            text-align: center;
         }
 
         .search-bar {
             margin-bottom: 2rem;
+            text-align: center;
         }
 
         .search-bar input {
-            width: 100%;
+            width: 60%;
             padding: 0.8rem;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: #007BFF;
         }
 
         .popular-areas, .top-rated {
@@ -95,6 +114,7 @@
             flex-wrap: wrap;
             gap: 0.5rem;
             list-style: none;
+            justify-content: center;
         }
 
         .popular-areas ul li {
@@ -127,7 +147,7 @@
         }
 
         .property:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
         .property img {
@@ -169,6 +189,9 @@
             font-weight: bold;
         }
 
+        footer a:hover {
+            color: #FFBB33;
+        }
     </style>
 </head>
 
@@ -176,46 +199,46 @@
 
     <header>
         <div class="logo">
-            <img src="logo (2).png" alt="Logo AirLockUnlock">
+            <img src="img/logo (2).png" alt="Logo AirLockUnlock">
             <span>AirLockUnlock</span>
         </div>
         <nav>
-            <a href="#">Appartements</a>
-            <a href="#">Maison</a>
-            <a href="#">Bureaux</a>
-            <a href="#">Stockage</a>
-            <a href="#">Découvrir</a>
+            <a href="appartements.html">Appartements</a> <!-- Redirection vers la page des appartements -->
+            <a href="maisons.html">Maison</a> <!-- Redirection vers la page des maisons -->
+            <a href="bureaux.html">Bureaux</a> <!-- Redirection vers la page des bureaux -->
+            <a href="stockage.html">Stockage</a> <!-- Redirection vers la page de stockage -->
+            <a href="decouvrir.html">Découvrir</a> <!-- Redirection vers la page de découverte -->
         </nav>
-        <a href="#" class="btn-host">Devenir hôte</a>
+        <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a> <!-- Redirection vers la page pour devenir propriétaire -->
     </header>
 
     <div class="container">
         <h1>Trouver un bien à louer</h1>
 
         <div class="search-bar">
-            <input type="text" placeholder="Paris, France">
+            <input type="text" placeholder="Paris, France" onclick="window.location.href='recherche.html';"> <!-- Redirection vers la page de recherche -->
         </div>
 
         <div class="popular-areas">
             <h2>Quartiers populaires</h2>
             <ul>
-                <li>Le Marais</li>
-                <li>Châtelet</li>
-                <li>République</li>
-                <li>Bastille</li>
-                <li>Belleville</li>
-                <li>Pigalle</li>
-                <li>Montmartre</li>
-                <li>Opéra</li>
-                <li>Saint-Germain-des-Prés</li>
-                <li>Les Halles</li>
+                <li onclick="window.location.href='quartier-marais.html'">Le Marais</li> <!-- Redirection vers la page du quartier Le Marais -->
+                <li onclick="window.location.href='quartier-chatelet.html'">Châtelet</li> <!-- Redirection vers la page du quartier Châtelet -->
+                <li onclick="window.location.href='quartier-republique.html'">République</li> <!-- Redirection vers la page du quartier République -->
+                <li onclick="window.location.href='quartier-bastille.html'">Bastille</li> <!-- Redirection vers la page du quartier Bastille -->
+                <li onclick="window.location.href='quartier-belleville.html'">Belleville</li> <!-- Redirection vers la page du quartier Belleville -->
+                <li onclick="window.location.href='quartier-pigalle.html'">Pigalle</li> <!-- Redirection vers la page du quartier Pigalle -->
+                <li onclick="window.location.href='quartier-montmartre.html'">Montmartre</li> <!-- Redirection vers la page du quartier Montmartre -->
+                <li onclick="window.location.href='quartier-opera.html'">Opéra</li> <!-- Redirection vers la page du quartier Opéra -->
+                <li onclick="window.location.href='quartier-saint-germain.html'">Saint-Germain-des-Prés</li> <!-- Redirection vers la page du quartier Saint-Germain-des-Prés -->
+                <li onclick="window.location.href='quartier-halles.html'">Les Halles</li> <!-- Redirection vers la page du quartier Les Halles -->
             </ul>
         </div>
 
         <div class="top-rated">
             <h2>Bien notés</h2>
             <div class="properties">
-                <div class="property">
+                <div class="property" onclick="window.location.href='appartement-cosy-paris.html'">
                     <img src="img/appartementparis.PNG" alt="Appartement moderne">
                     <div class="property-details">
                         <h3>Appartement Cosy</h3>
@@ -223,23 +246,23 @@
                     </div>
                 </div>
 
-                <div class="property">
-                    <img src="img/appartementmoderne.avif">
+                <div class="property" onclick="window.location.href='maison-famille-bordeaux.html'">
+                    <img src="img/appartementmoderne.avif" alt="Maison de famille">
                     <div class="property-details">
                         <h3>Maison de famille</h3>
                         <p><span>4.8</span> (95 avis): Bordeaux</p>
                     </div>
                 </div>
 
-                <div class="property">
-                    <img src="img/maisondefamille.jpg">
+                <div class="property" onclick="window.location.href='studio-lyon.html'">
+                    <img src="img/maisondefamille.jpg" alt="Studio lumineux">
                     <div class="property-details">
                         <h3>Studio lumineux</h3>
                         <p><span>4.7</span> (80 avis): Lyon</p>
                     </div>
                 </div>
 
-                <div class="property">
+                <div class="property" onclick="window.location.href='loft-marseille.html'">
                     <img src="img/studiolumineux.jpg" alt="Loft spacieux">
                     <div class="property-details">
                         <h3>Loft spacieux</h3>
@@ -247,7 +270,7 @@
                     </div>
                 </div>
 
-                <div class="property">
+                <div class="property" onclick="window.location.href='villa-architecte-toulouse.html'">
                     <img src="img/loftspacieux.jpg" alt="Villa d'architecte">
                     <div class="property-details">
                         <h3>Villa d'architecte</h3>
@@ -260,7 +283,7 @@
 
     <footer>
         <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
-        <p><a href="#">Politique de confidentialité</a> | <a href="#">Conditions d'utilisation</a></p>
+        <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p> <!-- Redirection vers les pages légales -->
     </footer>
 
 </body>
