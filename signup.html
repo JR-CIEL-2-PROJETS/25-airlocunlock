@@ -13,17 +13,17 @@
     <style>
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        background-image: url('still-life-keys-new-home.jpg'); /* Apply background image */
-        background-size: cover; /* Ensure the background image covers the full screen */
-        background-position: center; /* Center the image */
-        min-height: 100vh; /* Ensure the body takes up the full viewport height */
+        background-image: url('still-life-keys-new-home.jpg');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
       }
 
       .header {
-        background-color: rgba(70, 130, 180, 0.8); /* Semi-transparent background */
+        background-color: rgba(70, 130, 180, 0.8);
         padding: 20px;
         border-bottom: 1px solid #e8edf3;
         color: white;
@@ -42,7 +42,7 @@
         cursor: pointer;
         border-bottom: 2px solid transparent;
         font-weight: bold;
-        color: #4682b4; /* Bleu */
+        color: #4682b4;
         transition: all 0.3s ease;
       }
 
@@ -51,8 +51,8 @@
       }
 
       .tab-active {
-        border-color: #4682b4; /* Bleu */
-        color: #4682b4; /* Bleu */
+        border-color: #4682b4;
+        color: #4682b4;
       }
 
       .input-field {
@@ -67,7 +67,7 @@
       .button-primary {
         width: 100%;
         padding: 12px;
-        background-color: #4682b4; /* Bleu */
+        background-color: #4682b4;
         color: white;
         border-radius: 8px;
         font-weight: bold;
@@ -82,7 +82,7 @@
         width: 100%;
         padding: 12px;
         background-color: #edf2f7;
-        color: #4682b4; /* Bleu */
+        color: #4682b4;
         border-radius: 8px;
         font-weight: bold;
         display: flex;
@@ -96,7 +96,7 @@
       }
 
       .form-container {
-        background-color: rgba(255, 255, 255, 0.9); /* White background with some transparency */
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -110,6 +110,32 @@
         color: #333;
         text-align: center;
         margin-bottom: 20px;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+
+      .login-link a {
+        color: #4682b4;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      .eye-icon {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px; /* Normal size */
+        height: 20px; /* Normal size */
       }
     </style>
     <script>
@@ -135,10 +161,21 @@
       function register(type) {
         alert(`Inscription réussie pour un ${type}`);
       }
+
+      function togglePasswordVisibility() {
+        const passwordField = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (passwordField.type === 'password') {
+          passwordField.type = 'text';
+          eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png'; // change to visible icon
+        } else {
+          passwordField.type = 'password';
+          eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/invisible.png'; // change to invisible icon
+        }
+      }
     </script>
   </head>
   <body>
-    <!-- Barre de navigation -->
     <header class="header">
       <div class="flex items-center gap-4">
         <img src="logo (2).png" alt="Logo" />
@@ -146,10 +183,8 @@
       </div>
     </header>
 
-    <!-- Formulaire d'inscription -->
     <div class="flex justify-center items-center flex-1">
       <div class="form-container">
-        <!-- Onglets -->
         <div class="flex border-b mb-6">
           <div
             id="clientTab"
@@ -163,7 +198,6 @@
           </div>
         </div>
 
-        <!-- Contenu des onglets -->
         <div id="clientContent">
           <form>
             <input
@@ -190,12 +224,22 @@
               class="input-field"
               required
             />
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              class="input-field"
-              required
-            />
+            <div style="position: relative;">
+              <input
+                type="password"
+                placeholder="Mot de passe"
+                class="input-field"
+                id="password"
+                required
+              />
+              <img
+                id="eyeIcon"
+                src="https://img.icons8.com/ios-filled/50/000000/invisible.png"
+                alt="Voir le mot de passe"
+                class="eye-icon"
+                onclick="togglePasswordVisibility()"
+              />
+            </div>
             <button
               type="button"
               class="button-primary"
@@ -232,12 +276,22 @@
               class="input-field"
               required
             />
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              class="input-field"
-              required
-            />
+            <div style="position: relative;">
+              <input
+                type="password"
+                placeholder="Mot de passe"
+                class="input-field"
+                id="password-owner"
+                required
+              />
+              <img
+                id="eyeIcon-owner"
+                src="https://img.icons8.com/ios-filled/50/000000/invisible.png"
+                alt="Voir le mot de passe"
+                class="eye-icon"
+                onclick="togglePasswordVisibility()"
+              />
+            </div>
             <button
               type="button"
               class="button-primary"
@@ -248,10 +302,8 @@
           </form>
         </div>
 
-        <!-- Séparateur -->
         <div class="text-center my-6 text-gray-500">OU</div>
 
-        <!-- Bouton Google -->
         <button class="button-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -266,6 +318,10 @@
           </svg>
           Continuer avec Google
         </button>
+
+        <div class="login-link">
+          <p>Déjà un compte ? <a href="index.html">Se connecter</a></p>
+        </div>
       </div>
     </div>
   </body>
