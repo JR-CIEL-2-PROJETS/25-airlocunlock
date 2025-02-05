@@ -11,7 +11,6 @@
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Style inchangé */
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
         background-image: url('img/still-life-keys-new-home.jpg');
@@ -129,74 +128,64 @@
         text-decoration: underline;
       }
     </style>
-<script>
-  function changeTab(tab) {
-    const clientTab = document.getElementById('clientTab');
-    const ownerTab = document.getElementById('ownerTab');
-    const clientContent = document.getElementById('clientContent');
-    const ownerContent = document.getElementById('ownerContent');
+    <script>
+      function changeTab(tab) {
+        const clientTab = document.getElementById('clientTab');
+        const ownerTab = document.getElementById('ownerTab');
+        const clientContent = document.getElementById('clientContent');
+        const ownerContent = document.getElementById('ownerContent');
+        const sectionTitle = document.getElementById('sectionTitle');
 
-    if (tab === 'client') {
-      clientTab.classList.add('tab-active');
-      ownerTab.classList.remove('tab-active');
-      clientContent.style.display = 'block';
-      ownerContent.style.display = 'none';
-    } else {
-      ownerTab.classList.add('tab-active');
-      clientTab.classList.remove('tab-active');
-      ownerContent.style.display = 'block';
-      clientContent.style.display = 'none';
-    }
-  }
+        if (tab === 'client') {
+          clientTab.classList.add('tab-active');
+          ownerTab.classList.remove('tab-active');
+          clientContent.style.display = 'block';
+          ownerContent.style.display = 'none';
+          sectionTitle.textContent = 'Connexion - Client';
+        } else {
+          ownerTab.classList.add('tab-active');
+          clientTab.classList.remove('tab-active');
+          ownerContent.style.display = 'block';
+          clientContent.style.display = 'none';
+          sectionTitle.textContent = 'Connexion - Propriétaire';
+        }
+      }
 
-  // Fonction de connexion
-  function login(type) {
-    const email = document.getElementById(`${type.toLowerCase()}Email`).value;
-    const password = document.getElementById(`${type.toLowerCase()}Password`).value;
+      function login(type) {
+        let email, password;
 
-    let url = '';
-    let params = '';
+        // Sélection des éléments en fonction du type (Client ou Propriétaire)
+        if (type === 'Client') {
+          email = document.getElementById('clientEmail');
+          password = document.getElementById('clientPassword');
+        } else if (type === 'Propriétaire') {
+          email = document.getElementById('ownerEmail');
+          password = document.getElementById('ownerPassword');
+        }
 
-    // Déterminer l'URL et les paramètres en fonction du type d'utilisateur
-    if (type === 'Client' && email === 'toto@toto.fr' && password === 'toto') {
-      url = 'https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/login/client';
-      params = `?user=${email}&password=${password}`;
-    } else if (type === 'Propriétaire' && email === 'proprietaire@proprietaire.fr' && password === 'proprietaire') {
-      url = 'https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/login/proprietaire';
-      params = `?user=${email}&password=${password}`;
-    }
+        // Vérification si les champs existent
+        if (!email || !password) {
+          alert("Erreur : Impossible de trouver les champs de saisie");
+          return;
+        }
 
-    // Si l'URL est définie (identifiants valides)
-    if (url) {
-      fetch(url + params)
-        .then(response => {
-          if (response.ok) {
-            return response.text(); // Récupérer la réponse en texte
+        const emailValue = email.value;
+        const passwordValue = password.value;
+
+        // Vérification des identifiants
+        if (emailValue === 'toto' && passwordValue === 'toto') {
+          if (type === 'Client') {
+            window.location.href = 'accueil.html'; // Redirige le client vers la page d'accueil
           } else {
-            throw new Error('Erreur de connexion');
+            window.location.href = 'accueilpro.html'; // Redirige le propriétaire vers la page propriétaire
           }
-        })
-        .then(data => {
-          // Afficher la réponse dans la console
-          console.log('Réponse du serveur:', data);
-
-          // Rediriger vers la page d'accueil après 500ms (simultané)
-          setTimeout(() => {
-            window.location.href = 'accueil.html'; // Redirection
-          }, 500); // Délais pour afficher la réponse avant la redirection
-        })
-        .catch(error => {
-          console.error('Erreur de connexion:', error);
-        });
-    } else {
-      console.log(`Identifiants invalides pour le ${type}`);
-    }
-  }
-</script>
-
+        } else {
+          alert('Identifiants incorrects');
+        }
+      }
+    </script>
   </head>
   <body>
-    <!-- Barre de navigation -->
     <header class="header">
       <div class="flex items-center gap-4">
         <img src="img/logo (2).png" alt="Logo" />
@@ -204,10 +193,8 @@
       </div>
     </header>
 
-    <!-- Formulaire de connexion -->
     <div class="flex justify-center items-center flex-1">
       <div class="form-container">
-        <!-- Onglets -->
         <div class="flex border-b mb-6">
           <div
             id="clientTab"
@@ -221,7 +208,10 @@
           </div>
         </div>
 
-        <!-- Contenu des onglets -->
+        <div id="sectionTitle" class="section-title">
+          Connexion - Client
+        </div>
+
         <div id="clientContent">
           <form>
             <input
@@ -274,10 +264,8 @@
           </form>
         </div>
 
-        <!-- Séparateur -->
         <div class="text-center my-6 text-gray-500">OU</div>
 
-        <!-- Bouton Google -->
         <button class="button-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -293,7 +281,6 @@
           Continuer avec Google
         </button>
 
-        <!-- Section pour créer un compte -->
         <div class="signup-link">
           <p>Pas encore de compte ? <a href="signup.html">Créer un compte</a></p>
         </div>
