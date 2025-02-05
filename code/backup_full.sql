@@ -30,7 +30,7 @@ CREATE TABLE `inscription_clients` (
   `phone` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `inscription_clients` (
 
 LOCK TABLES `inscription_clients` WRITE;
 /*!40000 ALTER TABLE `inscription_clients` DISABLE KEYS */;
+INSERT INTO `inscription_clients` VALUES (1,'toto','toto@toto.fr','$2y$10$PCSpKBuNn7sPwwKs7T0r6OmHJvvt0adHHdk8r0ztyJsDtL3Rt50oi','010203040506');
 /*!40000 ALTER TABLE `inscription_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,4 +107,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-05 14:22:33
+-- Dump completed on 2025-02-05 14:30:50
