@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  php:
+    build: .
+    container_name: php-container
+    volumes:
+      - ./code:/var/www/html  # Répertoire de ton code local vers le conteneur
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - app_network
+
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: airlockunlock
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - dbdata:/var/lib/mysql  # Volume persistant pour la base de données
+    ports:
+      - "3306:3306"
+    networks:
+      - app_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-container
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - app_network
+
+volumes:
+  dbdata:  # Ce volume est maintenant local et persistant
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge
