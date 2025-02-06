@@ -7,6 +7,7 @@ $sql = "SELECT * FROM publier_bien";
 $stmt = $pdo->query($sql);
 $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -77,23 +78,26 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <h2>Appartements disponibles à la réservation</h2>
 
-        <!-- Affichage dynamique des biens à partir de la base de données -->
+        <!-- Vérifier si des propriétés existent dans la base de données -->
         <?php
-        // Affichage des biens disponibles
-        foreach ($properties as $property) {
-            echo "<div class='property-card'>
-                    <h3>" . htmlspecialchars($property['property_name']) . "</h3>
-                    <p><strong>Lieu: </strong>" . htmlspecialchars($property['location']) . "</p>
-                    <p>" . htmlspecialchars($property['description']) . "</p>
-                    <p><strong>Prix: </strong>" . htmlspecialchars($property['price']) . " €</p>
-                    <p><strong>Chambres: </strong>" . htmlspecialchars($property['rooms']) . "</p>
-                    <!-- Affichage de l'image du bien -->
-                    <img src='" . htmlspecialchars($property['image_url']) . "' alt='Image du bien'>
-                    <form action='reservation.php' method='GET'>
-                        <input type='hidden' name='id' value='" . htmlspecialchars($property['id']) . "'>
-                        <button type='submit'>Réserver</button>
-                    </form>
-                </div>";
+        if ($properties) {
+            foreach ($properties as $property) {
+                echo "<div class='property-card'>
+                        <h3>" . htmlspecialchars($property['property_name']) . "</h3>
+                        <p><strong>Lieu: </strong>" . htmlspecialchars($property['location']) . "</p>
+                        <p>" . htmlspecialchars($property['description']) . "</p>
+                        <p><strong>Prix: </strong>" . htmlspecialchars($property['price']) . " €</p>
+                        <p><strong>Chambres: </strong>" . htmlspecialchars($property['rooms']) . "</p>
+                        <!-- Affichage de l'image du bien -->
+                        <img src='" . htmlspecialchars($property['image_url']) . "' alt='Image du bien'>
+                        <form action='reservation.php' method='GET'>
+                            <input type='hidden' name='id' value='" . htmlspecialchars($property['id']) . "'>
+                            <button type='submit'>Réserver</button>
+                        </form>
+                    </div>";
+            }
+        } else {
+            echo "<p>Aucun bien trouvé à la réservation.</p>";
         }
         ?>
     </div>
