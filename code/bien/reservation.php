@@ -2,7 +2,37 @@
 // Connexion à la base de données
 include '../config.php';
 
-// Requête pour récupérer tous les biens
+// Traitement de la réservation si le formulaire est soumis
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $bien_id = $_POST['bien_id'];
+    $date_debut = $_POST['date_debut'];
+    $date_fin = $_POST['date_fin'];
+    $nombre_personnes = $_POST['nombre_personnes'];
+
+    // Vérification des champs requis
+    if (!empty($bien_id) && !empty($date_debut) && !empty($date_fin) && !empty($nombre_personnes)) {
+        try {
+            // Requête d'insertion dans la table reservation_bien
+            $sql = "INSERT INTO reservation_bien (bien_id, date_debut, date_fin, nombre_personnes) 
+                    VALUES (:bien_id, :date_debut, :date_fin, :nombre_personnes)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':bien_id' => $bien_id,
+                ':date_debut' => $date_debut,
+                ':date_fin' => $date_fin,
+                ':nombre_personnes' => $nombre_personnes
+            ]);
+
+            echo "<p>Réservation enregistrée avec succès !</p>";
+        } catch (PDOException $e) {
+            echo "<p>Erreur lors de l'enregistrement : " . $e->getMessage() . "</p>";
+        }
+    } else {
+        echo "<p>Veuillez remplir tous les champs.</p>";
+    }
+}
+
+// Récupération des biens pour affichage
 $sql = "SELECT * FROM publier_bien";
 $stmt = $pdo->query($sql);
 $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -24,12 +54,11 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         .container {
             width: 80%;
-            margin: 0 auto;
+            margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
-            margin-top: 50px;
         }
 
         h2 {
@@ -53,54 +82,67 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 10px;
         }
 
-        .property-card button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
+        form {
             margin-top: 20px;
+            text-align: center;
         }
 
-        .property-card button img {
-            width: 150px;
-            height: auto;
+        input[type="date"],
+        input[type="number"],
+        button {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            transition: transform 0.3s ease;
         }
 
-        .property-card button img:hover {
-            transform: scale(1.1);
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Appartements disponibles à la réservation</h2>
+<div class="container">
+    <h2>Choisis ta date !</h2>
 
-        <!-- Vérifier si des propriétés existent dans la base de données -->
-        <?php
-        if ($properties) {
-            foreach ($properties as $property) {
-                echo "<div class='property-card'>
-                        <h3>" . htmlspecialchars($property['property_name']) . "</h3>
-                        <p><strong>Lieu: </strong>" . htmlspecialchars($property['location']) . "</p>
-                        <p>" . htmlspecialchars($property['description']) . "</p>
-                        <p><strong>Prix: </strong>" . htmlspecialchars($property['price']) . " €</p>
-                        <p><strong>Chambres: </strong>" . htmlspecialchars($property['rooms']) . "</p>
-                        <!-- Affichage de l'image du bien -->
-                        <img src='" . htmlspecialchars($property['image_url']) . "' alt='Image du bien'>
-                        <form action='reservation.php' method='GET'>
-                            <input type='hidden' name='id' value='" . htmlspecialchars($property['id']) . "'>
-                            <button type='submit'>Réserver</button>
-                        </form>
-                    </div>";
-            }
-        } else {
-            echo "<p>Aucun bien trouvé à la réservation.</p>";
-        }
-        ?>
-    </div>
+    <!-- Liste des biens -->
+    <?php if ($properties): ?>
+        <?php foreach ($properties as $property): ?>
+            <div class="property-card">
+                <h3><?= htmlspecialchars($property['property_name']) ?></h3>
+                <p><strong>Lieu :</strong> <?= htmlspecialchars($property['location']) ?></p>
+                <p><?= htmlspecialchars($property['description']) ?></p>
+                <p><strong>Prix :</strong> <?= htmlspecialchars($property['price']) ?> €</p>
+                <p><strong>Chambres :</strong> <?= htmlspecialchars($property['rooms']) ?></p>
+                <img src="<?= htmlspecialchars($property['image_url']) ?>" alt="Image du bien">
+                
+                <!-- Formulaire de réservation -->
+                <form action="" method="POST">
+                    <input type="hidden" name="bien_id" value="<?= htmlspecialchars($property['id']) ?>">
+                    <label for="date_debut">Date de début :</label>
+                    <input type="date" name="date_debut" required>
+                    <br>
+                    <label for="date_fin">Date de fin :</label>
+                    <input type="date" name="date_fin" required>
+                    <br>
+                    <label for="nombre_personnes">Nombre de personnes :</label>
+                    <input type="number" name="nombre_personnes" min="1" required>
+                    <br>
+                    <button type="submit">Réserver</button>
+                </form>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Aucun bien disponible pour la réservation.</p>
+    <?php endif; ?>
+</div>
 
 </body>
 </html>
