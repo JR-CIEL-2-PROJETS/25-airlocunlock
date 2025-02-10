@@ -61,17 +61,90 @@
         }
 
         header .btn-host {
-            background-color: #FFBB33; /* Or pour le bouton */
+            background-color: #fff; /* Blanc pour le bouton */
             color: #007BFF;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             text-decoration: none;
             font-size: 1.1rem;
             transition: background-color 0.3s;
+            margin-right: 1rem;
         }
 
         header .btn-host:hover {
-            background-color: #FF9E00; /* Or plus foncé */
+            background-color: #FFBB33; /* Or en survol */
+            color: #fff;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            transition: transform 0.3s;
+        }
+
+        .profile img:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .profile-menu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-menu ul {
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        .profile-menu ul li {
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .profile-menu ul li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .profile-menu ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .profile-menu ul li a:hover {
+            color: #007BFF;
         }
 
         .container {
@@ -154,9 +227,20 @@
             <a href="appartements.html">Appartements</a>
             <a href="maisons.html">Maisons</a>
             <a href="bureaux.html">Bureaux</a>
-    
         </nav>
-        <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a>
+        <div class="profile-container">
+            <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a>
+            <div class="profile">
+                <img src="img/user-icon.png" alt="User Icon" class="user-icon">
+                <div class="profile-menu">
+                    <ul>
+                        <li><a href="profile.html">Profil</a></li>
+                        <li><a href="settings.html">Paramètres</a></li>
+                        <li><a href="logout.html">Déconnexion</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </header>
 
     <div class="container">
@@ -193,6 +277,22 @@
         <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
         <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p>
     </footer>
+
+    <script>
+        const profile = document.querySelector('.profile');
+        const profileMenu = document.querySelector('.profile-menu');
+
+        profile.addEventListener('click', () => {
+            profileMenu.classList.toggle('active');
+        });
+
+        // Close the profile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+    </script>
 
 </body>
 </html>

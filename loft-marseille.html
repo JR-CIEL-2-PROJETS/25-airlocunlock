@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appartement Cosy à Paris - AirLockUnlock</title>
+    <title>Loft Spacieux à Marseille - AirLockUnlock</title>
     <style>
         * {
             margin: 0;
@@ -394,36 +394,36 @@
     </header>
 
     <div class="container">
-        <h1>Appartement Cosy à Paris</h1>
+        <h1>Loft Spacieux à Marseille</h1>
 
         <div class="property-images">
             <button class="arrow arrow-left">&#10094;</button>
-            <img src="img/appartementparis.PNG" alt="Salon Appartement Cosy Paris" class="active">
-            <img src="img/chambreappartementcosyparis.avif" alt="Chambre Appartement Cosy Paris">
-            <img src="img/cusineparis.webp" alt="Cuisine Appartement Cosy Paris">
+            <img src="img/loftspacieux.jpg" alt="Salon Loft Spacieux Marseille" class="active">
+            <img src="img/chambreloftspacieux.avif" alt="Chambre Loft Spacieux Marseille">
+            <img src="img/cusineloftspacieux.webp" alt="Cuisine Loft Spacieux Marseille">
             <button class="arrow arrow-right">&#10095;</button>
         </div>
 
         <div class="details">
             <div class="left">
                 <h2>Description</h2>
-                <p>Ce magnifique appartement cosy situé dans le cœur de Paris vous offre tout le confort nécessaire pour un séjour agréable. Il est parfait pour une escapade en ville, avec une chambre spacieuse, un salon lumineux, une cuisine entièrement équipée et une salle de bain moderne. De plus, l'appartement est sécurisé avec une serrure électronique, vous permettant d'accéder facilement et en toute sécurité à votre logement.</p>
-                <p>À proximité des principaux monuments et attractions de Paris, cet appartement est l'endroit idéal pour explorer la ville lumière.</p>
+                <p>Ce loft spacieux situé à Marseille est parfait pour un séjour en famille ou entre amis. Avec ses grandes pièces lumineuses, une cuisine entièrement équipée et une terrasse avec vue sur la mer, ce loft offre tout le confort nécessaire pour un séjour agréable. De plus, le loft est sécurisé avec une serrure électronique, vous permettant d'accéder facilement et en toute sécurité à votre logement.</p>
+                <p>À proximité des principaux monuments et attractions de Marseille, ce loft est l'endroit idéal pour explorer la ville.</p>
 
                 <div class="amenities">
                     <div class="amenity">Wi-Fi</div>
                     <div class="amenity">Climatisation</div>
                     <div class="amenity">Cuisine équipée</div>
                     <div class="amenity">Machine à laver</div>
-                    <div class="amenity">Balcon</div>
-                    <div class="amenity">Serrure électronique</div> <!-- Ajout de la serrure électronique -->
+                    <div class="amenity">Terrasse avec vue</div>
+                    <div class="amenity">Serrure électronique</div>
                 </div>
             </div>
 
             <div class="right">
                 <h2>Prix par nuit</h2>
-                <p><strong>120 €</strong></p>
-                <p><em>Réservez dès maintenant et profitez de Paris dans le confort d'un appartement cosy.</em></p>
+                <p><strong>150 €</strong></p>
+                <p><em>Réservez dès maintenant et profitez de Marseille dans le confort d'un loft spacieux.</em></p>
             </div>
         </div>
 
@@ -461,7 +461,6 @@
                     <p><strong>4.7 étoiles</strong> - "Un appartement charmant avec une vue magnifique. Nous reviendrons sans hésiter !"</p>
                 </div>
             </div>
-
         </div>
 
         <div class="reservation-form">
@@ -525,7 +524,7 @@
             const checkin = document.getElementById('checkin').value;
             const checkout = document.getElementById('checkout').value;
             const guests = document.getElementById('guests').value;
-            const price = 120; // Prix par nuit
+            const price = 150; // Prix par nuit
             const nights = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24));
             const totalPrice = price * nights;
 

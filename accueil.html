@@ -20,26 +20,12 @@
         header {
             background-color: #007BFF;
             padding: 1rem;
-            border-bottom: 1px solid #ddd;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        header nav {
-            display: flex;
-            gap: 1rem;
-        }
-
-        header nav a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        header nav a:hover {
-            color: #FFBB33;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         header .logo {
@@ -59,7 +45,28 @@
             font-weight: bold;
         }
 
-        header .btn-host {
+        header nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #FFBB33;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-host {
             background-color: #fff;
             color: #007BFF;
             padding: 0.5rem 1rem;
@@ -67,11 +74,78 @@
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s;
+            margin-right: 1rem;
         }
 
-        header .btn-host:hover {
+        .btn-host:hover {
             background-color: #FFBB33;
             color: white;
+        }
+
+        .profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            transition: transform 0.3s;
+        }
+
+        .profile img:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .profile-menu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-menu ul {
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        .profile-menu ul li {
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .profile-menu ul li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .profile-menu ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .profile-menu ul li a:hover {
+            color: #007BFF;
         }
 
         .container {
@@ -208,7 +282,19 @@
             <a href="bureaux.html">Bureaux</a>
             <a href="decouvrir.html">Découvrir</a>
         </nav>
-        <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a>
+        <div class="profile-container">
+            <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a>
+            <div class="profile">
+                <img src="img/hasbula.jpg" alt="User Icon" class="user-icon">
+                <div class="profile-menu">
+                    <ul>
+                        <li><a href="profile.html">Profil</a></li>
+                        <li><a href="settings.html">Paramètres</a></li>
+                        <li><a href="logout.html">Déconnexion</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </header>
 
     <div class="container">
@@ -254,7 +340,7 @@
 
                 <!-- Appartement 3 -->
                 <div class="property" onclick="window.location.href='studio-lyon.html'">
-                    <img src="img/maisondefamille.jpg" alt="Studio lumineux">
+                    <img src="img/studiolumineux.jpg" alt="Studio lumineux">
                     <div class="property-details">
                         <h3>Studio lumineux</h3>
                         <p><span>4.7</span> (80 avis): Lyon</p>
@@ -263,7 +349,7 @@
 
                 <!-- Appartement 4 -->
                 <div class="property" onclick="window.location.href='loft-marseille.html'">
-                    <img src="img/studiolumineux.jpg" alt="Loft spacieux">
+                    <img src="img/loftspacieux.jpg" alt="Loft spacieux">
                     <div class="property-details">
                         <h3>Loft spacieux</h3>
                         <p><span>4.9</span> (110 avis): Marseille</p>
@@ -272,7 +358,7 @@
 
                 <!-- Appartement 5 -->
                 <div class="property" onclick="window.location.href='villa-architecte-toulouse.html'">
-                    <img src="img/loftspacieux.jpg" alt="Villa d'architecte">
+                    <img src="img/villa.jpg" alt="Villa d'architecte">
                     <div class="property-details">
                         <h3>Villa d'architecte</h3>
                         <p><span>4.8</span> (60 avis): Toulouse</p>
@@ -304,8 +390,31 @@
                         <h3>Penthouse à Nice</h3>
                         <p><span>5.0</span> (200 avis): Nice</p>
                     </div>
+                </div>
             </div>
         </div>
     </div>
 
     <footer>
+        <p>&copy; 2023 AirLockUnlock. Tous droits réservés.</p>
+        <a href="contact.html">Contact</a>
+    </footer>
+
+    <script>
+        const profile = document.querySelector('.profile');
+        const profileMenu = document.querySelector('.profile-menu');
+
+        profile.addEventListener('click', () => {
+            profileMenu.classList.toggle('active');
+        });
+
+        // Close the profile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
