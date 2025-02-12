@@ -376,6 +376,28 @@
         .chatbot-window .input-box button:hover {
             background-color: #FFBB33;
         }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-button {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .option-button:hover {
+            background-color: #FFBB33;
+        }
     </style>
 </head>
 <body>
@@ -506,7 +528,7 @@
 
     <!-- Chatbot Container -->
     <div class="chatbot-container" id="chatbot-toggle">
-        <img src="img/chatbot-icon.png" alt="Chatbot Icon">
+        <img src="img/chatbot-icon.png.png" alt="Chatbot Icon">
     </div>
 
     <div class="chatbot-window" id="chatbot-window">
@@ -550,11 +572,15 @@
 
         chatbotToggle.addEventListener('click', () => {
             chatbotWindow.classList.toggle('active');
-            if (currentStep === 0) {
-                addMessageToChatBox('bot', 'Bonjour ! Que souhaitez-vous faire ?');
-                addMessageToChatBox('bot', '1. Voir des appartements');
-                addMessageToChatBox('bot', '2. Voir des maisons');
-                addMessageToChatBox('bot', '3. Contacter le support');
+            if (chatbotWindow.classList.contains('active')) {
+                clearChatBox();
+                if (currentStep === 0) {
+                    addMessageToChatBox('bot', 'Bonjour ! Que souhaitez-vous faire ?', [
+                        { text: 'Voir des appartements', value: '1' },
+                        { text: 'Voir des maisons', value: '2' },
+                        { text: 'Contacter le support', value: '3' }
+                    ]);
+                }
             }
         });
 
@@ -566,12 +592,22 @@
 
                 if (currentStep === 0) {
                     if (userMessage === '1') {
-                        addMessageToChatBox('bot', 'Quelle ville souhaitez-vous explorer pour les appartements ?');
-                        addMessageToChatBox('bot', 'Options: Paris, Bordeaux, Lyon, Marseille, Toulouse');
+                        addMessageToChatBox('bot', 'Quelle ville souhaitez-vous explorer pour les appartements ?', [
+                            { text: 'Paris', value: 'paris' },
+                            { text: 'Bordeaux', value: 'bordeaux' },
+                            { text: 'Lyon', value: 'lyon' },
+                            { text: 'Marseille', value: 'marseille' },
+                            { text: 'Toulouse', value: 'toulouse' }
+                        ]);
                         currentStep = 1;
                     } else if (userMessage === '2') {
-                        addMessageToChatBox('bot', 'Quelle ville souhaitez-vous explorer pour les maisons ?');
-                        addMessageToChatBox('bot', 'Options: Paris, Bordeaux, Lyon, Marseille, Toulouse');
+                        addMessageToChatBox('bot', 'Quelle ville souhaitez-vous explorer pour les maisons ?', [
+                            { text: 'Paris', value: 'paris' },
+                            { text: 'Bordeaux', value: 'bordeaux' },
+                            { text: 'Lyon', value: 'lyon' },
+                            { text: 'Marseille', value: 'marseille' },
+                            { text: 'Toulouse', value: 'toulouse' }
+                        ]);
                         currentStep = 2;
                     } else if (userMessage === '3') {
                         addMessageToChatBox('bot', 'Pour nous contacter, veuillez appeler le 0695789645.');
@@ -579,21 +615,7 @@
                     } else {
                         addMessageToChatBox('bot', 'Veuillez choisir une option valide.');
                     }
-                } else if (currentStep === 1) {
-                    const cityMapping = {
-                        'paris': 'appartement-cosy-paris.html',
-                        'bordeaux': 'maison-famille-bordeaux.html',
-                        'lyon': 'studio-lyon.html',
-                        'marseille': 'loft-marseille.html',
-                        'toulouse': 'villa-architecte-toulouse.html'
-                    };
-                    if (cityMapping[userMessage]) {
-                        window.location.href = cityMapping[userMessage];
-                    } else {
-                        addMessageToChatBox('bot', 'Ville non reconnue. Veuillez choisir parmi les options fournies.');
-                    }
-                    currentStep = 0;
-                } else if (currentStep === 2) {
+                } else if (currentStep === 1 || currentStep === 2) {
                     const cityMapping = {
                         'paris': 'appartement-cosy-paris.html',
                         'bordeaux': 'maison-famille-bordeaux.html',
@@ -611,12 +633,74 @@
             }
         });
 
-        function addMessageToChatBox(sender, message) {
+        function addMessageToChatBox(sender, message, options = []) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender);
-            messageElement.textContent = message;
+            messageElement.innerHTML = message;
+
+            if (options.length > 0) {
+                const optionsContainer = document.createElement('div');
+                optionsContainer.classList.add('options-container');
+                options.forEach(option => {
+                    const optionButton = document.createElement('button');
+                    optionButton.classList.add('option-button');
+                    optionButton.textContent = option.text;
+                    optionButton.addEventListener('click', () => handleOptionClick(option.value));
+                    optionsContainer.appendChild(optionButton);
+                });
+                messageElement.appendChild(optionsContainer);
+            }
+
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
+
+        function handleOptionClick(value) {
+            addMessageToChatBox('user', value);
+            chatInput.value = '';
+
+            if (currentStep === 0) {
+                if (value === '1') {
+                    addMessageToChatBox('bot', 'Quelle ville souhaitez-vous explorer pour les appartements ?', [
+                        { text: 'Paris', value: 'paris' },
+                        { text: 'Bordeaux', value: 'bordeaux' },
+                        { text: 'Lyon', value: 'lyon' },
+                        { text: 'Marseille', value: 'marseille' },
+                        { text: 'Toulouse', value: 'toulouse' }
+                    ]);
+                    currentStep = 1;
+                } else if (value === '2') {
+                    addMessageToChatBox('bot', 'Quelle ville souhaitez-vous explorer pour les maisons ?', [
+                        { text: 'Paris', value: 'paris' },
+                        { text: 'Bordeaux', value: 'bordeaux' },
+                        { text: 'Lyon', value: 'lyon' },
+                        { text: 'Marseille', value: 'marseille' },
+                        { text: 'Toulouse', value: 'toulouse' }
+                    ]);
+                    currentStep = 2;
+                } else if (value === '3') {
+                    addMessageToChatBox('bot', 'Pour nous contacter, veuillez appeler le 0695789645.');
+                    currentStep = 0;
+                }
+            } else if (currentStep === 1 || currentStep === 2) {
+                const cityMapping = {
+                    'paris': 'appartement-cosy-paris.html',
+                    'bordeaux': 'maison-famille-bordeaux.html',
+                    'lyon': 'studio-lyon.html',
+                    'marseille': 'loft-marseille.html',
+                    'toulouse': 'villa-architecte-toulouse.html'
+                };
+                if (cityMapping[value]) {
+                    window.location.href = cityMapping[value];
+                } else {
+                    addMessageToChatBox('bot', 'Ville non reconnue. Veuillez choisir parmi les options fournies.');
+                }
+                currentStep = 0;
+            }
+        }
+
+        function clearChatBox() {
+            chatBox.innerHTML = '';
         }
     </script>
 
