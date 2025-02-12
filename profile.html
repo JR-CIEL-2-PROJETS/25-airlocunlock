@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirLockUnlock - Profil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        header .logo span {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #FFBB33;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-host {
+            background-color: #fff;
+            color: #007BFF;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin-right: 1rem;
+        }
+
+        .btn-host:hover {
+            background-color: #FFBB33;
+            color: white;
+        }
+
+        .profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            transition: transform 0.3s;
+        }
+
+        .profile img:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .profile-menu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-menu ul {
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        .profile-menu ul li {
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .profile-menu ul li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .profile-menu ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .profile-menu ul li a:hover {
+            color: #007BFF;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #007BFF;
+            transition: border-color 0.3s;
+        }
+
+        .profile-header img:hover {
+            border-color: #FFBB33;
+        }
+
+        .profile-header div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-header h1 {
+            font-size: 2.5rem;
+            color: #007BFF;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .profile-header p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .profile-details {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .profile-details:hover {
+            transform: translateY(-10px);
+        }
+
+        .profile-details h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #007BFF;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 0.5rem;
+        }
+
+        .profile-details p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .profile-details .info {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-details .info div {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .profile-details .info div:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .profile-details .info div p {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-details .info div span {
+            font-size: 1.2rem;
+            color: #007BFF;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            background-color: #007BFF;
+            color: #fff;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #FFBB33;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="img/logo (2).png" alt="Logo AirLockUnlock">
+            <span>AirLockUnlock</span>
+        </div>
+        <nav>
+            <a href="appartements.html">Appartements</a>
+            <a href="maisons.html">Maison</a>
+            <a href="bureaux.html">Bureaux</a>
+            <a href="decouvrir.html">Découvrir</a>
+        </nav>
+        <div class="profile-container">
+            <a href="devenir-proprietaire.html" class="btn-host">Devenir propriétaire</a>
+            <div class="profile">
+                <img src="img/hasbula.jpg" alt="User Icon" class="user-icon">
+                <div class="profile-menu">
+                    <ul>
+                        <li><a href="profil.html">Profil</a></li>
+                        <li><a href="settings.html">Paramètres</a></li>
+                        <li><a href="logout.html">Déconnexion</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="profile-header">
+            <img src="img/hasbula.jpg" alt="Profile Picture">
+            <div>
+                <h1>Nom Utilisateur</h1>
+                <p>Membre depuis 2023</p>
+            </div>
+        </div>
+
+        <div class="profile-details">
+            <h2>Détails du Profil</h2>
+            <p>Bienvenue sur votre profil ! Gérez vos informations personnelles et vos préférences de location ici.</p>
+
+            <div class="info">
+                <div>
+                    <p>Nombre de réservations</p>
+                    <span>15</span>
+                </div>
+                <div>
+                    <p>Avis reçus</p>
+                    <span>4.8/5</span>
+                </div>
+                <div>
+                    <p>Propriétés favorites</p>
+                    <span>8</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 AirLockUnlock. Tous droits réservés.</p>
+        <a href="contact.html">Contact</a>
+    </footer>
+
+    <script>
+        const profile = document.querySelector('.profile');
+        const profileMenu = document.querySelector('.profile-menu');
+
+        profile.addEventListener('click', () => {
+            profileMenu.classList.toggle('active');
+        });
+
+        // Close the profile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
