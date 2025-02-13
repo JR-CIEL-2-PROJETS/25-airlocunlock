@@ -1,7 +1,7 @@
 <?php
 // Configuration de la base de données
 $host = 'mysql'; // Nom d'hôte ou adresse IP de votre serveur MySQL (ici pour Docker c'est "mysql")
-$dbname = 'Tapkey'; // Nom de la base de données
+$dbname = 'airlockunlock'; // Nom de la base de données
 $username = 'root'; // Nom d'utilisateur MySQL
 $password = 'root'; // Mot de passe MySQL
 
