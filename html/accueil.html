@@ -164,6 +164,7 @@
         .search-bar {
             margin-bottom: 2rem;
             text-align: center;
+            position: relative;
         }
 
         .search-bar input {
@@ -177,6 +178,30 @@
 
         .search-bar input:focus {
             border-color: #007BFF;
+        }
+
+        .suggestions-list {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            z-index: 10;
+        }
+
+        .suggestions-list li {
+            padding: 0.8rem;
+            cursor: pointer;
+        }
+
+        .suggestions-list li:hover {
+            background-color: #f0f0f0;
         }
 
         .popular-areas, .top-rated {
@@ -420,7 +445,7 @@
                 <div class="profile-menu">
                     <ul>
                         <li><a href="profile.html">Profil</a></li>
-                        <li><a href="settings.html">Paramètres</a></li>
+                        <li><a href="setting.html">Paramètres</a></li>
                         <li><a href="signin.html">Déconnexion</a></li>
                     </ul>
                 </div>
@@ -433,7 +458,8 @@
 
         <!-- Barre de recherche -->
         <div class="search-bar">
-            <input type="text" placeholder="Paris, France" onclick="window.location.href='recherche.html';">
+            <input type="text" id="search-input" placeholder="Paris, France">
+            <ul class="suggestions-list" id="suggestions-list"></ul>
         </div>
 
         <!-- Villes avec appartements disponibles -->
@@ -630,6 +656,48 @@
                     }
                     currentStep = 0;
                 }
+            }
+        });
+
+        // Search bar functionality
+        const searchInput = document.getElementById('search-input');
+        const suggestionsList = document.getElementById('suggestions-list');
+
+        const cities = {
+            'paris': 'appartement-cosy-paris.html',
+            'bordeaux': 'maison-famille-bordeaux.html',
+            'lyon': 'studio-lyon.html',
+            'marseille': 'loft-marseille.html',
+            'toulouse': 'villa-architecte-toulouse.html',
+            'nice': 'appartement-design-nice.html',
+            'corse': 'appartement-vue-mer-corse.html'
+        };
+
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value.toLowerCase();
+            suggestionsList.innerHTML = '';
+
+            if (query) {
+                const matchingCities = Object.keys(cities).filter(city => city.includes(query));
+
+                matchingCities.forEach(city => {
+                    const li = document.createElement('li');
+                    li.textContent = city.charAt(0).toUpperCase() + city.slice(1);
+                    li.addEventListener('click', () => {
+                        window.location.href = cities[city];
+                    });
+                    suggestionsList.appendChild(li);
+                });
+
+                suggestionsList.style.display = matchingCities.length > 0 ? 'block' : 'none';
+            } else {
+                suggestionsList.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
+                suggestionsList.style.display = 'none';
             }
         });
 
