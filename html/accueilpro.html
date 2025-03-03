@@ -135,9 +135,32 @@
         footer a:hover {
             color: #FFBB33;
         }
+
+        .form-container {
+            margin-top: 2rem;
+        }
+
+        .form-container input, .form-container button {
+            padding: 0.8rem;
+            margin-top: 1rem;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .form-container button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-container button:hover {
+            background-color: #FFBB33;
+        }
     </style>
 </head>
-
 <body>
 
     <header>
@@ -178,6 +201,19 @@
                 <p>Consultez les réservations actuelles et modifiez-les si nécessaire.</p>
                 <a href="reservations.html" class="btn-primary">Voir les réservations</a>
             </div>
+            <div class="card">
+                <h3>Acheter des Serrures Tapkey</h3>
+                <p>Achetez des serrures Tapkey pour vos propriétés.</p>
+                <a href="https://www.tapkey.com" target="_blank" class="btn-primary">Acheter des serrures</a>
+            </div>
+            <div class="card">
+                <h3>Vérifier l'Achat</h3>
+                <p>Entrez le numéro de série pour vérifier votre achat.</p>
+                <div class="form-container">
+                    <input type="text" id="serialNumber" placeholder="Numéro de série">
+                    <button onclick="verifyPurchase()">Vérifier</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -185,6 +221,19 @@
         <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
         <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p>
     </footer>
+
+    <script>
+        function verifyPurchase() {
+            const serialNumber = document.getElementById('serialNumber').value;
+            // Ici, vous pouvez ajouter une logique pour vérifier le numéro de série avec votre backend ou une API.
+            // Pour l'exemple, nous allons simplement afficher une alerte.
+            if (serialNumber) {
+                alert('Numéro de série vérifié avec succès !');
+            } else {
+                alert('Veuillez entrer un numéro de série.');
+            }
+        }
+    </script>
 
 </body>
 </html>

@@ -1,290 +1,232 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirLockUnlock - Connexion</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      body {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        background-image: url('img/still-life-keys-new-home.jpg');
-        background-size: cover;
-        background-position: center;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: url('img/still-life-keys-new-home.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-      .header {
-        background-color: rgba(70, 130, 180, 0.8);
-        padding: 20px;
-        border-bottom: 1px solid #e8edf3;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+        .header {
+            background-color: rgba(70, 130, 180, 0.8);
+            padding: 20px;
+            border-bottom: 1px solid #e8edf3;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-      .header img {
-        width: 40px;
-        height: 40px;
-      }
+        .header img {
+            width: 40px;
+            height: 40px;
+        }
 
-      .tab {
-        padding: 10px 20px;
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        font-weight: bold;
-        color: #4682b4;
-        transition: all 0.3s ease;
-      }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: bold;
+            color: #4682b4;
+            transition: all 0.3s ease;
+        }
 
-      .tab:hover {
-        color: #2b6cb0;
-      }
+        .tab:hover {
+            color: #2b6cb0;
+        }
 
-      .tab-active {
-        border-color: #4682b4;
-        color: #4682b4;
-      }
+        .tab-active {
+            border-color: #4682b4;
+            color: #4682b4;
+        }
 
-      .input-field {
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #cbd5e0;
-        margin-bottom: 15px;
-        font-size: 14px;
-      }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e0;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
 
-      .button-primary {
-        width: 100%;
-        padding: 12px;
-        background-color: #4682b4;
-        color: white;
-        border-radius: 8px;
-        font-weight: bold;
-        transition: background-color 0.3s;
-      }
+        .button-primary {
+            width: 100%;
+            padding: 12px;
+            background-color: #4682b4;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
 
-      .button-primary:hover {
-        background-color: #2c5282;
-      }
+        .button-primary:hover {
+            background-color: #2c5282;
+        }
 
-      .button-secondary {
-        width: 100%;
-        padding: 12px;
-        background-color: #edf2f7;
-        color: #4682b4;
-        border-radius: 8px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-      }
+        .button-secondary {
+            width: 100%;
+            padding: 12px;
+            background-color: #edf2f7;
+            color: #4682b4;
+            border-radius: 8px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
 
-      .button-secondary:hover {
-        background-color: #e2e8f0;
-      }
+        .button-secondary:hover {
+            background-color: #e2e8f0;
+        }
 
-      .form-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-      }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
 
-      .section-title {
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-        text-align: center;
-        margin-bottom: 20px;
-      }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-      .signup-link {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 14px;
-      }
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
 
-      .signup-link a {
-        color: #4682b4;
-        font-weight: bold;
-        text-decoration: none;
-      }
+        .signup-link a {
+            color: #4682b4;
+            font-weight: bold;
+            text-decoration: none;
+        }
 
-      .signup-link a:hover {
-        text-decoration: underline;
-      }
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
     </style>
     <script>
-      function changeTab(tab) {
-        const clientTab = document.getElementById('clientTab');
-        const ownerTab = document.getElementById('ownerTab');
-        const clientContent = document.getElementById('clientContent');
-        const ownerContent = document.getElementById('ownerContent');
-        const sectionTitle = document.getElementById('sectionTitle');
+        function changeTab(tab) {
+            const clientTab = document.getElementById('clientTab');
+            const ownerTab = document.getElementById('ownerTab');
+            const clientContent = document.getElementById('clientContent');
+            const ownerContent = document.getElementById('ownerContent');
+            const sectionTitle = document.getElementById('sectionTitle');
 
-        if (tab === 'client') {
-          clientTab.classList.add('tab-active');
-          ownerTab.classList.remove('tab-active');
-          clientContent.style.display = 'block';
-          ownerContent.style.display = 'none';
-          sectionTitle.textContent = 'Connexion - Client';
-        } else {
-          ownerTab.classList.add('tab-active');
-          clientTab.classList.remove('tab-active');
-          ownerContent.style.display = 'block';
-          clientContent.style.display = 'none';
-          sectionTitle.textContent = 'Connexion - Propriétaire';
-        }
-      }
-
-      function login(type) {
-        let email, password;
-
-        // Sélection des éléments en fonction du type (Client ou Propriétaire)
-        if (type === 'Client') {
-          email = document.getElementById('clientEmail');
-          password = document.getElementById('clientPassword');
-        } else if (type === 'Propriétaire') {
-          email = document.getElementById('ownerEmail');
-          password = document.getElementById('ownerPassword');
+            if (tab === 'client') {
+                clientTab.classList.add('tab-active');
+                ownerTab.classList.remove('tab-active');
+                clientContent.style.display = 'block';
+                ownerContent.style.display = 'none';
+                sectionTitle.textContent = 'Connexion - Client';
+            } else {
+                ownerTab.classList.add('tab-active');
+                clientTab.classList.remove('tab-active');
+                ownerContent.style.display = 'block';
+                clientContent.style.display = 'none';
+                sectionTitle.textContent = 'Connexion - Propriétaire';
+            }
         }
 
-        // Vérification si les champs existent
-        if (!email || !password) {
-          alert("Erreur : Impossible de trouver les champs de saisie");
-          return;
-        }
+        function login(type) {
+            let email, password;
 
-        const emailValue = email.value;
-        const passwordValue = password.value;
+            if (type === 'Client') {
+                email = document.getElementById('clientEmail');
+                password = document.getElementById('clientPassword');
+            } else if (type === 'Propriétaire') {
+                email = document.getElementById('ownerEmail');
+                password = document.getElementById('ownerPassword');
+            }
 
-        // Vérification des identifiants
-        if (emailValue === 'toto' && passwordValue === 'toto') {
-          if (type === 'Client') {
-            window.location.href = 'accueil.html'; // Redirige le client vers la page d'accueil
-          } else {
-            window.location.href = 'accueilpro.html'; // Redirige le propriétaire vers la page propriétaire
-          }
-        } else {
-          alert('Identifiants incorrects');
+            if (!email || !password) {
+                alert("Erreur : Impossible de trouver les champs de saisie");
+                return;
+            }
+
+            const emailValue = email.value;
+            const passwordValue = password.value;
+
+            if (emailValue === 'toto' && passwordValue === 'toto') {
+                if (type === 'Client') {
+                    localStorage.setItem('userType', 'Client');
+                    window.location.href = 'accueil.html';
+                } else {
+                    localStorage.setItem('userType', 'Propriétaire');
+                    window.location.href = 'accueil.html';
+                }
+            } else {
+                alert('Identifiants incorrects');
+            }
         }
-      }
     </script>
-  </head>
-  <body>
+</head>
+<body>
     <header class="header">
-      <div class="flex items-center gap-4">
-        <img src="img/logo (2).png" alt="Logo" />
-        <h1 class="text-xl font-bold">AirLockUnlock</h1>
-      </div>
+        <div class="flex items-center gap-4">
+            <img src="img/logo (2).png" alt="Logo">
+            <h1 class="text-xl font-bold">AirLockUnlock</h1>
+        </div>
     </header>
 
     <div class="flex justify-center items-center flex-1">
-      <div class="form-container">
-        <div class="flex border-b mb-6">
-          <div
-            id="clientTab"
-            class="tab tab-active"
-            onclick="changeTab('client')"
-          >
-            Client
-          </div>
-          <div id="ownerTab" class="tab" onclick="changeTab('owner')">
-            Propriétaire
-          </div>
-        </div>
+        <div class="form-container">
+            <div class="flex border-b mb-6">
+                <div id="clientTab" class="tab tab-active" onclick="changeTab('client')">Client</div>
+                <div id="ownerTab" class="tab" onclick="changeTab('owner')">Propriétaire</div>
+            </div>
 
-        <div id="sectionTitle" class="section-title">
-          Connexion - Client
-        </div>
+            <div id="sectionTitle" class="section-title">Connexion - Client</div>
 
-        <div id="clientContent">
-          <form>
-            <input
-              id="clientEmail"
-              type="email"
-              placeholder="Adresse e-mail"
-              class="input-field"
-              required
-            />
-            <input
-              id="clientPassword"
-              type="password"
-              placeholder="Mot de passe"
-              class="input-field"
-              required
-            />
-            <button
-              type="button"
-              class="button-primary"
-              onclick="login('Client')"
-            >
-              Se connecter
+            <div id="clientContent">
+                <form>
+                    <input id="clientEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
+                    <input id="clientPassword" type="password" placeholder="Mot de passe" class="input-field" required>
+                    <button type="button" class="button-primary" onclick="login('Client')">Se connecter</button>
+                </form>
+            </div>
+
+            <div id="ownerContent" style="display: none;">
+                <form>
+                    <input id="ownerEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
+                    <input id="ownerPassword" type="password" placeholder="Mot de passe" class="input-field" required>
+                    <button type="button" class="button-primary" onclick="login('Propriétaire')">Se connecter</button>
+                </form>
+            </div>
+
+            <div class="text-center my-6 text-gray-500">OU</div>
+
+            <button class="button-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M224,128a96,96,0,1,1-21.95-61.09,8,8,0,1,1-12.33,10.18A80,80,0,1,0,207.6,136H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128Z"></path>
+                </svg>
+                Continuer avec Google
             </button>
-          </form>
+
+            <div class="signup-link">
+                <p>Pas encore de compte ? <a href="signup.html">Créer un compte</a></p>
+            </div>
         </div>
-
-        <div id="ownerContent" style="display: none;">
-          <form>
-            <input
-              id="ownerEmail"
-              type="email"
-              placeholder="Adresse e-mail"
-              class="input-field"
-              required
-            />
-            <input
-              id="ownerPassword"
-              type="password"
-              placeholder="Mot de passe"
-              class="input-field"
-              required
-            />
-            <button
-              type="button"
-              class="button-primary"
-              onclick="login('Propriétaire')"
-            >
-              Se connecter
-            </button>
-          </form>
-        </div>
-
-        <div class="text-center my-6 text-gray-500">OU</div>
-
-        <button class="button-secondary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            fill="currentColor"
-            viewBox="0 0 256 256"
-          >
-            <path
-              d="M224,128a96,96,0,1,1-21.95-61.09,8,8,0,1,1-12.33,10.18A80,80,0,1,0,207.6,136H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128Z"
-            ></path>
-          </svg>
-          Continuer avec Google
-        </button>
-
-        <div class="signup-link">
-          <p>Pas encore de compte ? <a href="signup.html">Créer un compte</a></p>
-        </div>
-      </div>
     </div>
-  </body>
+</body>
 </html>

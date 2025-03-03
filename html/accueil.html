@@ -446,6 +446,7 @@
                     <ul>
                         <li><a href="profile.html">Profil</a></li>
                         <li><a href="setting.html">Paramètres</a></li>
+                        <li><a href="accueilpro.html" class="owner-only">Accueil Pro</a></li> <!-- Lien masqué par défaut -->
                         <li><a href="signin.html">Déconnexion</a></li>
                     </ul>
                 </div>
@@ -574,6 +575,19 @@
     </footer>
 
     <script>
+        // Vérifiez le statut de l'utilisateur et affichez le lien si c'est un propriétaire
+        const userType = localStorage.getItem('userType');
+
+        if (userType === 'Propriétaire') {
+            document.querySelectorAll('.owner-only').forEach(element => {
+                element.style.display = 'block'; // Afficher le lien si l'utilisateur est un propriétaire
+            });
+        } else {
+            document.querySelectorAll('.owner-only').forEach(element => {
+                element.style.display = 'none'; // Masquer le lien pour les clients
+            });
+        }
+
         const profile = document.querySelector('.profile');
         const profileMenu = document.querySelector('.profile-menu');
 
