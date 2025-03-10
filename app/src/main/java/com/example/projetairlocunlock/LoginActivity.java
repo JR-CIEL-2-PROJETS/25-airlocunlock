@@ -32,9 +32,17 @@ public class LoginActivity extends Activity {
                 String password = passwordInput.getText().toString().trim();
 
                 // Vérification des credentials
-                if (email.equals("toto@toto.fr") && password.equals("toto")) {
-                    // URL de la requête
-                    String urlString = "https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/login/client?email=" + email + "&password=" + password;
+                if ((email.equals("toto@toto.fr") && password.equals("toto")) ||
+                        (email.equals("proprietaire@proprietaire.fr") && password.equals("proprietaire"))) {
+
+                    String urlString;
+
+                    // Choisir l'URL en fonction des identifiants
+                    if (email.equals("toto@toto.fr")) {
+                        urlString = "https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/login/client?email=" + email + "&password=" + password;
+                    } else {
+                        urlString = "https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/login/proprietaire?email=root@root.fr&password=root";
+                    }
 
                     // Effectuer la requête réseau
                     new Thread(() -> {
@@ -92,3 +100,6 @@ public class LoginActivity extends Activity {
                 .show();
     }
 }
+
+
+
