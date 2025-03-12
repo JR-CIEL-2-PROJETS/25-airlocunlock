@@ -30,7 +30,7 @@ CREATE TABLE `inscription_clients` (
   `phone` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `inscription_clients` (
 
 LOCK TABLES `inscription_clients` WRITE;
 /*!40000 ALTER TABLE `inscription_clients` DISABLE KEYS */;
-INSERT INTO `inscription_clients` VALUES (1,'bilal','bll.taoufik@gmail.com','bilal','0626626252');
+INSERT INTO `inscription_clients` VALUES (5,'toto','toto@lycee-jeanrostand.fr','$2y$10$BK2UsbFDyfTK9qf1haW9nOHiNEWCbZKOdTkKOs4F.6qkA56aibdLq','0102030405'),(6,'tata','tata@lycee-jeanrostand.fr','$2y$10$/VyrbgJTORCjlJdOC9X5ve40QR4Xq184j9ChmnsWVTAVdQcyGUFvm','0102030405'),(7,'Amine','amine.elmir@lycee-jeanrostand.fr','$2y$10$MSJ3RzWOLqmKAps/nNL8BexvTG2MO/UlzfS2mcOx.1e7irrOyGXGi','0102030405');
 /*!40000 ALTER TABLE `inscription_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `inscription_proprietaire` (
   `phone` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `inscription_proprietaire` (
 
 LOCK TABLES `inscription_proprietaire` WRITE;
 /*!40000 ALTER TABLE `inscription_proprietaire` DISABLE KEYS */;
-INSERT INTO `inscription_proprietaire` VALUES (1,'amine','amineelmir@gmail.com','amine','0254354135');
+INSERT INTO `inscription_proprietaire` VALUES (2,'amine','amine.elmir@lycee-jeanrostand.fr','$2y$10$JMU5VGbmBsm4BsdwbDt4jeQcwF5Zk.Fx8LbRWe0opbELWHg9YIEsm','0102030405');
 /*!40000 ALTER TABLE `inscription_proprietaire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +90,7 @@ CREATE TABLE `publier_bien` (
   PRIMARY KEY (`id`),
   KEY `proprietaire_id` (`proprietaire_id`),
   CONSTRAINT `publier_bien_ibfk_1` FOREIGN KEY (`proprietaire_id`) REFERENCES `inscription_proprietaire` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,6 +99,7 @@ CREATE TABLE `publier_bien` (
 
 LOCK TABLES `publier_bien` WRITE;
 /*!40000 ALTER TABLE `publier_bien` DISABLE KEYS */;
+INSERT INTO `publier_bien` VALUES (2,'Appartement Parisien','Paris','Un superbe appartement au cœur de Paris, idéal pour vos séjours.',150.00,2,'photo-bien/tour-eiffel.jpg',NULL);
 /*!40000 ALTER TABLE `publier_bien` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +122,7 @@ CREATE TABLE `reservation_bien` (
   KEY `client_id` (`client_id`),
   CONSTRAINT `reservation_bien_ibfk_1` FOREIGN KEY (`bien_id`) REFERENCES `publier_bien` (`id`) ON DELETE CASCADE,
   CONSTRAINT `reservation_bien_ibfk_2` FOREIGN KEY (`client_id`) REFERENCES `inscription_clients` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,6 +131,7 @@ CREATE TABLE `reservation_bien` (
 
 LOCK TABLES `reservation_bien` WRITE;
 /*!40000 ALTER TABLE `reservation_bien` DISABLE KEYS */;
+INSERT INTO `reservation_bien` VALUES (2,2,'2025-03-12','2025-03-21',2,NULL);
 /*!40000 ALTER TABLE `reservation_bien` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -142,4 +144,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-03 11:25:14
+-- Dump completed on 2025-03-12 16:10:48

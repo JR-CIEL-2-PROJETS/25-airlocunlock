@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
     // Préparer la requête d'insertion
-    $sql = "INSERT INTO inscription_propriétaire (username, email, password, phone) 
+    $sql = "INSERT INTO inscription_proprietaire (username, email, password, phone) 
             VALUES (:username, :email, :password, :phone)";
 
     try {
