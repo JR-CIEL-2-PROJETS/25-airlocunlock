@@ -204,6 +204,15 @@
             background-color: #f0f0f0;
         }
 
+        #map {
+            display: none;
+            height: 400px;
+            width: 100%;
+            margin-top: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
         .popular-areas, .top-rated {
             margin-bottom: 2rem;
         }
@@ -446,7 +455,7 @@
                     <ul>
                         <li><a href="profile.html">Profil</a></li>
                         <li><a href="setting.html">Paramètres</a></li>
-                        <li><a href="accueilpro.html" class="owner-only">Accueil Pro</a></li> <!-- Lien masqué par défaut -->
+                        <li><a href="accueilpro.html" class="owner-only">Accueil Pro</a></li>
                         <li><a href="signin.html">Déconnexion</a></li>
                     </ul>
                 </div>
@@ -462,6 +471,9 @@
             <input type="text" id="search-input" placeholder="Paris, France">
             <ul class="suggestions-list" id="suggestions-list"></ul>
         </div>
+
+        <!-- Carte Google Maps -->
+        <div id="map"></div>
 
         <!-- Villes avec appartements disponibles -->
         <div class="popular-areas">
@@ -573,6 +585,9 @@
         <p>&copy; 2023 AirLockUnlock. Tous droits réservés.</p>
         <a href="contact.html">Contact</a>
     </footer>
+
+    <!-- Intégration de l'API Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpABtYXoyN7HA1SOc8ghsZRw1-lS-gfXI&callback=initMap" async defer></script>
 
     <script>
         // Vérifiez le statut de l'utilisateur et affichez le lien si c'est un propriétaire
@@ -713,6 +728,53 @@
             if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
                 suggestionsList.style.display = 'none';
             }
+        });
+
+        // Google Maps functionality
+        let map;
+        let markers = [];
+
+        function initMap() {
+            // Coordonnées initiales (Paris)
+            const initialLocation = { lat: 48.8566, lng: 2.3522 };
+
+            // Créer la carte
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: initialLocation
+            });
+
+            // Ajouter des marqueurs pour chaque bien
+            const properties = [
+                { name: 'Appartement Cosy', location: { lat: 48.8566, lng: 2.3522 }, link: 'appartement-cosy-paris.html' },
+                { name: 'Maison de famille', location: { lat: 44.8378, lng: -0.5792 }, link: 'maison-famille-bordeaux.html' },
+                { name: 'Studio lumineux', location: { lat: 45.7640, lng: 4.8357 }, link: 'studio-lyon.html' },
+                { name: 'Loft spacieux', location: { lat: 43.2965, lng: 5.3698 }, link: 'loft-marseille.html' },
+                { name: 'Villa d\'architecte', location: { lat: 43.6047, lng: 1.4442 }, link: 'villa-architecte-toulouse.html' },
+                { name: 'Appartement Design', location: { lat: 43.7102, lng: 7.2620 }, link: 'appartement-design-nice.html' },
+                { name: 'Appartement Vue Mer', location: { lat: 42.0396, lng: 9.0129 }, link: 'appartement-vue-mer-corse.html' },
+                { name: 'Penthouse à Nice', location: { lat: 43.7102, lng: 7.2620 }, link: 'penthouse-nice.html' }
+            ];
+
+            properties.forEach(property => {
+                const marker = new google.maps.Marker({
+                    position: property.location,
+                    map: map,
+                    title: property.name
+                });
+
+                marker.addListener('click', () => {
+                    window.location.href = property.link;
+                });
+
+                markers.push(marker);
+            });
+        }
+
+        // Afficher la carte lorsque l'utilisateur clique sur la barre de recherche
+        searchInput.addEventListener('focus', () => {
+            document.getElementById('map').style.display = 'block';
+            initMap(); // Re-initialize the map to ensure it's visible
         });
 
         function addMessageToChatBox(sender, message, options = []) {
