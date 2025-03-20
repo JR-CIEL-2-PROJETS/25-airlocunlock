@@ -2,7 +2,7 @@ services:
   nginx:
     image: nginx:latest
     container_name: nginx_server
-    restart: always
+    # restart: always
     ports:
       - "80:80"
       - "443:443"
@@ -11,8 +11,9 @@ services:
       - ./html:/usr/share/nginx/html
       - ./img:/usr/share/nginx/html/img  # Ajout du dossier des images
       - ./logs:/var/log/nginx
-    networks:
-      - webnet
+      - ./nginx/ssl:/etc/nginx/ssl
+#     networks:
+#       - webnet
 
-networks:
-  webnet:
+# networks:
+#   webnet:
