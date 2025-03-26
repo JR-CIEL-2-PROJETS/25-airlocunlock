@@ -834,3 +834,7 @@
 2025/03/20 15:43:46 [emerg] 1#1: cannot load certificate "/etc/nginx/ssl/nginx.crt": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/nginx/ssl/nginx.crt, r) error:10000080:BIO routines::no such file)
 2025/03/20 15:44:12 [emerg] 1#1: cannot load certificate "/etc/nginx/ssl/nginx.crt": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/nginx/ssl/nginx.crt, r) error:10000080:BIO routines::no such file)
 2025/03/20 15:46:22 [emerg] 1#1: cannot load certificate "/etc/nginx/ssl/nginx.crt": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/nginx/ssl/nginx.crt, r) error:10000080:BIO routines::no such file)
+2025/03/26 10:06:49 [error] 31#31: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.67, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
+2025/03/26 10:07:36 [error] 31#31: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.67, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
+2025/03/26 10:09:13 [error] 29#29: *19 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.67, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
+2025/03/26 13:39:59 [error] 30#30: *290 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.67, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"

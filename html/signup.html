@@ -168,12 +168,13 @@
       });
 
       const url = type === 'Client'
-        ? 'http://172.16.15.63:8081/index.php?route=/sql&pos=0&db=airlockunlock&table=inscription_clients' // http://172.16.15.63:8081/index.php?nom=${nom}&prenom=${prenom}'
-        : 'http://172.16.15.63:8081/index.php?route=/sql&pos=0&db=airlockunlock&table=inscription_proprietaire';
+        ? 'http://172.16.15.63:8080/AirlockUnlock/client/client.php' // http://172.16.15.63:8081/index.php?nom=${nom}&prenom=${prenom}'
+        : 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/proprietaire.php';
 
       try {
         const response = await fetch(url, {
           method: 'POST',
+          // mode: 'no-cors',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -239,14 +240,14 @@
             type="text"
             placeholder="Prénom"
             class="input-field"
-            name="prenom"
+            name="username"
             required
           />
           <input
             type="tel"
             placeholder="Numéro de téléphone"
             class="input-field"
-            name="telephone"
+            name="phone"
             required
           />
           <input
@@ -296,7 +297,7 @@
             type="text"
             placeholder="Prénom"
             class="input-field"
-            name="prenom"
+            name="username"
             required
           />
           <input

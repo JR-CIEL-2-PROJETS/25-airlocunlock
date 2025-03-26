@@ -124,62 +124,24 @@
         .signup-link a:hover {
             text-decoration: underline;
         }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .eye-icon {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+        }
     </style>
-    <script>
-        function changeTab(tab) {
-            const clientTab = document.getElementById('clientTab');
-            const ownerTab = document.getElementById('ownerTab');
-            const clientContent = document.getElementById('clientContent');
-            const ownerContent = document.getElementById('ownerContent');
-            const sectionTitle = document.getElementById('sectionTitle');
-
-            if (tab === 'client') {
-                clientTab.classList.add('tab-active');
-                ownerTab.classList.remove('tab-active');
-                clientContent.style.display = 'block';
-                ownerContent.style.display = 'none';
-                sectionTitle.textContent = 'Connexion - Client';
-            } else {
-                ownerTab.classList.add('tab-active');
-                clientTab.classList.remove('tab-active');
-                ownerContent.style.display = 'block';
-                clientContent.style.display = 'none';
-                sectionTitle.textContent = 'Connexion - Propriétaire';
-            }
-        }
-
-        function login(type) {
-            let email, password;
-
-            if (type === 'Client') {
-                email = document.getElementById('clientEmail');
-                password = document.getElementById('clientPassword');
-            } else if (type === 'Propriétaire') {
-                email = document.getElementById('ownerEmail');
-                password = document.getElementById('ownerPassword');
-            }
-
-            if (!email || !password) {
-                alert("Erreur : Impossible de trouver les champs de saisie");
-                return;
-            }
-
-            const emailValue = email.value;
-            const passwordValue = password.value;
-
-            if (emailValue === 'toto' && passwordValue === 'toto') {
-                if (type === 'Client') {
-                    localStorage.setItem('userType', 'Client');
-                    window.location.href = 'accueil.html';
-                } else {
-                    localStorage.setItem('userType', 'Propriétaire');
-                    window.location.href = 'accueil.html';
-                }
-            } else {
-                alert('Identifiants incorrects');
-            }
-        }
-    </script>
 </head>
 <body>
     <header class="header">
@@ -198,10 +160,15 @@
 
             <div id="sectionTitle" class="section-title">Connexion - Client</div>
 
+            <div id="errorMessage" class="error-message"></div>
+
             <div id="clientContent">
                 <form>
                     <input id="clientEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
-                    <input id="clientPassword" type="password" placeholder="Mot de passe" class="input-field" required>
+                    <div style="position: relative;">
+                        <input id="clientPassword" type="password" placeholder="Mot de passe" class="input-field" required>
+                        <img id="eyeIcon-client" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility('client')">
+                    </div>
                     <button type="button" class="button-primary" onclick="login('Client')">Se connecter</button>
                 </form>
             </div>
@@ -209,7 +176,10 @@
             <div id="ownerContent" style="display: none;">
                 <form>
                     <input id="ownerEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
-                    <input id="ownerPassword" type="password" placeholder="Mot de passe" class="input-field" required>
+                    <div style="position: relative;">
+                        <input id="ownerPassword" type="password" placeholder="Mot de passe" class="input-field" required>
+                        <img id="eyeIcon-owner" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility('owner')">
+                    </div>
                     <button type="button" class="button-primary" onclick="login('Propriétaire')">Se connecter</button>
                 </form>
             </div>
@@ -228,5 +198,104 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Initialize users storage
+        function initializeUsers() {
+            if (!localStorage.getItem('registeredUsers')) {
+                localStorage.setItem('registeredUsers', JSON.stringify({
+                    clients: [],
+                    proprietaires: []
+                }));
+            }
+        }
+
+        function changeTab(tab) {
+            const clientTab = document.getElementById('clientTab');
+            const ownerTab = document.getElementById('ownerTab');
+            const clientContent = document.getElementById('clientContent');
+            const ownerContent = document.getElementById('ownerContent');
+            const sectionTitle = document.getElementById('sectionTitle');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Reset error message
+            errorMessage.style.display = 'none';
+
+            if (tab === 'client') {
+                clientTab.classList.add('tab-active');
+                ownerTab.classList.remove('tab-active');
+                clientContent.style.display = 'block';
+                ownerContent.style.display = 'none';
+                sectionTitle.textContent = 'Connexion - Client';
+            } else {
+                ownerTab.classList.add('tab-active');
+                clientTab.classList.remove('tab-active');
+                ownerContent.style.display = 'block';
+                clientContent.style.display = 'none';
+                sectionTitle.textContent = 'Connexion - Propriétaire';
+            }
+        }
+
+        function togglePasswordVisibility(type) {
+            const passwordField = document.getElementById(`${type}Password`);
+            const eyeIcon = document.getElementById(`eyeIcon-${type}`);
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/invisible.png';
+            }
+        }
+
+        function login(type) {
+            // Initialize users if not already done
+            initializeUsers();
+
+            const errorMessage = document.getElementById('errorMessage');
+            let email, password;
+
+            if (type === 'Client') {
+                email = document.getElementById('clientEmail').value;
+                password = document.getElementById('clientPassword').value;
+            } else if (type === 'Propriétaire') {
+                email = document.getElementById('ownerEmail').value;
+                password = document.getElementById('ownerPassword').value;
+            }
+
+            // Basic validation
+            if (!email || !password) {
+                errorMessage.textContent = 'Veuillez remplir tous les champs';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Retrieve registered users
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers'));
+            const usersToCheck = type === 'Client' ? registeredUsers.clients : registeredUsers.proprietaires;
+
+            // Check if user exists and password matches
+            const foundUser = usersToCheck.find(user => 
+                user.email === email && user.password === password
+            );
+
+            if (foundUser) {
+                // Store user type and data for session management
+                localStorage.setItem('userType', type);
+                localStorage.setItem('currentUser', JSON.stringify(foundUser));
+                
+                // Redirect to home page
+                window.location.href = 'accueil.html';
+            } else {
+                // Show error message
+                errorMessage.textContent = 'Email ou mot de passe incorrect';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        // Initialize on page load
+        window.onload = initializeUsers;
+    </script>
 </body>
 </html>
