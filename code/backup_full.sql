@@ -28,9 +28,10 @@ CREATE TABLE `inscription_clients` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phone` varchar(20) NOT NULL,
+  `nom` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +40,7 @@ CREATE TABLE `inscription_clients` (
 
 LOCK TABLES `inscription_clients` WRITE;
 /*!40000 ALTER TABLE `inscription_clients` DISABLE KEYS */;
-INSERT INTO `inscription_clients` VALUES (5,'toto','toto@lycee-jeanrostand.fr','$2y$10$BK2UsbFDyfTK9qf1haW9nOHiNEWCbZKOdTkKOs4F.6qkA56aibdLq','0102030405'),(6,'tata','tata@lycee-jeanrostand.fr','$2y$10$/VyrbgJTORCjlJdOC9X5ve40QR4Xq184j9ChmnsWVTAVdQcyGUFvm','0102030405'),(7,'Amine','amine.elmir@lycee-jeanrostand.fr','$2y$10$MSJ3RzWOLqmKAps/nNL8BexvTG2MO/UlzfS2mcOx.1e7irrOyGXGi','0102030405');
+INSERT INTO `inscription_clients` VALUES (26,'Yz','Yz@gmzil.com','$2y$10$yjG7eUCxCFwJfxR4d8exPupBkts66JleDRiHil40.Bbfwgpr08s1W','00000000','yz'),(36,'el mir','amine@amine.com','$2y$10$yZlA1q9eW5JzAPNDOarGTedfv8z/Yk5Phtkh6OzEkZz/3dsgwGZva','0123456789','amine'),(39,'qsdoqkd','qoisdjqopsd@gmail.com','$2y$10$CaJ.xJ0cXfW14miPWc6XjegcWDuCGRjMZmlu9sN6aBJCQ/2dxE3sm','0102030405','toto'),(52,'yac','yacine@lycee-jeanrostand.fr','$2y$10$KljdEc7Rz/.nbjbStcMPc.J4hHksm2nlQWT.pkzfnOVW.1CAM4S.u','yacine','yacine'),(53,'toto','toto@lycee-jeanrostand.fr','$2y$10$uMSpqCF2CSsElLbSL0EI1OSYziiY9/zUPw3o7o5g9xpomYCzPwKYi','0102030405','toto'),(55,'tata','tata@lycee-jeanrostand.fr','$2y$10$7rmGz0shoajbytgM578ZxunPbe.DJnGwqgAdGAL8lEm8kX6YT6z3G','0102030405','tata'),(58,'toto','titi@lycee-jeanrostand.fr','$2y$10$cmr996mNckk6.Z2MIuRahep6HIfomBD4ErxHIEcFXAyh.4zD2Pssu','0102030405','toto');
 /*!40000 ALTER TABLE `inscription_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,9 +57,10 @@ CREATE TABLE `inscription_proprietaire` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phone` varchar(20) NOT NULL,
+  `nom` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +69,7 @@ CREATE TABLE `inscription_proprietaire` (
 
 LOCK TABLES `inscription_proprietaire` WRITE;
 /*!40000 ALTER TABLE `inscription_proprietaire` DISABLE KEYS */;
-INSERT INTO `inscription_proprietaire` VALUES (2,'amine','amine.elmir@lycee-jeanrostand.fr','$2y$10$JMU5VGbmBsm4BsdwbDt4jeQcwF5Zk.Fx8LbRWe0opbELWHg9YIEsm','0102030405');
+INSERT INTO `inscription_proprietaire` VALUES (4,'tata','tata@lycee-jeanrostand.fr','$2y$10$0SBykzG5gS8oDQtmXiGeZ.bhnJQklHnew0AvOFDDQP5aOKer/6SUe','0102030405','tata'),(5,'amine','amine.lycee@lycee-jeanrostand.fr','$2y$10$n2Ds7TUQI5lUs2X46Vj7vuaXuKoTjv31SeNxU5p.bEDecC5.hXuKq','0102030405','amine'),(6,'bilal','bilal@gmail.com','$2y$10$0TeWp/4SEVapzI4TWk8qd.n7amcysEC9XtsDoutGXqBetzt0iReYW','0102030405','bilal'),(8,'toto','toto@lycee-jeanrostand.fr','$2y$10$zg2rqKtoWL.4OUuiSjn1P.je7pywL40O1gZIku6vcNHYhe4E/6L9C','0102030405','toto');
 /*!40000 ALTER TABLE `inscription_proprietaire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,4 +146,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-12 16:10:48
+-- Dump completed on 2025-03-31 15:41:56
