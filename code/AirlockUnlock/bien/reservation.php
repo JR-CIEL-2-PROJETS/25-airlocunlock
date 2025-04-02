@@ -2,6 +2,12 @@
 // Connexion à la base de données
 include '../config.php';
 
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+
 // Traitement de la réservation si le formulaire est soumis
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bien_id = $_POST['bien_id'];

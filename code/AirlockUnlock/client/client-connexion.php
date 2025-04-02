@@ -23,13 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $inputData['password'];
 
     try {
-        $stmt = $pdo->prepare("SELECT id, password FROM inscription_clients WHERE email = :email");
+        $stmt = $pdo->prepare("SELECT id, password, username FROM inscription_clients WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
-            echo json_encode(['status' => 'success', 'message' => 'Connexion réussie.', 'user_id' => $user['id']]);
+            echo json_encode(['status' => 'success', 'message' => 'Connexion réussie.', 'user_id' => $user['id'],'username' => $user['username']]);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Email ou mot de passe incorrect.']);
         }

@@ -31,7 +31,7 @@ CREATE TABLE `inscription_clients` (
   `nom` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `inscription_clients` (
 
 LOCK TABLES `inscription_clients` WRITE;
 /*!40000 ALTER TABLE `inscription_clients` DISABLE KEYS */;
-INSERT INTO `inscription_clients` VALUES (26,'Yz','Yz@gmzil.com','$2y$10$yjG7eUCxCFwJfxR4d8exPupBkts66JleDRiHil40.Bbfwgpr08s1W','00000000','yz'),(36,'el mir','amine@amine.com','$2y$10$yZlA1q9eW5JzAPNDOarGTedfv8z/Yk5Phtkh6OzEkZz/3dsgwGZva','0123456789','amine'),(39,'qsdoqkd','qoisdjqopsd@gmail.com','$2y$10$CaJ.xJ0cXfW14miPWc6XjegcWDuCGRjMZmlu9sN6aBJCQ/2dxE3sm','0102030405','toto'),(52,'yac','yacine@lycee-jeanrostand.fr','$2y$10$KljdEc7Rz/.nbjbStcMPc.J4hHksm2nlQWT.pkzfnOVW.1CAM4S.u','yacine','yacine'),(53,'toto','toto@lycee-jeanrostand.fr','$2y$10$uMSpqCF2CSsElLbSL0EI1OSYziiY9/zUPw3o7o5g9xpomYCzPwKYi','0102030405','toto'),(55,'tata','tata@lycee-jeanrostand.fr','$2y$10$7rmGz0shoajbytgM578ZxunPbe.DJnGwqgAdGAL8lEm8kX6YT6z3G','0102030405','tata'),(58,'toto','titi@lycee-jeanrostand.fr','$2y$10$cmr996mNckk6.Z2MIuRahep6HIfomBD4ErxHIEcFXAyh.4zD2Pssu','0102030405','toto');
+INSERT INTO `inscription_clients` VALUES (68,'admin','admin@gmail.com','$2y$10$HrEVAD0pxZtZydfiXDzGV.eeywqJgDop7HjIDGxmP9VV/CzNpJVm.','0751423278','admin'),(69,'tata','tata@gmail.com','$2y$10$64GcBKhI7Q3KKbfxUQAYAuQ4yBfq591A5NQLMl8Icx/73BbGz3Z5e','0695679565','tata');
 /*!40000 ALTER TABLE `inscription_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +60,7 @@ CREATE TABLE `inscription_proprietaire` (
   `nom` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `inscription_proprietaire` (
 
 LOCK TABLES `inscription_proprietaire` WRITE;
 /*!40000 ALTER TABLE `inscription_proprietaire` DISABLE KEYS */;
-INSERT INTO `inscription_proprietaire` VALUES (4,'tata','tata@lycee-jeanrostand.fr','$2y$10$0SBykzG5gS8oDQtmXiGeZ.bhnJQklHnew0AvOFDDQP5aOKer/6SUe','0102030405','tata'),(5,'amine','amine.lycee@lycee-jeanrostand.fr','$2y$10$n2Ds7TUQI5lUs2X46Vj7vuaXuKoTjv31SeNxU5p.bEDecC5.hXuKq','0102030405','amine'),(6,'bilal','bilal@gmail.com','$2y$10$0TeWp/4SEVapzI4TWk8qd.n7amcysEC9XtsDoutGXqBetzt0iReYW','0102030405','bilal'),(8,'toto','toto@lycee-jeanrostand.fr','$2y$10$zg2rqKtoWL.4OUuiSjn1P.je7pywL40O1gZIku6vcNHYhe4E/6L9C','0102030405','toto');
+INSERT INTO `inscription_proprietaire` VALUES (4,'tata','tata@lycee-jeanrostand.fr','$2y$10$0SBykzG5gS8oDQtmXiGeZ.bhnJQklHnew0AvOFDDQP5aOKer/6SUe','0102030405','tata'),(5,'amine','amine.lycee@lycee-jeanrostand.fr','$2y$10$n2Ds7TUQI5lUs2X46Vj7vuaXuKoTjv31SeNxU5p.bEDecC5.hXuKq','0102030405','amine'),(9,'bilal','qoisdjqopsd@gmail.com','$2y$10$KEVLA6NonaLdPlVjYQ.LcuJmxhh7Pd7eYq6IN5ldJmSfGQ2o2lyCy','0102030405','bilal'),(10,'tre','tre@gmail.com','$2y$10$Gap99lvgTV72xnMLK/MhsOLlBG0UMGJ4gW1ePc2YNxBGATbZGkP.G','0695679565','tre');
 /*!40000 ALTER TABLE `inscription_proprietaire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,8 +89,11 @@ CREATE TABLE `publier_bien` (
   `rooms` int NOT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `proprietaire_id` int DEFAULT NULL,
+  `cle_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `proprietaire_id` (`proprietaire_id`),
+  KEY `fk_cle_id` (`cle_id`),
+  CONSTRAINT `fk_cle_id` FOREIGN KEY (`cle_id`) REFERENCES `Tapkey`.`cle_tapkey` (`cle_id`),
   CONSTRAINT `publier_bien_ibfk_1` FOREIGN KEY (`proprietaire_id`) REFERENCES `inscription_proprietaire` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -101,7 +104,7 @@ CREATE TABLE `publier_bien` (
 
 LOCK TABLES `publier_bien` WRITE;
 /*!40000 ALTER TABLE `publier_bien` DISABLE KEYS */;
-INSERT INTO `publier_bien` VALUES (2,'Appartement Parisien','Paris','Un superbe appartement au cœur de Paris, idéal pour vos séjours.',150.00,2,'photo-bien/tour-eiffel.jpg',NULL);
+INSERT INTO `publier_bien` VALUES (2,'Appartement Parisien','Paris','Un superbe appartement au cœur de Paris, idéal pour vos séjours.',150.00,2,'photo-bien/tour-eiffel.jpg',NULL,NULL);
 /*!40000 ALTER TABLE `publier_bien` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-31 15:41:56
+-- Dump completed on 2025-04-02 15:07:28
