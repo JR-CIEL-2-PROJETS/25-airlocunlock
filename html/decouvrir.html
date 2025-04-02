@@ -4,7 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirLockUnlock - Découvrir</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #007BFF;
+            --secondary: #0056b3;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --success: #10b981;
+            --gray: #94a3b8;
+            --light-gray: #e2e8f0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,73 +24,204 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f7f7f7;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
         }
 
         header {
-            background-color: #007BFF; /* Bleu en haut */
-            padding: 1rem;
-            border-bottom: 1px solid #ddd;
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo img {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--light-gray);
+            transform: translateY(-1px);
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .btn-logout:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .discoveries {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .discovery {
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .discovery:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .discovery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .discovery-details {
+            padding: 1.25rem;
+        }
+
+        .discovery-details h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .discovery-details p {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .discovery-details span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        header nav {
+        .footer-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
-        header nav a {
+        .footer-links a {
+            color: white;
             text-decoration: none;
-            color: #fff; /* Texte blanc pour les liens */
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
         }
 
-        header nav a:hover {
-            color: #FFBB33; /* Or en survol */
+        .footer-links a:hover {
+            color: var(--accent);
         }
 
-        header .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        header .logo img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        header .logo span {
-            color: #fff; /* Texte blanc */
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        header .btn-host {
-            background-color: #fff; /* Blanc pour le bouton */
-            color: #007BFF;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: background-color 0.3s;
-            margin-right: 1rem;
-        }
-
-        header .btn-host:hover {
-            background-color: #FFBB33; /* Or en survol */
-            color: #fff;
-        }
-
+        /* Profile Menu Styles */
         .profile-container {
             display: flex;
             align-items: center;
+            gap: 1rem;
         }
 
         .profile {
@@ -89,11 +232,11 @@
         }
 
         .profile img {
-            width: 40px;
-            height: 40px;
+            width: 2.5rem;
+            height: 2.5rem;
             border-radius: 50%;
             border: 2px solid white;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
 
         .profile img:hover {
@@ -103,16 +246,17 @@
         .profile-menu {
             display: none;
             position: absolute;
-            top: 60px;
+            top: 3.5rem;
             right: 0;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             opacity: 0;
             transform: translateY(-10px);
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
             z-index: 1000;
             overflow: hidden;
+            min-width: 200px;
         }
 
         .profile-menu.active {
@@ -123,120 +267,77 @@
 
         .profile-menu ul {
             list-style: none;
-            padding: 10px 0;
-            margin: 0;
         }
 
         .profile-menu ul li {
-            padding: 10px 20px;
-            transition: background-color 0.3s;
+            padding: 0.75rem 1.25rem;
+            transition: background-color 0.3s ease;
         }
 
         .profile-menu ul li:hover {
-            background-color: #f0f0f0;
+            background-color: var(--light-gray);
         }
 
         .profile-menu ul li a {
             text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            transition: color 0.3s;
+            color: var(--dark);
+            font-weight: 500;
+            display: block;
         }
 
         .profile-menu ul li a:hover {
-            color: #007BFF;
+            color: var(--primary);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+        .owner-only {
+            display: none;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: #333;
-            text-align: center;
-        }
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
 
-        .discovery-card {
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-            margin-bottom: 1.5rem;
-        }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
 
-        .discovery-card:hover {
-            transform: scale(1.05);
-        }
+            .profile-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
 
-        .discovery-card img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .discovery-details {
-            padding: 1.5rem;
-        }
-
-        .discovery-details h3 {
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .discovery-details p {
-            font-size: 1rem;
-            color: #555;
-            margin-bottom: 1rem;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            background-color: #007BFF; /* Bleu pour le pied de page */
-            color: #fff;
-            margin-top: 3rem;
-        }
-
-        footer a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        footer a:hover {
-            color: #FFBB33; /* Or en survol */
+            .profile-menu {
+                top: 5rem;
+            }
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="logo">
-            <img src="img/logo (2).png" alt="Logo AirLockUnlock">
-            <span>AirLockUnlock</span>
+            <img src="img/logo (2).png" alt="AirLockUnlock Logo">
+            <span class="logo-text">AirLockUnlock</span>
         </div>
-        <nav>
-            <a href="accueil.html">Accueil</a>
-            <a href="appartements.html">Appartements</a>
-            <a href="maisons.html">Maisons</a>
-            <a href="bureaux.html">Bureaux</a>
+        <nav class="nav-links">
+            <a href="accueil.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="appartements.html"><i class="fas fa-building"></i> Appartements</a>
+            <a href="maisons.html"><i class="fas fa-home"></i> Maisons</a>
+            <a href="bureaux.html"><i class="fas fa-briefcase"></i> Bureaux</a>
         </nav>
         <div class="profile-container">
-            <a href="signup.html" class="btn-host">Devenir propriétaire</a>
+            <a href="sign.html" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
             <div class="profile">
-                <img src="img/user-icon.png" alt="User Icon" class="user-icon">
+                <img src="img/hasbula.jpg" alt="User Icon" class="user-icon">
                 <div class="profile-menu">
                     <ul>
-                        <li><a href="profile.html">Profil</a></li>
-                        <li><a href="settings.html">Paramètres</a></li>
-                        <li><a href="logout.html">Déconnexion</a></li>
+                        <li><a href="profile.html"><i class="fas fa-user"></i> Profil</a></li>
+                        <li><a href="setting.html"><i class="fas fa-cog"></i> Paramètres</a></li>
+                        <li><a href="accueilpro.html" class="owner-only"><i class="fas fa-user-tie"></i> Accueil Pro</a></li>
+                        <li><a href="signin.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                     </ul>
                 </div>
             </div>
@@ -246,39 +347,64 @@
     <div class="container">
         <h1>Découvrir nos offres exclusives</h1>
 
-        <!-- Exemple de cartes de découverte -->
-        <div class="discovery-card">
-            <img src="img/toureiffel.jpg" alt="Découvrir Paris">
-            <div class="discovery-details">
-                <h3>Visiter Paris</h3>
-                <p>Explorez les lieux emblématiques et les quartiers incontournables de la capitale.</p>
+        <div class="discoveries">
+            <!-- Découverte 1 -->
+            <div class="discovery" onclick="window.location.href='decouvrir-paris.html'">
+                <img src="img/toureiffel.jpg" alt="Découvrir Paris">
+                <div class="discovery-details">
+                    <h3>Visiter Paris</h3>
+                    <p>Explorez les lieux emblématiques et les quartiers incontournables de la capitale.</p>
+                    <p><span>4.9</span> (150 avis)</p>
+                </div>
+            </div>
+
+            <!-- Découverte 2 -->
+            <div class="discovery" onclick="window.location.href='decouvrir-bordeaux.html'">
+                <img src="img/bordeaux1.webp" alt="Découvrir Bordeaux">
+                <div class="discovery-details">
+                    <h3>Découvrir Bordeaux</h3>
+                    <p>Parcourez la ville qui allie charme historique et innovation moderne.</p>
+                    <p><span>4.8</span> (120 avis)</p>
+                </div>
+            </div>
+
+            <!-- Découverte 3 -->
+            <div class="discovery" onclick="window.location.href='decouvrir-lyon.html'">
+                <img src="img/lyon1.webp" alt="Découvrir Lyon">
+                <div class="discovery-details">
+                    <h3>Venez à Lyon</h3>
+                    <p>Venez découvrir la ville de la gastronomie et de l'art de vivre à la française.</p>
+                    <p><span>4.7</span> (110 avis)</p>
+                </div>
             </div>
         </div>
-
-        <div class="discovery-card">
-            <img src="img/bordeaux1.webp" alt="Découvrir Bordeaux">
-            <div class="discovery-details">
-                <h3>Découvrir Bordeaux</h3>
-                <p>Parcourez la ville qui allie charme historique et innovation moderne.</p>
-            </div>
-        </div>
-
-        <div class="discovery-card">
-            <img src="img/lyon1.webp" alt="Découvrir Lyon">
-            <div class="discovery-details">
-                <h3>Venez à Lyon</h3>
-                <p>Venez découvrir la ville de la gastronomie et de l'art de vivre à la française.</p>
-            </div>
-        </div>
-
     </div>
 
     <footer>
-        <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
-        <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p>
+        <div class="footer-content">
+            <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="politique-confidentialite.html">Confidentialité</a>
+                <a href="conditions-utilisation.html">Conditions</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
     </footer>
 
     <script>
+        // Vérifiez le statut de l'utilisateur et affichez le lien si c'est un propriétaire
+        const userType = localStorage.getItem('userType');
+
+        if (userType === 'Propriétaire') {
+            document.querySelectorAll('.owner-only').forEach(element => {
+                element.style.display = 'block'; // Afficher le lien si l'utilisateur est un propriétaire
+            });
+        } else {
+            document.querySelectorAll('.owner-only').forEach(element => {
+                element.style.display = 'none'; // Masquer le lien pour les clients
+            });
+        }
+
         const profile = document.querySelector('.profile');
         const profileMenu = document.querySelector('.profile-menu');
 
@@ -286,13 +412,11 @@
             profileMenu.classList.toggle('active');
         });
 
-        // Close the profile menu when clicking outside
         document.addEventListener('click', (event) => {
             if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
                 profileMenu.classList.remove('active');
             }
         });
     </script>
-
 </body>
 </html>

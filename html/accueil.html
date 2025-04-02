@@ -246,6 +246,7 @@
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .property:hover {
@@ -277,6 +278,14 @@
 
         .property-details span {
             font-weight: bold;
+            color: var(--primary);
+        }
+
+        .property-details .lock-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
             color: var(--primary);
         }
 
@@ -628,6 +637,7 @@
                     <div class="property-details">
                         <h3>Appartement Cosy</h3>
                         <p><span>4.9</span> (120 avis): Paris</p>
+                        <i class="fas fa-lock-open lock-icon"></i>
                     </div>
                 </div>
 
@@ -637,6 +647,7 @@
                     <div class="property-details">
                         <h3>Maison de famille</h3>
                         <p><span>4.8</span> (95 avis): Bordeaux</p>
+                        <i class="fas fa-lock lock-icon"></i>
                     </div>
                 </div>
 
@@ -646,6 +657,7 @@
                     <div class="property-details">
                         <h3>Studio lumineux</h3>
                         <p><span>4.7</span> (80 avis): Lyon</p>
+                        <i class="fas fa-lock-open lock-icon"></i>
                     </div>
                 </div>
 
@@ -655,6 +667,7 @@
                     <div class="property-details">
                         <h3>Loft spacieux</h3>
                         <p><span>4.9</span> (110 avis): Marseille</p>
+                        <i class="fas fa-lock lock-icon"></i>
                     </div>
                 </div>
 
@@ -664,6 +677,7 @@
                     <div class="property-details">
                         <h3>Villa d'architecte</h3>
                         <p><span>4.8</span> (60 avis): Toulouse</p>
+                        <i class="fas fa-lock-open lock-icon"></i>
                     </div>
                 </div>
 
@@ -673,6 +687,7 @@
                     <div class="property-details">
                         <h3>Appartement Design</h3>
                         <p><span>4.9</span> (150 avis): Nice</p>
+                        <i class="fas fa-lock-open lock-icon"></i>
                     </div>
                 </div>
 
@@ -682,6 +697,7 @@
                     <div class="property-details">
                         <h3>Appartement Vue Mer</h3>
                         <p><span>4.8</span> (100 avis): Corse</p>
+                        <i class="fas fa-lock lock-icon"></i>
                     </div>
                 </div>
 
@@ -691,6 +707,7 @@
                     <div class="property-details">
                         <h3>Penthouse à Nice</h3>
                         <p><span>5.0</span> (200 avis): Nice</p>
+                        <i class="fas fa-lock-open lock-icon"></i>
                     </div>
                 </div>
             </div>
@@ -884,21 +901,32 @@
 
             // Ajouter des marqueurs pour chaque bien
             const properties = [
-                { name: 'Appartement Cosy', location: { lat: 48.8566, lng: 2.3522 }, link: 'appartement-cosy-paris.html' },
-                { name: 'Maison de famille', location: { lat: 44.8378, lng: -0.5792 }, link: 'maison-famille-bordeaux.html' },
-                { name: 'Studio lumineux', location: { lat: 45.7640, lng: 4.8357 }, link: 'studio-lyon.html' },
-                { name: 'Loft spacieux', location: { lat: 43.2965, lng: 5.3698 }, link: 'loft-marseille.html' },
-                { name: 'Villa d\'architecte', location: { lat: 43.6047, lng: 1.4442 }, link: 'villa-architecte-toulouse.html' },
-                { name: 'Appartement Design', location: { lat: 43.7102, lng: 7.2620 }, link: 'appartement-design-nice.html' },
-                { name: 'Appartement Vue Mer', location: { lat: 42.0396, lng: 9.0129 }, link: 'appartement-vue-mer-corse.html' },
-                { name: 'Penthouse à Nice', location: { lat: 43.7102, lng: 7.2620 }, link: 'penthouse-nice.html' }
+                { name: 'Appartement Cosy', location: { lat: 48.8566, lng: 2.3522 }, link: 'appartement-cosy-paris.html', locked: false },
+                { name: 'Maison de famille', location: { lat: 44.8378, lng: -0.5792 }, link: 'maison-famille-bordeaux.html', locked: true },
+                { name: 'Studio lumineux', location: { lat: 45.7640, lng: 4.8357 }, link: 'studio-lyon.html', locked: false },
+                { name: 'Loft spacieux', location: { lat: 43.2965, lng: 5.3698 }, link: 'loft-marseille.html', locked: true },
+                { name: 'Villa d\'architecte', location: { lat: 43.6047, lng: 1.4442 }, link: 'villa-architecte-toulouse.html', locked: false },
+                { name: 'Appartement Design', location: { lat: 43.7102, lng: 7.2620 }, link: 'appartement-design-nice.html', locked: false },
+                { name: 'Appartement Vue Mer', location: { lat: 42.0396, lng: 9.0129 }, link: 'appartement-vue-mer-corse.html', locked: true },
+                { name: 'Penthouse à Nice', location: { lat: 43.7102, lng: 7.2620 }, link: 'penthouse-nice.html', locked: false }
             ];
 
             properties.forEach(property => {
+                const icon = property.locked
+                    ? {
+                        url: 'https://maps.google.com/mapfiles/kml/shapes/lock_purple.png',
+                        scaledSize: new google.maps.Size(30, 30)
+                      }
+                    : {
+                        url: 'https://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png',
+                        scaledSize: new google.maps.Size(30, 30)
+                      };
+
                 const marker = new google.maps.Marker({
                     position: property.location,
                     map: map,
-                    title: property.name
+                    title: property.name,
+                    icon: icon
                 });
 
                 marker.addListener('click', () => {

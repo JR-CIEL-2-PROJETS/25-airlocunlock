@@ -134,8 +134,8 @@
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      width: 20px; /* Normal size */
-      height: 20px; /* Normal size */
+      width: 20px;
+      height: 20px;
     }
   </style>
   <script>
@@ -167,14 +167,13 @@
         data[key] = value;
       });
 
-      const url = type === 'Client'
-        ? 'http://172.16.15.63:8080/AirlockUnlock/client/client.php' // http://172.16.15.63:8081/index.php?nom=${nom}&prenom=${prenom}'
-        : 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/proprietaire.php';
+      const url = type === 'Propriétaire'
+        ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/proprietaire-inscription.php'
+        : 'http://172.16.15.63:8080/AirlockUnlock/client/client-inscription.php';
 
-      try {
+    try {
         const response = await fetch(url, {
           method: 'POST',
-          // mode: 'no-cors',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -196,10 +195,10 @@
       const eyeIcon = document.getElementById('eyeIcon');
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png'; // change to visible icon
+        eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
       } else {
         passwordField.type = 'password';
-        eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/invisible.png'; // change to invisible icon
+        eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/invisible.png';
       }
     }
   </script>
@@ -215,151 +214,36 @@
   <div class="flex justify-center items-center flex-1">
     <div class="form-container">
       <div class="flex border-b mb-6">
-        <div
-          id="clientTab"
-          class="tab tab-active"
-          onclick="changeTab('client')"
-        >
-          Client
-        </div>
-        <div id="ownerTab" class="tab" onclick="changeTab('owner')">
-          Propriétaire
-        </div>
+        <div id="clientTab" class="tab tab-active" onclick="changeTab('client')">Client</div>
+        <div id="ownerTab" class="tab" onclick="changeTab('owner')">Propriétaire</div>
       </div>
 
       <div id="clientContent">
         <form>
-          <input
-            type="text"
-            placeholder="Nom"
-            class="input-field"
-            name="nom"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Prénom"
-            class="input-field"
-            name="username"
-            required
-          />
-          <input
-            type="tel"
-            placeholder="Numéro de téléphone"
-            class="input-field"
-            name="phone"
-            required
-          />
-          <input
-            type="email"
-            placeholder="Adresse e-mail"
-            class="input-field"
-            name="email"
-            required
-          />
+          <input type="text" placeholder="Nom" class="input-field" name="nom" required />
+          <input type="text" placeholder="Prénom" class="input-field" name="username" required />
+          <input type="email" placeholder="Adresse e-mail" class="input-field" name="email" required />
           <div style="position: relative;">
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              class="input-field"
-              id="password"
-              name="password"
-              required
-            />
-            <img
-              id="eyeIcon"
-              src="https://img.icons8.com/ios-filled/50/000000/invisible.png"
-              alt="Voir le mot de passe"
-              class="eye-icon"
-              onclick="togglePasswordVisibility()"
-            />
+            <input type="password" placeholder="Mot de passe" class="input-field" id="password" name="password" required />
+            <img id="eyeIcon" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility()" />
           </div>
-          <button
-            type="button"
-            class="button-primary"
-            onclick="register('Client')"
-          >
-            S'inscrire
-          </button>
+          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="phone" required />
+          <button type="button" class="button-primary" onclick="register('Client')">S'inscrire</button>
         </form>
       </div>
 
       <div id="ownerContent" style="display: none;">
         <form>
-          <input
-            type="text"
-            placeholder="Nom"
-            class="input-field"
-            name="nom"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Prénom"
-            class="input-field"
-            name="username"
-            required
-          />
-          <input
-            type="tel"
-            placeholder="Numéro de téléphone"
-            class="input-field"
-            name="telephone"
-            required
-          />
-          <input
-            type="email"
-            placeholder="Adresse e-mail"
-            class="input-field"
-            name="email"
-            required
-          />
+          <input type="text" placeholder="Nom" class="input-field" name="nom" required />
+          <input type="text" placeholder="Prénom" class="input-field" name="username" required />
+          <input type="email" placeholder="Adresse e-mail" class="input-field" name="email" required />
           <div style="position: relative;">
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              class="input-field"
-              id="password-owner"
-              name="password"
-              required
-            />
-            <img
-              id="eyeIcon-owner"
-              src="https://img.icons8.com/ios-filled/50/000000/invisible.png"
-              alt="Voir le mot de passe"
-              class="eye-icon"
-              onclick="togglePasswordVisibility()"
-            />
+            <input type="password" placeholder="Mot de passe" class="input-field" id="password-owner" name="password" required />
+            <img id="eyeIcon-owner" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility()" />
           </div>
-          <button
-            type="button"
-            class="button-primary"
-            onclick="register('Propriétaire')"
-          >
-            S'inscrire
-          </button>
+          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="phone" required />
+          <button type="button" class="button-primary" onclick="register('Propriétaire')">S'inscrire</button>
         </form>
-      </div>
-
-      <div class="text-center my-6 text-gray-500">OU</div>
-
-      <button class="button-secondary">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="currentColor"
-          viewBox="0 0 256 256"
-        >
-          <path
-            d="M224,128a96,96,0,1,1-21.95-61.09,8,8,0,1,1-12.33,10.18A80,80,0,1,0,207.6,136H128a8,8,0,0,1,0-16h88A8,8,0,0,1,224,128Z"
-          ></path>
-        </svg>
-        Continuer avec Google
-      </button>
-
-      <div class="login-link">
-        <p>Déjà un compte ? <a href="signin.html">Se connecter</a></p>
       </div>
     </div>
   </div>

@@ -322,8 +322,9 @@
         <div class="profile-header">
             <img src="img/hasbula.jpg" alt="Profile Picture">
             <div>
-                <h1>Nom Utilisateur</h1>
-                <p>Membre depuis 2023</p>
+                <h1 id="username">Chargement...</h1>
+                <p id="email">Chargement...</p>
+                <p id="member-since">Membre depuis 2023</p>
             </div>
         </div>
 
@@ -334,15 +335,15 @@
             <div class="info">
                 <div>
                     <p>Nombre de réservations</p>
-                    <span>15</span>
+                    <span id="reservations-count">15</span>
                 </div>
                 <div>
                     <p>Avis reçus</p>
-                    <span>4.8/5</span>
+                    <span id="reviews-rating">4.8/5</span>
                 </div>
                 <div>
                     <p>Propriétés favorites</p>
-                    <span>8</span>
+                    <span id="favorites-count">8</span>
                 </div>
             </div>
         </div>
@@ -354,6 +355,7 @@
     </footer>
 
     <script>
+        // Gestion du menu profil
         const profile = document.querySelector('.profile');
         const profileMenu = document.querySelector('.profile-menu');
 
@@ -361,10 +363,32 @@
             profileMenu.classList.toggle('active');
         });
 
-        // Close the profile menu when clicking outside
+        // Fermer le menu quand on clique ailleurs
         document.addEventListener('click', (event) => {
             if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
                 profileMenu.classList.remove('active');
+            }
+        });
+
+        // Récupération des données utilisateur depuis le localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    document.getElementById('username').textContent = currentUser.username;
+                    document.getElementById('email').textContent = currentUser.email;
+                    document.getElementById('member-since').textContent = `Membre depuis 2023`;
+                    document.getElementById('reservations-count').textContent = 0;
+                    document.getElementById('reviews-rating').textContent = '0/5';
+                    document.getElementById('favorites-count').textContent = 0;
+                } else {
+                    document.getElementById('username').textContent = "Utilisateur";
+                    document.getElementById('email').textContent = "Email non disponible";
+                }
+            } catch (error) {
+                console.error("Erreur lors du chargement des données:", error);
+                document.getElementById('username').textContent = "Utilisateur";
+                document.getElementById('email').textContent = "Email non disponible";
             }
         });
     </script>

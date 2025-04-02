@@ -200,13 +200,65 @@
     </div>
 
     <script>
-        // Initialize users storage
-        function initializeUsers() {
-            if (!localStorage.getItem('registeredUsers')) {
-                localStorage.setItem('registeredUsers', JSON.stringify({
-                    clients: [],
-                    proprietaires: []
-                }));
+        async function login(type) {
+            const errorMessage = document.getElementById('errorMessage');
+            let email, password;
+
+            if (type === 'Client') {
+                email = document.getElementById('clientEmail').value;
+                password = document.getElementById('clientPassword').value;
+            } else if (type === 'Propriétaire') {
+                email = document.getElementById('ownerEmail').value;
+                password = document.getElementById('ownerPassword').value;
+            }
+
+            // Basic validation
+            if (!email || !password) {
+                errorMessage.textContent = 'Veuillez remplir tous les champs';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const url = type === 'Propriétaire'
+                ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/proprietaire-connexion.php'
+                : 'http://172.16.15.63:8080/AirlockUnlock/client/client-connexion.php';
+
+            try {
+                console.log("Email:", email, "Password:", password);
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+                console.log("API Response:", result);
+
+                if (response.ok && result.status === 'success') { // Verifying success message
+                    // Store user type and data for session management
+                    localStorage.setItem('userType', type);
+                    localStorage.setItem('currentUser', JSON.stringify({ user_id: result.user_id, username: result.username, email: email }));
+
+                    // Redirect to appropriate home page based on user type
+                    if (type === 'Client') {
+                        console.log("Redirecting to accueil.html");
+                        window.location.href = 'accueil.html';
+                    } else if (type === 'Propriétaire') {
+                        console.log("Redirecting to accueilpro.html");
+                        window.location.href = 'accueilpro.html';
+                    }
+                } else {
+                    // Show error message if login failed
+                    errorMessage.textContent = result.message || 'Email ou mot de passe incorrect';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                // Show network error message
+                errorMessage.textContent = 'Erreur réseau: ' + error.message;
+                errorMessage.style.display = 'block';
             }
         }
 
@@ -239,7 +291,7 @@
         function togglePasswordVisibility(type) {
             const passwordField = document.getElementById(`${type}Password`);
             const eyeIcon = document.getElementById(`eyeIcon-${type}`);
-            
+
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
                 eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
@@ -249,53 +301,16 @@
             }
         }
 
-        function login(type) {
-            // Initialize users if not already done
-            initializeUsers();
-
-            const errorMessage = document.getElementById('errorMessage');
-            let email, password;
-
-            if (type === 'Client') {
-                email = document.getElementById('clientEmail').value;
-                password = document.getElementById('clientPassword').value;
-            } else if (type === 'Propriétaire') {
-                email = document.getElementById('ownerEmail').value;
-                password = document.getElementById('ownerPassword').value;
-            }
-
-            // Basic validation
-            if (!email || !password) {
-                errorMessage.textContent = 'Veuillez remplir tous les champs';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            // Retrieve registered users
-            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers'));
-            const usersToCheck = type === 'Client' ? registeredUsers.clients : registeredUsers.proprietaires;
-
-            // Check if user exists and password matches
-            const foundUser = usersToCheck.find(user => 
-                user.email === email && user.password === password
-            );
-
-            if (foundUser) {
-                // Store user type and data for session management
-                localStorage.setItem('userType', type);
-                localStorage.setItem('currentUser', JSON.stringify(foundUser));
-                
-                // Redirect to home page
-                window.location.href = 'accueil.html';
-            } else {
-                // Show error message
-                errorMessage.textContent = 'Email ou mot de passe incorrect';
-                errorMessage.style.display = 'block';
-            }
-        }
-
         // Initialize on page load
-        window.onload = initializeUsers;
+        window.onload = function() {
+            // Initialize users if not already done
+            if (!localStorage.getItem('registeredUsers')) {
+                localStorage.setItem('registeredUsers', JSON.stringify({
+                    clients: [],
+                    proprietaires: []
+                }));
+            }
+        };
     </script>
 </body>
 </html>
