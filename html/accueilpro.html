@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AirLockUnlock - Tableau de Bord Propriétaire</title>
+    <title>AirLockUnlock - Accueil Propriétaire</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #007BFF;
-            --secondary: #0056b3; /* Une nuance plus foncée pour le dégradé */
+            --secondary: #0056b3;
             --accent: #f59e0b;
             --light: #f8fafc;
             --dark: #1e293b;
@@ -31,7 +31,7 @@
         }
 
         header {
-            background-color: var(--primary); /* Dégradé remplacé par couleur unie */
+            background-color: var(--primary);
             padding: 1rem 2rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             display: flex;
@@ -407,7 +407,7 @@
     <div class="container">
         <section class="welcome-section">
             <div class="welcome-text">
-                <h1>Bienvenue, Jean Dupont</h1>
+                <h1 id="welcome-message">Bienvenue, Jean Dupont</h1>
                 <p>Gérez vos propriétés et réservations en toute simplicité</p>
             </div>
             <a href="publier-bien.html" class="btn btn-primary"><i class="fas fa-plus"></i> Publier un bien</a>
@@ -536,6 +536,20 @@
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userType = localStorage.getItem('userType');
+            const currentUser = localStorage.getItem('currentUser');
+
+            if (!currentUser || userType !== 'Propriétaire') {
+                alert('Vous devez être connecté en tant que propriétaire pour accéder à cette page.');
+                window.location.href = 'signin.html';
+                return;
+            }
+
+            const userData = JSON.parse(currentUser);
+            document.getElementById('welcome-message').textContent = `Bienvenue, ${userData.username}`;
+        });
+
         // Vérification du numéro de série
         document.querySelector('.verify-btn').addEventListener('click', function() {
             const serialNumber = document.querySelector('.verify-input').value;

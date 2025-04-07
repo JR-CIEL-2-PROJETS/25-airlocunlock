@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #007BFF;   
-            --secondary: #0056b3; 
+            --primary: #007BFF;
+            --secondary: #0056b3;
             --accent: #f59e0b;
             --light: #f8fafc;
-            --dark: #007BFF;     
+            --dark: #007BFF;
             --success: #10b981;
             --danger: #ef4444;
             --gray: #94a3b8;
@@ -32,7 +32,7 @@
         }
 
         header {
-            background-color: var(--primary); 
+            background-color: var(--primary);
             padding: 1rem 2rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             display: flex;
@@ -319,10 +319,10 @@
             <a href="accueilpro.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour</a>
         </div>
 
-        <form class="property-form" id="publishForm">
+        <form class="property-form" id="publishForm" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="propertyType" class="form-label required">Type de bien</label>
-                <select id="propertyType" class="form-control" required>
+                <select id="propertyType" class="form-control" name="propertyType" required>
                     <option value="">Sélectionnez un type</option>
                     <option value="apartment">Appartement</option>
                     <option value="house">Maison</option>
@@ -334,43 +334,43 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="title" class="form-label required">Titre de l'annonce</label>
-                    <input type="text" id="title" class="form-control" placeholder="Ex: Magnifique appartement avec vue" required>
+                    <input type="text" id="title" class="form-control" name="title" placeholder="Ex: Magnifique appartement avec vue" required>
                 </div>
                 <div class="form-group">
                     <label for="price" class="form-label required">Prix par nuit (€)</label>
-                    <input type="number" id="price" class="form-control" min="0" step="0.01" required>
+                    <input type="number" id="price" class="form-control" name="price" min="0" step="0.01" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="description" class="form-label required">Description</label>
-                <textarea id="description" class="form-control form-textarea" placeholder="Décrivez votre bien en détail..." required></textarea>
+                <textarea id="description" class="form-control form-textarea" name="description" placeholder="Décrivez votre bien en détail..." required></textarea>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="surface" class="form-label required">Surface (m²)</label>
-                    <input type="number" id="surface" class="form-control" min="0" required>
+                    <input type="number" id="surface" class="form-control" name="surface" min="0" required>
                 </div>
                 <div class="form-group">
                     <label for="rooms" class="form-label required">Nombre de pièces</label>
-                    <input type="number" id="rooms" class="form-control" min="1" required>
+                    <input type="number" id="rooms" class="form-control" name="rooms" min="1" required>
                 </div>
                 <div class="form-group">
                     <label for="capacity" class="form-label required">Capacité (personnes)</label>
-                    <input type="number" id="capacity" class="form-control" min="1" required>
+                    <input type="number" id="capacity" class="form-control" name="capacity" min="1" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="address" class="form-label required">Adresse complète</label>
-                <input type="text" id="address" class="form-control" required>
+                <input type="text" id="address" class="form-control" name="address" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label required">Photos du bien</label>
                 <div class="upload-area" id="uploadArea">
-                    <input type="file" id="fileInput" accept="image/*" multiple>
+                    <input type="file" id="fileInput" name="photos[]" accept="image/*" multiple>
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
@@ -384,29 +384,32 @@
                 <label for="amenities" class="form-label">Équipements</label>
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.75rem;">
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities" value="wifi"> WiFi
+                        <input type="checkbox" name="amenities[]" value="wifi"> WiFi
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities" value="parking"> Parking
+                        <input type="checkbox" name="amenities[]" value="parking"> Parking
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities" value="kitchen"> Cuisine
+                        <input type="checkbox" name="amenities[]" value="kitchen"> Cuisine
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities" value="tv"> TV
+                        <input type="checkbox" name="amenities[]" value="tv"> TV
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities" value="ac"> Climatisation
+                        <input type="checkbox" name="amenities[]" value="ac"> Climatisation
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities" value="heating"> Chauffage
+                        <input type="checkbox" name="amenities[]" value="heating"> Chauffage
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" name="amenities[]" value="heating"> Serrure électronique 
                     </label>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="tapkeySerial" class="form-label">Numéro de série Tapkey</label>
-                <input type="text" id="tapkeySerial" class="form-control" placeholder="Si vous avez déjà une serrure Tapkey">
+                <input type="text" id="tapkeySerial" class="form-control" name="tapkeySerial" placeholder="Si vous avez déjà une serrure Tapkey">
             </div>
 
             <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Publier le bien</button>
@@ -425,13 +428,23 @@
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userType = localStorage.getItem('userType');
+            const currentUser = localStorage.getItem('currentUser');
+
+            if (!currentUser || userType !== 'Propriétaire') {
+                alert('Vous devez être connecté en tant que propriétaire pour publier un bien.');
+                window.location.href = 'signin.html';
+            }
+        });
+
         // Gestion de l'upload d'images
         const fileInput = document.getElementById('fileInput');
         const uploadArea = document.getElementById('uploadArea');
         const previewContainer = document.getElementById('previewContainer');
 
         uploadArea.addEventListener('click', () => fileInput.click());
-        
+
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             uploadArea.style.borderColor = '#007BFF';
@@ -447,7 +460,7 @@
             e.preventDefault();
             uploadArea.style.borderColor = '#e2e8f0';
             uploadArea.style.backgroundColor = '#f8fafc';
-            
+
             if (e.dataTransfer.files.length) {
                 fileInput.files = e.dataTransfer.files;
                 handleFiles(e.dataTransfer.files);
@@ -462,25 +475,25 @@
 
         function handleFiles(files) {
             previewContainer.innerHTML = '';
-            
+
             Array.from(files).forEach(file => {
                 if (!file.type.startsWith('image/')) return;
-                
+
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const previewItem = document.createElement('div');
                     previewItem.className = 'preview-item';
-                    
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
-                    
+
                     const removeBtn = document.createElement('div');
                     removeBtn.className = 'remove-btn';
                     removeBtn.innerHTML = '<i class="fas fa-times"></i>';
                     removeBtn.addEventListener('click', () => {
                         previewItem.remove();
                     });
-                    
+
                     previewItem.appendChild(img);
                     previewItem.appendChild(removeBtn);
                     previewContainer.appendChild(previewItem);
@@ -492,10 +505,26 @@
         // Validation du formulaire
         document.getElementById('publishForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Ici vous ajouteriez la logique pour envoyer les données au serveur
-            alert('Votre bien a été publié avec succès !');
-            // window.location.href = 'index.html'; // Redirection après publication
+
+            const formData = new FormData(this);
+
+            fetch('http://172.16.15.63:8080/AirlockUnlock/bien/publier-bien.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Votre bien a été publié avec succès !');
+                    window.location.href = 'index.html'; // Redirection après publication
+                } else {
+                    alert('Erreur lors de la publication du bien.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur s\'est produite. Veuillez réessayer.');
+            });
         });
     </script>
 </body>

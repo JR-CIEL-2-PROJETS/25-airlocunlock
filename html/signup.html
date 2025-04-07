@@ -60,8 +60,13 @@
       padding: 12px;
       border-radius: 8px;
       border: 1px solid #cbd5e0;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
       font-size: 14px;
+    }
+
+    .input-field:focus {
+      border-color: #4682b4;
+      outline: none;
     }
 
     .button-primary {
@@ -72,6 +77,8 @@
       border-radius: 8px;
       font-weight: bold;
       transition: background-color 0.3s;
+      border: none;
+      cursor: pointer;
     }
 
     .button-primary:hover {
@@ -137,7 +144,108 @@
       width: 20px;
       height: 20px;
     }
+
+    .error-message {
+      color: #e53e3e;
+      font-size: 12px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .password-rules {
+      font-size: 12px;
+      color: #4a5568;
+      margin-bottom: 15px;
+    }
+
+    .password-rules ul {
+      list-style-type: disc;
+      padding-left: 20px;
+      margin-top: 5px;
+    }
+
+    .password-rules li {
+      margin-bottom: 3px;
+    }
+
+    .rule-valid {
+      color: #38a169;
+    }
+
+    .rule-invalid {
+      color: #e53e3e;
+    }
   </style>
+</head>
+<body>
+  <header class="header">
+    <div class="flex items-center gap-4">
+      <img src="img/logo (2).png" alt="Logo" />
+      <h1 class="text-xl font-bold">AirLockUnlock</h1>
+    </div>
+  </header>
+
+  <div class="flex justify-center items-center flex-1">
+    <div class="form-container">
+      <div class="flex border-b mb-6">
+        <div id="clientTab" class="tab tab-active" onclick="changeTab('client')">Client</div>
+        <div id="ownerTab" class="tab" onclick="changeTab('owner')">Propriétaire</div>
+      </div>
+
+      <div id="clientContent">
+        <form id="clientForm">
+          <input type="text" placeholder="Nom" class="input-field" name="nom" required />
+          <input type="text" placeholder="Prénom" class="input-field" name="username" required />
+          <input type="email" placeholder="Adresse e-mail" class="input-field" name="email" required />
+          <div style="position: relative;">
+            <input type="password" placeholder="Mot de passe" class="input-field" id="password" name="password" required oninput="validatePassword('client')" />
+            <img id="eyeIcon" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility('client')" />
+          </div>
+          <div class="password-rules">
+            <p>Le mot de passe doit contenir :</p>
+            <ul>
+              <li id="client-length" class="rule-invalid">Minimum 8 caractères</li>
+              <li id="client-uppercase" class="rule-invalid">Au moins une majuscule</li>
+              <li id="client-number" class="rule-invalid">Au moins un chiffre</li>
+              <li id="client-special" class="rule-invalid">Au moins un caractère spécial</li>
+            </ul>
+          </div>
+          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="phone" required />
+          <div id="clientError" class="error-message"></div>
+          <button type="button" class="button-primary" onclick="validateAndRegister('Client')">S'inscrire</button>
+        </form>
+      </div>
+
+      <div id="ownerContent" style="display: none;">
+        <form id="ownerForm">
+          <input type="text" placeholder="Nom" class="input-field" name="nom" required />
+          <input type="text" placeholder="Prénom" class="input-field" name="username" required />
+          <input type="email" placeholder="Adresse e-mail" class="input-field" name="email" required />
+          <div style="position: relative;">
+            <input type="password" placeholder="Mot de passe" class="input-field" id="password-owner" name="password" required oninput="validatePassword('owner')" />
+            <img id="eyeIcon-owner" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility('owner')" />
+          </div>
+          <div class="password-rules">
+            <p>Le mot de passe doit contenir :</p>
+            <ul>
+              <li id="owner-length" class="rule-invalid">Minimum 8 caractères</li>
+              <li id="owner-uppercase" class="rule-invalid">Au moins une majuscule</li>
+              <li id="owner-number" class="rule-invalid">Au moins un chiffre</li>
+              <li id="owner-special" class="rule-invalid">Au moins un caractère spécial</li>
+            </ul>
+          </div>
+          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="phone" required />
+          <div id="ownerError" class="error-message"></div>
+          <button type="button" class="button-primary" onclick="validateAndRegister('Propriétaire')">S'inscrire</button>
+        </form>
+      </div>
+
+      <div class="login-link">
+        Déjà un compte ? <a href="signin.html">Connectez-vous</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     function changeTab(tab) {
       const clientTab = document.getElementById('clientTab');
@@ -158,9 +266,70 @@
       }
     }
 
+    function validatePassword(type) {
+      const password = document.getElementById(type === 'client' ? 'password' : 'password-owner').value;
+      const prefix = type === 'client' ? 'client-' : 'owner-';
+      
+      // Vérifier la longueur
+      const lengthValid = password.length >= 8;
+      document.getElementById(prefix + 'length').className = lengthValid ? 'rule-valid' : 'rule-invalid';
+      
+      // Vérifier les majuscules
+      const uppercaseValid = /[A-Z]/.test(password);
+      document.getElementById(prefix + 'uppercase').className = uppercaseValid ? 'rule-valid' : 'rule-invalid';
+      
+      // Vérifier les chiffres
+      const numberValid = /[0-9]/.test(password);
+      document.getElementById(prefix + 'number').className = numberValid ? 'rule-valid' : 'rule-invalid';
+      
+      // Vérifier les caractères spéciaux
+      const specialValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      document.getElementById(prefix + 'special').className = specialValid ? 'rule-valid' : 'rule-invalid';
+      
+      return lengthValid && uppercaseValid && numberValid && specialValid;
+    }
+
+    function validateAndRegister(type) {
+      const formId = type === 'Client' ? 'clientForm' : 'ownerForm';
+      const form = document.getElementById(formId);
+      const errorElement = document.getElementById(type === 'Client' ? 'clientError' : 'ownerError');
+      
+      // Valider tous les champs
+      let isValid = true;
+      const inputs = form.querySelectorAll('input[required]');
+      
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
+          isValid = false;
+          input.style.borderColor = '#e53e3e';
+        } else {
+          input.style.borderColor = '#cbd5e0';
+        }
+      });
+      
+      // Valider spécifiquement le mot de passe
+      const passwordValid = validatePassword(type === 'Client' ? 'client' : 'owner');
+      
+      if (!isValid) {
+        errorElement.textContent = 'Veuillez remplir tous les champs obligatoires';
+        errorElement.style.display = 'block';
+        return;
+      }
+      
+      if (!passwordValid) {
+        errorElement.textContent = 'Le mot de passe ne respecte pas les règles requises';
+        errorElement.style.display = 'block';
+        return;
+      }
+      
+      errorElement.style.display = 'none';
+      register(type);
+    }
+
     async function register(type) {
-      const form = document.querySelector(`#${type === 'Client' ? 'clientContent' : 'ownerContent'} form`);
+      const form = document.querySelector(`#${type === 'Client' ? 'clientForm' : 'ownerForm'}`);
       const formData = new FormData(form);
+      const errorElement = document.getElementById(type === 'Client' ? 'clientError' : 'ownerError');
 
       const data = {};
       formData.forEach((value, key) => {
@@ -171,7 +340,7 @@
         ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/proprietaire-inscription.php'
         : 'http://172.16.15.63:8080/AirlockUnlock/client/client-inscription.php';
 
-    try {
+      try {
         const response = await fetch(url, {
           method: 'POST',
           headers: {
@@ -180,19 +349,35 @@
           body: JSON.stringify(data),
         });
 
+        const result = await response.json();
+        
         if (response.ok) {
-          alert(`Inscription réussie pour un ${type}`);
+          // Redirection vers la page de connexion après 2 secondes
+          setTimeout(() => {
+            window.location.href = 'signin.html?registered=true';
+          }, 2000);
+          
+          // Afficher un message de succès
+          errorElement.textContent = 'Inscription réussie ! Redirection en cours...';
+          errorElement.style.color = '#38a169';
+          errorElement.style.display = 'block';
         } else {
-          alert(`Erreur lors de l'inscription: ${response.statusText}`);
+          // Afficher l'erreur retournée par le serveur
+          errorElement.textContent = result.message || `Erreur lors de l'inscription: ${response.statusText}`;
+          errorElement.style.color = '#e53e3e';
+          errorElement.style.display = 'block';
         }
       } catch (error) {
-        alert(`Erreur réseau: ${error.message}`);
+        errorElement.textContent = `Erreur réseau: ${error.message}`;
+        errorElement.style.color = '#e53e3e';
+        errorElement.style.display = 'block';
       }
     }
 
-    function togglePasswordVisibility() {
-      const passwordField = document.getElementById('password');
-      const eyeIcon = document.getElementById('eyeIcon');
+    function togglePasswordVisibility(type) {
+      const passwordField = document.getElementById(type === 'client' ? 'password' : 'password-owner');
+      const eyeIcon = document.getElementById(type === 'client' ? 'eyeIcon' : 'eyeIcon-owner');
+      
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
         eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
@@ -202,50 +387,5 @@
       }
     }
   </script>
-</head>
-<body>
-  <header class="header">
-    <div class="flex items-center gap-4">
-      <img src="img/logo (2).png" alt="Logo" />
-      <h1 class="text-xl font-bold">AirLockUnlock</h1>
-    </div>
-  </header>
-
-  <div class="flex justify-center items-center flex-1">
-    <div class="form-container">
-      <div class="flex border-b mb-6">
-        <div id="clientTab" class="tab tab-active" onclick="changeTab('client')">Client</div>
-        <div id="ownerTab" class="tab" onclick="changeTab('owner')">Propriétaire</div>
-      </div>
-
-      <div id="clientContent">
-        <form>
-          <input type="text" placeholder="Nom" class="input-field" name="nom" required />
-          <input type="text" placeholder="Prénom" class="input-field" name="username" required />
-          <input type="email" placeholder="Adresse e-mail" class="input-field" name="email" required />
-          <div style="position: relative;">
-            <input type="password" placeholder="Mot de passe" class="input-field" id="password" name="password" required />
-            <img id="eyeIcon" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility()" />
-          </div>
-          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="phone" required />
-          <button type="button" class="button-primary" onclick="register('Client')">S'inscrire</button>
-        </form>
-      </div>
-
-      <div id="ownerContent" style="display: none;">
-        <form>
-          <input type="text" placeholder="Nom" class="input-field" name="nom" required />
-          <input type="text" placeholder="Prénom" class="input-field" name="username" required />
-          <input type="email" placeholder="Adresse e-mail" class="input-field" name="email" required />
-          <div style="position: relative;">
-            <input type="password" placeholder="Mot de passe" class="input-field" id="password-owner" name="password" required />
-            <img id="eyeIcon-owner" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility()" />
-          </div>
-          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="phone" required />
-          <button type="button" class="button-primary" onclick="register('Propriétaire')">S'inscrire</button>
-        </form>
-      </div>
-    </div>
-  </div>
 </body>
 </html>
