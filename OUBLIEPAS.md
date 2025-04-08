@@ -5,7 +5,8 @@ docker compose up -d
 
 sauvegarder la bsdonne
 
-docker exec -i mysql-container mysqldump -u root -proot airlockunlock > backup_full.sql  
+docker exec -i mysql-container mysqldump -u root -proot airlockunlock > back_airlockunlock.sql  
+docker exec -i mysql-container mysqldump -u root -proot Tapkey > back_tapkey.sql  
 
 docker-compose down
  
