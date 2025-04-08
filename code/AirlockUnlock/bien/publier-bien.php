@@ -3,7 +3,7 @@ session_start();
 include '../config.php'; // Connexion à la base de données principale
 
 // Inclure le fichier config.php pour la base Tapkey (assurez-vous que le chemin est correct)
-include '../../Tapkey/config.php'; // Chemin vers le config.php de Tapkey
+include '../Tapkey/config.php'; // Chemin vers le config.php de Tapkey
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['proprietaire_id'])) {
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Générer un nom unique pour l'image téléchargée
         $photo_name = uniqid('bien_', true) . '.' . $file_extension;
-        $target_directory = 'photos/'; // Dossier où l'image sera stockée
+        $target_directory = '../photos/'; // Dossier où l'image sera stockée
 
         // Créer le dossier si nécessaire
         if (!is_dir($target_directory)) {
