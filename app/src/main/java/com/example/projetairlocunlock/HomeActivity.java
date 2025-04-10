@@ -40,19 +40,16 @@ public class HomeActivity extends Activity {
         instructionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Effectuer la requête HTTP en arrière-plan
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            // URL de la requête mock
                             URL url = new URL("https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/bien1?bien_id=1&nom=appartementParis&reservation=1");
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setRequestMethod("GET");
                             connection.setConnectTimeout(15000);
                             connection.setReadTimeout(15000);
 
-                            // Obtenir la réponse du serveur
                             InputStreamReader reader = new InputStreamReader(connection.getInputStream());
                             StringBuilder response = new StringBuilder();
                             int read;
@@ -60,7 +57,6 @@ public class HomeActivity extends Activity {
                                 response.append((char) read);
                             }
 
-                            // Afficher la réponse sur le thread principal
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
