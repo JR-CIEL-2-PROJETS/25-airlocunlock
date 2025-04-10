@@ -1,0 +1,116 @@
+#include <WiFi.h>
+#include <WebServer.h>
+#include <ESP32Servo.h>
+#include <SD.h>
+
+const char* ssid = "ciel";
+const char* password = "U7803k66";
+
+WebServer server(80);
+Servo monServo;
+const int servoPin = 13; // GPIO où est branché le servo
+const int positionOn = 180;   // Position à 180° pour "on" (ouvert)
+const int positionOff = 0; // Position à 0° pour "off" (fermé)
+const int positionMid = 90;  // Position à 90° pour "mid" (milieu)
+const int doorSensorPin = 27; // Broche GPIO pour le capteur de porte
+const int chipSelect = 5; // Broche CS pour le module SD
+bool doorOpen = false;
+
+void setup() {
+  Serial.begin(115200);
+
+  // Connexion Wi-Fi
+  WiFi.begin(ssid, password);
+  Serial.print("Connexion au Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWi-Fi connecté !");
+  Serial.print("Adresse IP : ");
+  Serial.println(WiFi.localIP());
+
+  // Initialisation du capteur de porte
+  pinMode(doorSensorPin, INPUT_PULLUP); // Active la résistance pull-up interne
+  Serial.println("Capteur de porte initialisé.");
+
+  // Initialisation de la carte SD
+  if (!SD.begin(chipSelect)) {
+    Serial.println("Échec de l'initialisation de la carte SD !");
+    return;
+  }
+  Serial.println("Carte SD initialisée.");
+
+  // Route pour ouvrir (180°)
+  server.on("/on", HTTP_GET, []() {
+    Serial.println("Commande reçue : ON (180°)");
+    monServo.attach(servoPin, 500, 2500); // Plage de pulsations ajustée
+    monServo.write(positionOn); // Position à 180° (ouvert)
+    delay(500); // Petit temps pour atteindre la position
+    monServo.detach(); // Coupe l'alimentation du servo
+    server.send(200, "text/plain", "Servo tourné à 180°");
+    logEvent("Servo tourné à 180° (ouvert)");
+  });
+
+  // Route pour fermer (0°)
+  server.on("/off", HTTP_GET, []() {
+    Serial.println("Commande reçue : OFF (0°)");
+    monServo.attach(servoPin, 500, 2500); // Plage de pulsations ajustée
+    monServo.write(positionOff); // Position à 0° (fermé)
+    delay(500); // Laisse le temps de revenir
+    monServo.detach(); // Coupe l'alimentation du servo
+    server.send(200, "text/plain", "Servo retourné à 0°");
+    logEvent("Servo tourné à 0° (fermé)");
+  });
+
+  // Route pour positionner à 90°
+  server.on("/mid", HTTP_GET, []() {
+    Serial.println("Commande reçue : MID (90°)");
+    monServo.attach(servoPin, 500, 2500); // Plage de pulsations ajustée
+    monServo.write(positionMid); // Position à 90° (milieu)
+    delay(500); // Laisse le temps de revenir
+    monServo.detach(); // Coupe l'alimentation du servo
+    server.send(200, "text/plain", "Servo tourné à 90°");
+    logEvent("Servo tourné à 90° (milieu)");
+  });
+
+  server.begin();
+  Serial.println("Serveur HTTP lancé.");
+
+  // Configuration de l'interruption pour réveiller l'ESP32
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_27, LOW); // Réveil lorsque le capteur de porte est activé
+}
+
+void loop() {
+  server.handleClient();
+
+  // Lecture de l'état du capteur de porte
+  bool currentState = digitalRead(doorSensorPin);
+  if (currentState != doorOpen) {
+    doorOpen = currentState;
+    if (doorOpen) {
+      Serial.println("Porte ouverte !");
+      logEvent("Porte ouverte");
+    } else {
+      Serial.println("Porte fermée !");
+      logEvent("Porte fermée");
+    }
+  }
+
+  // Mise en veille après un certain temps d'inactivité
+  delay(10000); // Attendre 10 secondes d'inactivité
+  Serial.println("Passage en mode veille...");
+  esp_deep_sleep_start();
+}
+
+void logEvent(const char* event) {
+  File dataFile = SD.open("log.txt", FILE_WRITE);
+  if (dataFile) {
+    dataFile.println(event);
+    dataFile.close();
+    Serial.println("Événement journalisé.");
+  } else {
+    Serial.println("Erreur lors de l'ouverture du fichier log.txt");
+  }
+}
