@@ -212,8 +212,8 @@
                 <form>
                     <input id="clientEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
                     <div style="position: relative;">
-                        <input id="clientPassword" type="password" placeholder="Mot de passe" class="input-field" required>
-                        <img id="eyeIcon-client" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility('client')">
+                        <input id="clientMotDePasse" type="mot_de_passe" placeholder="Mot de passe" class="input-field" required>
+                        <img id="eyeIcon-client" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="toggleMotDePasseVisibility('client')">
                     </div>
                     <button type="button" class="button-primary" onclick="login('Client')">Se connecter</button>
                 </form>
@@ -223,8 +223,8 @@
                 <form>
                     <input id="ownerEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
                     <div style="position: relative;">
-                        <input id="ownerPassword" type="password" placeholder="Mot de passe" class="input-field" required>
-                        <img id="eyeIcon-owner" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility('owner')">
+                        <input id="ownerMotDePasse" type="mot_de_passe" placeholder="Mot de passe" class="input-field" required>
+                        <img id="eyeIcon-owner" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="toggleMotDePasseVisibility('owner')">
                     </div>
                     <button type="button" class="button-primary" onclick="login('Propriétaire')">Se connecter</button>
                 </form>
@@ -352,34 +352,34 @@
 
         async function login(type) {
             const errorMessage = document.getElementById('errorMessage');
-            let email, password;
+            let email, mot_de_passe;
 
             if (type === 'Client') {
                 email = document.getElementById('clientEmail').value;
-                password = document.getElementById('clientPassword').value;
+                mot_de_passe = document.getElementById('clientMotDePasse').value;
             } else if (type === 'Propriétaire') {
                 email = document.getElementById('ownerEmail').value;
-                password = document.getElementById('ownerPassword').value;
+                mot_de_passe = document.getElementById('ownerMotDePasse').value;
             }
 
             // Validation de base
-            if (!email || !password) {
+            if (!email || !mot_de_passe) {
                 errorMessage.textContent = 'Veuillez remplir tous les champs';
                 errorMessage.style.display = 'block';
                 return;
             }
 
             const url = type === 'Propriétaire'
-                ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/proprietaire-connexion.php'
-                : 'http://172.16.15.63:8080/AirlockUnlock/client/client-connexion.php';
+                ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/connexion.php'
+                : 'http://172.16.15.63:8080/AirlockUnlock/client/connexion.php';
 
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify({ email, password })
+                    body: `email=${encodeURIComponent(email)}&mot_de_passe=${encodeURIComponent(mot_de_passe)}`
                 });
 
                 const result = await response.json();
@@ -437,15 +437,15 @@
             }
         }
 
-        function togglePasswordVisibility(type) {
-            const passwordField = document.getElementById(`${type}Password`);
+        function toggleMotDePasseVisibility(type) {
+            const motDePasseField = document.getElementById(`${type}MotDePasse`);
             const eyeIcon = document.getElementById(`eyeIcon-${type}`);
 
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
+            if (motDePasseField.type === 'mot_de_passe') {
+                motDePasseField.type = 'text';
                 eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
             } else {
-                passwordField.type = 'password';
+                motDePasseField.type = 'mot_de_passe';
                 eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/invisible.png';
             }
         }
