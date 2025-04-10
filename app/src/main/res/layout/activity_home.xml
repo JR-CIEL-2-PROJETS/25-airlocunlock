@@ -48,6 +48,15 @@
                 android:contentDescription="Exit"
                 android:src="@drawable/exit" />
         </LinearLayout>
+        <!-- activity_home.xml -->
+        <LinearLayout
+            android:id="@+id/reservationLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!-- Les autres vues ici -->
+        </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
     <!-- Carte principale -->

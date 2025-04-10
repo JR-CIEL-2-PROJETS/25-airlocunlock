@@ -17,7 +17,7 @@ public class InstructionsActivity extends Activity {
     private Button openButton;
     private Button closeButton;
 
-    private static final String ESP32_IP_ADDRESS = "http://192.168.137.226"; // Remplace par l'adresse IP de ton ESP32
+    private static final String ESP32_IP_ADDRESS = "http://192.168.137.68"; // Remplace par l'adresse IP de ton ESP32
     private static final String OPEN_URL = "/on";  // URL pour ouvrir
     private static final String CLOSE_URL = "/off"; // URL pour fermer
 
