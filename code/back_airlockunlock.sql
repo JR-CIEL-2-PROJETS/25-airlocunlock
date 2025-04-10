@@ -74,7 +74,7 @@ CREATE TABLE `clients` (
   `telephone` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id_client`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +83,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client Admin','client@admin.com','$2y$10$GEq6aEZHERl/tHB2b0fBr.nqfQ9SxvtFybmgWWbU2nyReZ0Qw5Fme','2025-04-08 09:27:45','0614589324'),(2,'Bilal Taoufik','bilal@gmail.com','$2y$10$Noi/ZpDGHQM/VPpOcBJW1eKhocXGg7yMeUgEgnPMZnUwbjBjUXyZm','2025-04-08 09:31:07','0626266252'),(3,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357');
+INSERT INTO `clients` VALUES (1,'Client Admin','client@admin.com','$2y$10$GEq6aEZHERl/tHB2b0fBr.nqfQ9SxvtFybmgWWbU2nyReZ0Qw5Fme','2025-04-08 09:27:45','0614589324'),(2,'Bilal Taoufik','bilal@gmail.com','$2y$10$Noi/ZpDGHQM/VPpOcBJW1eKhocXGg7yMeUgEgnPMZnUwbjBjUXyZm','2025-04-08 09:31:07','0626266252'),(3,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357'),(5,'toto','toto@lycee-jeanrostand.fr','$2y$10$vGYrKL5l2U0Uf1vmLgWXZ.35PK2BNvMQBaqNRoMNxX/gcXkXhCc2G','2025-04-10 13:36:07','0102030405');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `reservations` (
   KEY `id_bien` (`id_bien`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_bien`) REFERENCES `biens` (`id_bien`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-05-01','2025-05-03',2,'2025-04-08 09:35:08','confirmée');
+INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-05-01','2025-05-03',2,'2025-04-08 09:35:08','confirmée'),(7,NULL,NULL,NULL,'2025-04-10','2025-04-17',4,'2025-04-10 14:22:23','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-08 12:12:46
+-- Dump completed on 2025-04-10 14:57:14

@@ -1,31 +1,39 @@
 <?php
-include '../config.php'; // Assurez-vous que le fichier config.php est dans le même répertoire
+header('Content-Type: application/json');
+include '../config.php';
 
-// Démarrer la session
-session_start();
+// Récupérer l'ID du client depuis les paramètres GET
+$client_id = isset($_GET['client_id']) ? intval($_GET['client_id']) : 0;
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['client_id'])) {
-    echo 'Vous devez être connecté pour accéder à cette page.';
+if ($client_id <= 0) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'ID client invalide ou manquant.'
+    ]);
     exit();
 }
 
-// Récupérer les réservations du client
-$id_client = $_SESSION['client_id'];
-$sql = "SELECT r.id_reservation, r.date_arrivee, r.date_depart, r.nombre_personnes, r.statut, 
+// Requête SQL pour récupérer les réservations du client
+$sql = "SELECT r.id_reservation, r.date_arrivee, r.date_depart, r.nombre_personnes, r.statut,
                b.titre, b.photos
         FROM reservations r
         JOIN biens b ON r.id_bien = b.id_bien
         WHERE r.id_client = :id_client";
+
 try {
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id_client', $id_client);
+    $stmt->bindParam(':id_client', $client_id, PDO::PARAM_INT);
     $stmt->execute();
-
-    // Récupérer toutes les réservations
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode([
+        'status' => 'success',
+        'reservations' => $reservations
+    ]);
 } catch (PDOException $e) {
-    echo 'Erreur lors de l\'exécution de la requête : ' . $e->getMessage();
-    exit();
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Erreur lors de l\'exécution de la requête : ' . $e->getMessage()
+    ]);
 }
 ?>

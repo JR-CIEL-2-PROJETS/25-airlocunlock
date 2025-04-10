@@ -1,20 +1,13 @@
 <?php
-session_start();
 include '../config.php'; // Connexion à la base de données principale
 
 // Inclure le fichier config.php pour la base Tapkey (assurez-vous que le chemin est correct)
 include '../Tapkey/config.php'; // Chemin vers le config.php de Tapkey
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['proprietaire_id'])) {
-    echo 'Vous devez être connecté pour publier un bien.';
-    exit();
-}
-
 // Traitement du formulaire d'ajout de bien
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Récupérer les données envoyées par le formulaire
-    $id_proprietaire = $_SESSION['proprietaire_id'];  // ID du propriétaire connecté
+    $id_proprietaire = $_POST['id_proprietaire'];  // ID du propriétaire passé via le formulaire (ou autre méthode)
     $type_bien = $_POST['type_bien'];
     $titre = $_POST['titre'];
     $prix_par_nuit = $_POST['prix_par_nuit'];

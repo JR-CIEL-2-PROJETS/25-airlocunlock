@@ -1,6 +1,10 @@
 <?php
 include '../config.php'; // Assurez-vous que le fichier config.php est dans le même répertoire
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Vérifier si les données nécessaires existent
     if (!isset($_POST['nom'], $_POST['email'], $_POST['mot_de_passe'], $_POST['telephone'])) {

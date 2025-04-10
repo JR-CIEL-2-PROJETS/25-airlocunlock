@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Publier un Bien</title>
+</head>
+<body>
+    <h2>Formulaire de Publication de Bien</h2>
+    <form action="publier-bien.php" method="POST" enctype="multipart/form-data">
+        <label>ID Propriétaire :</label><br>
+        <input type="number" name="id_proprietaire" required><br><br>
+
+        <label>Type de bien :</label><br>
+        <input type="text" name="type_bien" required><br><br>
+
+        <label>Titre :</label><br>
+        <input type="text" name="titre" required><br><br>
+
+        <label>Prix par nuit (€) :</label><br>
+        <input type="number" name="prix_par_nuit" required><br><br>
+
+        <label>Description :</label><br>
+        <textarea name="description" required></textarea><br><br>
+
+        <label>Surface (m²) :</label><br>
+        <input type="number" name="surface" required><br><br>
+
+        <label>Nombre de pièces :</label><br>
+        <input type="number" name="nombre_pieces" required><br><br>
+
+        <label>Capacité :</label><br>
+        <input type="number" name="capacite" required><br><br>
+
+        <label>Adresse :</label><br>
+        <input type="text" name="adresse" required><br><br>
+
+        <label>Options :</label><br>
+        <input type="checkbox" name="wifi"> Wifi<br>
+        <input type="checkbox" name="parking"> Parking<br>
+        <input type="checkbox" name="cuisine"> Cuisine<br>
+        <input type="checkbox" name="tv"> TV<br>
+        <input type="checkbox" name="climatisation"> Climatisation<br>
+        <input type="checkbox" name="chauffage"> Chauffage<br>
+        <input type="checkbox" name="serrure_electronique"> Serrure électronique<br><br>
+
+        <label>Numéro de série Tapkey :</label><br>
+        <input type="text" name="numero_serie_tapkey"><br><br>
+
+        <label>Photo :</label><br>
+        <input type="file" name="photos" accept="image/*" required><br><br>
+
+        <input type="submit" value="Publier">
+    </form>
+</body>
+</html>
