@@ -10,6 +10,6 @@
     <color name="background">#FFFFFF</color>
     <color name="primary">#4682B4</color>->
     <color name="primaryDark">#315A7D</color>
-    <color name="blue">#4682B4</color> <!-- Bleu vif -->
-
+    <color name="blue">#4682B4</color>
+    <color name="blue_fond">#5b67ed</color>
 </resources>

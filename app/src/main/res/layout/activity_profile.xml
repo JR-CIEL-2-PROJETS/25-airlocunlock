@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFF">
+    android:background="#FFFFFF">
 
-    <!-- Barre d'en-tête avec la structure de la première page -->
+    <!-- Barre d'en-tête -->
     <androidx.cardview.widget.CardView
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,10 +14,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/blue_fond"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="16dp">
+            android:paddingHorizontal="16dp"
+            android:background="@color/blue_fond">
 
             <ImageView
                 android:id="@+id/icon"
@@ -27,74 +27,70 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="0dp"
+                android:layout_width="304dp"
                 style="@style/CustomStyle"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Accès au logement"
+                android:text="Mon Profil"
                 android:textColor="@android:color/white"
                 android:textSize="30dp"
                 android:textStyle="bold" />
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Contenu principal -->
+    <!-- Contenu principal du profil -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="634dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:background="#FFFF"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Image de profil en cercle -->
         <ImageView
-            android:id="@+id/lockImage"
-            android:layout_width="195dp"
-            android:layout_height="230dp"
+            android:id="@+id/profileImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/fermer" />
+            android:src="@drawable/profile_image"
 
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circle_background"
+            android:scaleType="centerCrop"/>
+
+        <!-- Nom et Prénom -->
         <TextView
-            android:id="@+id/lockStatus"
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Serrure status : Fermer"
+            android:text="Nom Prénom"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
+        <!-- Email -->
         <TextView
-            android:id="@+id/lockInstruction"
+            android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="Veillez à être proche de la serrure"
+            android:text="email@exemple.com"
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="32dp"/>
 
+        <!-- Bouton retour -->
         <Button
-            android:id="@+id/openButton"
+            android:id="@+id/backButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:backgroundTint="#6C92FF"
             android:padding="16dp"
-            android:text="OUVRIR"
+            android:text="Retour à l'accueil"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/closeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#D3D3D3"
-            android:padding="16dp"
-            android:text="FERMER"
-            android:textColor="#000000"
-            android:textSize="18sp" />
     </LinearLayout>
+
 </RelativeLayout>

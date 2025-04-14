@@ -48,5 +48,8 @@
 
         <!-- Déclare InstructionsActivity -->
         <activity android:name=".InstructionsActivity" />
+        <!-- Déclare ProfileActivity -->
+        <activity android:name=".ProfileActivity">
+        </activity>
     </application>
 </manifest>

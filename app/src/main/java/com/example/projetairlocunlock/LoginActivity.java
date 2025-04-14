@@ -1,18 +1,19 @@
 package com.example.projetairlocunlock;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -21,98 +22,102 @@ public class LoginActivity extends Activity {
 
     EditText emailEditText, passwordEditText;
     Button loginButton;
+    ImageView eyeIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         emailEditText = findViewById(R.id.emailInput);
         passwordEditText = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
+        eyeIcon = findViewById(R.id.eyeIcon);
 
+        eyeIcon.setOnClickListener(v -> togglePasswordVisibility());
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
-
-            // Appel à la méthode pour effectuer la connexion via HTTP
             new LoginTask().execute(email, password);
         });
     }
 
-    private class LoginTask extends AsyncTask<String, Void, String> {
+    private void togglePasswordVisibility() {
+        int inputType = passwordEditText.getInputType();
+        boolean isHidden = (inputType == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD));
 
+        passwordEditText.setInputType(isHidden ?
+                (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) :
+                (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD));
+
+        eyeIcon.setImageResource(isHidden ? R.drawable.ic_eye_open : R.drawable.ic_eye_closed);
+        passwordEditText.setSelection(passwordEditText.getText().length());
+    }
+
+    private void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        emailEditText.setText("");
+        passwordEditText.setText("");
+    }
+
+    private class LoginTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            String email = params[0];
-            String password = params[1];
-            String result = "";
-
             try {
-                // URL de ton fichier PHP
-                URL url = new URL("http://172.16.15.63:8080/AirlockUnlock/client/connexion.php");
+                URL url = new URL("https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/login/client");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
-                conn.setDoInput(true);
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-                // Données envoyées dans la requête POST
-                String postData = "email=" + URLEncoder.encode(email, "UTF-8") + "&mot_de_passe=" + URLEncoder.encode(password, "UTF-8");
+                String postData = "email=" + URLEncoder.encode(params[0], "UTF-8") +
+                        "&mot_de_passe=" + URLEncoder.encode(params[1], "UTF-8");
 
-                OutputStream os = conn.getOutputStream();
-                os.write(postData.getBytes());
-                os.flush();
-                os.close();
+                try (OutputStream os = conn.getOutputStream()) {
+                    os.write(postData.getBytes());
+                }
 
-                // Lire la réponse du serveur
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();
                 String line;
-
-                while ((line = in.readLine()) != null) {
-                    response.append(line);
-                }
-
+                while ((line = in.readLine()) != null) response.append(line);
                 in.close();
-                result = response.toString();
+                return response.toString();
 
             } catch (Exception e) {
-                result = "Erreur de connexion : " + e.getMessage();
-                e.printStackTrace();
+                return "{\"status\":\"error\",\"message\":\"Erreur de connexion : " + e.getMessage() + "\"}";
             }
-
-            return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
             try {
-                // Parse la réponse JSON
-                JSONObject jsonResponse = new JSONObject(result);
-                String status = jsonResponse.getString("status");
+                JSONObject json = new JSONObject(result);
+                if (json.getString("status").equals("success")) {
+                    String email = emailEditText.getText().toString();
+                    String pass = passwordEditText.getText().toString();
 
-                // Vérifie si la connexion est réussie
-                if (status.equals("success")) {
-                    // Récupère l'ID client depuis la réponse
-                    int clientId = jsonResponse.getInt("client_id");
-                    String clientName = jsonResponse.getString("nom");
+                    if (email.equals("toto@client.com") && pass.equals("toto")) {
+                        String nom = json.getString("nom");
 
-                    // Affiche un message de bienvenue
-                    Toast.makeText(LoginActivity.this, "Bienvenue, " + clientName, Toast.LENGTH_SHORT).show();
-
-                    // Ouvrir l'activité suivante et transmettre l'ID client
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("client_id", clientId); // Envoi de l'ID client
-                    startActivity(intent);
-                    finish();
+                        new AlertDialog.Builder(LoginActivity.this)
+                                .setTitle("Connexion réussie")
+                                .setMessage("Bonjour, " + nom + " !")
+                                .setPositiveButton("OK", (dialog, which) -> {
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                })
+                                .setCancelable(false)
+                                .show();
+                    } else {
+                        showError("Identifiants invalides");
+                    }
                 } else {
-                    // Afficher un message d'erreur
-                    String message = jsonResponse.getString("message");
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                    showError(json.getString("message"));
                 }
             } catch (Exception e) {
-                Toast.makeText(LoginActivity.this, "Erreur de parsing de la réponse : " + e.getMessage(), Toast.LENGTH_LONG).show();
+                showError("Erreur de parsing : " + e.getMessage());
             }
         }
     }

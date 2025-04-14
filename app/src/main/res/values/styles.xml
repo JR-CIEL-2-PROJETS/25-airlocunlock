@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style personnalisé -->
+    <style name="CustomStyle">
+        <item name="android:fontFamily">@font/lobster</item> <!-- Utilisation du fichier .otf -->
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">45sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>
