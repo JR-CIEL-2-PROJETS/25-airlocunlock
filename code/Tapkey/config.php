@@ -1,4 +1,8 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 // Configuration de la base de données
 $host = 'mysql'; // Nom d'hôte ou adresse IP de votre serveur MySQL (ici pour Docker c'est "mysql")
 $dbname = 'Tapkey'; // Nom de la base de données
