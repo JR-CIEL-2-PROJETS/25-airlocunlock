@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.TextView;
+import android.net.Uri;
+import android.view.View;
+
 
 import org.json.JSONObject;
 
@@ -20,6 +24,7 @@ import java.net.URLEncoder;
 
 public class LoginActivity extends Activity {
 
+    TextView forgotPassword, inscription;
     EditText emailEditText, passwordEditText;
     Button loginButton;
     ImageView eyeIcon;
@@ -33,12 +38,27 @@ public class LoginActivity extends Activity {
         passwordEditText = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
         eyeIcon = findViewById(R.id.eyeIcon);
+        forgotPassword = findViewById(R.id.forgotPassword);
+        inscription = findViewById(R.id.inscription);
 
         eyeIcon.setOnClickListener(v -> togglePasswordVisibility());
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             new LoginTask().execute(email, password);
+        });
+
+        forgotPassword.setOnClickListener(v -> {
+            String url = "https://tonsiteweb.com/mot-de-passe-oublie"; // Remplace par ton lien
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        });
+
+        // Redirection vers lien d’inscription
+        inscription.setOnClickListener(v -> {
+            String url = "https://tonsiteweb.com/inscription"; // Remplace par ton lien
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
         });
     }
 

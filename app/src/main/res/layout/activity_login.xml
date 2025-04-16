@@ -5,13 +5,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <!-- ScrollView pour rendre le contenu scrollable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <!-- Contenu centré dans un LinearLayout -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -83,19 +81,42 @@
                 android:elevation="4dp"
                 android:layout_gravity="center"/>
 
+            <!-- Texte cliquable pour réinitialiser le mot de passe -->
             <TextView
                 android:id="@+id/forgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:minWidth="48dp"
+                android:padding="12dp"
                 android:text="Mot de passe oublié ?"
                 android:textSize="14sp"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="8dp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@android:color/transparent"/>
+
+            <!-- Texte cliquable pour s’inscrire -->
+            <TextView
+                android:id="@+id/inscription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:minWidth="48dp"
+                android:padding="12dp"
+                android:text="S'inscrire"
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@android:color/transparent"/>
         </LinearLayout>
     </ScrollView>
 
-    <!-- ✅ Logo en bas à droite -->
     <ImageView
         android:id="@+id/logo"
         android:layout_width="61dp"

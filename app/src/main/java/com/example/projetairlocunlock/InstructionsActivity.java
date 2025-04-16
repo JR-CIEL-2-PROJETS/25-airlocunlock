@@ -17,9 +17,9 @@ public class InstructionsActivity extends Activity {
     private Button openButton;
     private Button closeButton;
 
-    private static final String ESP32_IP_ADDRESS = "http://192.168.137.68"; // Remplace par l'adresse IP de ton ESP32
-    private static final String OPEN_URL = "/on";  // URL pour ouvrir
-    private static final String CLOSE_URL = "/off"; // URL pour fermer
+    private static final String MOCK_SERVER_URL = "https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/serrure"; // L'URL de ton serveur mock
+    private static final String OPEN_URL = "?reservation=1&serrure_1=on";  // URL pour ouvrir
+    private static final String CLOSE_URL = "?reservation=1&serrure_1=off"; // URL pour fermer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class InstructionsActivity extends Activity {
     private void sendCommand(String commandUrl) {
         new Thread(() -> {
             try {
-                // Crée l'URL complète
-                URL url = new URL(ESP32_IP_ADDRESS + commandUrl);
+                // Crée l'URL complète avec le serveur mock
+                URL url = new URL(MOCK_SERVER_URL + commandUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
 
@@ -68,7 +68,7 @@ public class InstructionsActivity extends Activity {
                     });
                 } else {
                     runOnUiThread(() -> {
-                        Toast.makeText(this, "Erreur de communication avec l'ESP32", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Erreur de communication avec le serveur", Toast.LENGTH_SHORT).show();
                     });
                 }
             } catch (Exception e) {
