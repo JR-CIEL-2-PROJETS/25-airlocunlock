@@ -9,15 +9,10 @@ $dbname = 'Tapkey'; // Nom de la base de données
 $username = 'root'; // Nom d'utilisateur MySQL
 $password = 'root'; // Mot de passe MySQL
 
-// Connexion à la base de données
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    // Définir le mode d'erreur de PDO sur Exception
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Afficher un message de connexion réussie
-    echo "Connexion réussie à la base de données '$dbname' avec l'utilisateur '$username'.<br>";
+    $pdo_tapkey = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo_tapkey->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // echo "Connexion Tapkey réussie.";
 } catch (PDOException $e) {
-    echo "Échec de la connexion à la base de données : " . $e->getMessage();
+    die("Erreur de connexion à la base Tapkey : " . $e->getMessage());
 }
-?>

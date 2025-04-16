@@ -4,11 +4,17 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header('Content-Type: application/json');
 
-error_reporting(0);
-ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 include '../config.php';
-include '../Tapkey/config.php';
+
+include __DIR__ . '/../../Tapkey/config.php';
+
+
+
+echo "Fichier de configuration Tapkey inclus avec succès.";
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_proprietaire = $_POST['id_proprietaire'];
@@ -29,18 +35,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $serrure_electronique = isset($_POST['serrure_electronique']) ? 1 : 0;
     $numero_serie_tapkey = $_POST['numero_serie_tapkey'];
 
-    if (!empty($numero_serie_tapkey)) {
-        $sql_check = "SELECT COUNT(*) FROM tapkey_cle WHERE numero_serie = :numero_serie_tapkey";
-        $stmt_check = $pdo_tapkey->prepare($sql_check);
-        $stmt_check->bindParam(':numero_serie_tapkey', $numero_serie_tapkey);
-        $stmt_check->execute();
-        $count = $stmt_check->fetchColumn();
-
-        if ($count > 0) {
-            echo json_encode(['error' => 'Ce numéro de série Tapkey est déjà utilisé.']);
-            exit();
+    try {
+        if (!empty($_POST['numero_serie_tapkey'])) {
+            $numero = trim($_POST['numero_serie_tapkey']);
+            $stmt = $pdo_tapkey->prepare("SELECT COUNT(*) FROM Tapkey.cles_electroniques WHERE numero_serie = :numero");
+            $stmt->execute([':numero' => $numero]);
+            if ($stmt->fetchColumn() == 0) {
+                echo json_encode(['error' => 'Ce numéro de série Tapkey n’existe pas.']);
+                exit();
+            }
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM biens WHERE numero_serie_tapkey = :numero");
+            $stmt->execute([':numero' => $numero]);
+            if ($stmt->fetchColumn() > 0) {
+                echo json_encode(['error' => 'Ce numéro de série Tapkey est déjà utilisé.']);
+                exit();
+            }
         }
+    } catch (PDOException $e) {
+        echo json_encode(['error' => 'Erreur PDO : ' . $e->getMessage()]);
+        exit();
     }
+    
+    
+    
 
     if (isset($_FILES['photos']) && $_FILES['photos']['error'] == 0) {
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
