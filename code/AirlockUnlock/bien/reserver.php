@@ -2,11 +2,6 @@
 session_start();
 include '../config.php';
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['client_id'])) {
-    echo 'Vous devez être connecté pour réserver un bien.';
-    exit();
-}
 
 // Traitement de la réservation
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

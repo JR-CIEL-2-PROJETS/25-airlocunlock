@@ -464,5 +464,133 @@
 
         </div>
 
-        <div class="reservation-form">
-            <h2>Réservez maintenant
+        <<form id="reservationForm">
+            <label for="name">Nom:</label>
+            <input type="text" id="name" name="nom" required>
+        
+            <label for="checkin">Date d'arrivée:</label>
+            <input type="date" id="checkin" name="date_arrivee" required>
+        
+            <label for="checkout">Date de départ:</label>
+            <input type="date" id="checkout" name="date_depart" required>
+        
+            <label for="guests">Nombre de personnes:</label>
+            <input type="number" id="guests" name="nombre_personnes" min="1" required>
+        
+            <input type="hidden" name="id_bien" value="123"> 
+            
+            <button type="submit">Réserver</button>
+        </form>
+        
+        </div>
+
+        <footer>
+            <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
+            <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('.property-images img');
+        const leftArrow = document.querySelector('.arrow-left');
+        const rightArrow = document.querySelector('.arrow-right');
+        let currentIndex = 0;
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.classList.remove('active');
+                if (i === index) {
+                    img.classList.add('active');
+                }
+            });
+        }
+
+        leftArrow.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        });
+
+        rightArrow.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        });
+
+        // Initial display
+        showImage(currentIndex);
+
+        // Form submission
+        document.getElementById('reservationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            const guests = document.getElementById('guests').value;
+            const price = 120; // Prix par nuit
+            const nights = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24));
+            const totalPrice = price * nights;
+
+            // Redirect to PayPal with the reservation details
+            const paypalUrl = `https://www.paypal.com/paypalme/ericjunior936/${totalPrice}`;
+
+            window.location.href = paypalUrl;
+        });
+
+        // Profile menu toggle
+        const profile = document.querySelector('.profile');
+        const profileMenu = document.querySelector('.profile-menu');
+
+        profile.addEventListener('click', () => {
+            profileMenu.classList.toggle('active');
+        });
+
+        // Close the profile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+
+        document.getElementById('reservationForm').addEventListener('submit', async function(e) {
+        
+
+        const formElement = e.target;
+        const formData = new FormData(formElement);
+
+        try {
+        // Affiche toutes les données avant l'envoi (debug)
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
+        const response = await fetch('http://192.168.1.193:8080/AirlockUnlock/bien/reserver.php', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const contentType = response.headers.get("content-type");
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP : ${response.status}`);
+        }
+
+        if (contentType && contentType.includes("application/json")) {
+            const result = await response.json();
+            alert(result.message || "Bien publié avec succès !");
+        } else {
+            const text = await response.text();
+            console.warn("Réponse non JSON :", text);
+            alert("Réponse inattendue : " + text);
+        }
+
+    } catch (error) {
+        console.error('Erreur lors de la requête API:', error);
+        alert('Erreur lors de la publication : ' + error.message);
+    }
+});
+
+    </script>
+    
+
+</body>
+</html>
