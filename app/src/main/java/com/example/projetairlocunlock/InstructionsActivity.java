@@ -1,6 +1,7 @@
 package com.example.projetairlocunlock;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,6 +10,9 @@ import android.widget.Toast;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class InstructionsActivity extends Activity {
 
@@ -16,16 +20,21 @@ public class InstructionsActivity extends Activity {
     private ImageView lockImage;
     private Button openButton;
     private Button closeButton;
+    private Button backToHomeButton;
+    private String reservationDate;
 
-    private static final String MOCK_SERVER_URL = "https://7b053c83-308c-4225-95a8-3ae0ffd5ca21.mock.pstmn.io/serrure"; // L'URL de ton serveur mock
-    private static final String OPEN_URL = "?reservation=1&serrure_1=on";  // URL pour ouvrir
-    private static final String CLOSE_URL = "?reservation=1&serrure_1=off"; // URL pour fermer
+    private static final String ESP32_IP_ADDRESS = "http://192.168.137.68";
+    private static final String OPEN_URL = "/on";
+    private static final String CLOSE_URL = "/off";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructions);
         initUI();
+
+        reservationDate = getIntent().getStringExtra("reservationDate");
+        checkReservationTime();
     }
 
     private void initUI() {
@@ -33,49 +42,80 @@ public class InstructionsActivity extends Activity {
         lockImage = findViewById(R.id.lockImage);
         openButton = findViewById(R.id.openButton);
         closeButton = findViewById(R.id.closeButton);
+        backToHomeButton = findViewById(R.id.backToHomeButton);
 
-        // Lors de l'appui sur le bouton "Ouvrir", envoyer la commande pour ouvrir la serrure
         openButton.setOnClickListener(v -> sendCommand(OPEN_URL));
-
-        // Lors de l'appui sur le bouton "Fermer", envoyer la commande pour fermer la serrure
         closeButton.setOnClickListener(v -> sendCommand(CLOSE_URL));
+        backToHomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(InstructionsActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void checkReservationTime() {
+        try {
+            if (reservationDate == null || !reservationDate.contains(" - ")) {
+                Toast.makeText(this, "Date invalide ou non reçue", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Affichage pour debug
+            Toast.makeText(this, "Date reçue : " + reservationDate, Toast.LENGTH_LONG).show();
+
+            String[] parts = reservationDate.split(" - ");
+            String startString = parts[0].trim() + " 09:00";
+            String endString = parts[1].trim() + " 09:00";
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            Date reservationStartDate = dateFormat.parse(startString);
+            Date reservationEndDate = dateFormat.parse(endString);
+            Date currentDate = new Date();
+
+            if (currentDate.after(reservationStartDate) && currentDate.before(reservationEndDate)) {
+                openButton.setEnabled(true);
+            } else {
+                openButton.setEnabled(false);
+                Toast.makeText(this, "Il n'est pas encore l'heure d'ouverture", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Erreur de format de date : " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void sendCommand(String commandUrl) {
         new Thread(() -> {
             try {
-                // Crée l'URL complète avec le serveur mock
-                URL url = new URL(MOCK_SERVER_URL + commandUrl);
+                URL url = new URL(ESP32_IP_ADDRESS + commandUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-
-                // Connecte et envoie la requête
                 connection.connect();
 
-                // Vérifie le code de réponse HTTP
                 int responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    runOnUiThread(() -> {
+                runOnUiThread(() -> {
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
                         if (commandUrl.equals(OPEN_URL)) {
                             lockStatus.setText("Ouvert");
-                            lockImage.setImageResource(R.drawable.ouvert);  // Assure-toi que tu as l'image "ouvert" dans drawable
+                            lockImage.setImageResource(R.drawable.ouvert);
                             Toast.makeText(this, "Serrure ouverte", Toast.LENGTH_SHORT).show();
                         } else {
                             lockStatus.setText("Fermé");
-                            lockImage.setImageResource(R.drawable.fermer);  // Assure-toi que tu as l'image "fermer" dans drawable
+                            lockImage.setImageResource(R.drawable.fermer);
                             Toast.makeText(this, "Serrure fermée", Toast.LENGTH_SHORT).show();
                         }
-                    });
-                } else {
-                    runOnUiThread(() -> {
-                        Toast.makeText(this, "Erreur de communication avec le serveur", Toast.LENGTH_SHORT).show();
-                    });
-                }
+                    } else {
+                        Toast.makeText(this, "Erreur de communication avec l'ESP32", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "Erreur de connexion", Toast.LENGTH_SHORT).show();
-                });
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Erreur de connexion : " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
             }
         }).start();
     }

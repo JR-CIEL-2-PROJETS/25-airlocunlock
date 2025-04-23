@@ -43,7 +43,7 @@
     <!-- Contenu principal -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="634dp"
+        android:layout_height="675dp"
         android:layout_below="@id/toolbar"
         android:background="#FFFF"
         android:gravity="center"
@@ -96,5 +96,17 @@
             android:text="FERMER"
             android:textColor="#000000"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/backToHomeButton"
+            android:layout_width="279dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/blue_fond"
+            android:padding="16dp"
+            android:text="Retour à l'accueil"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
     </LinearLayout>
 </RelativeLayout>

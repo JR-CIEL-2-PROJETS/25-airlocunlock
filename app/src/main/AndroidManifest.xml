@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.projetairlocunlock">
 
-    <!-- Permissions nécessaires pour le Bluetooth -->
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
     <!-- Permissions de localisation (nécessaires pour la recherche de périphériques Bluetooth) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:required="true" />

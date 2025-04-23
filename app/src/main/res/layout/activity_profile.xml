@@ -42,7 +42,7 @@
     <!-- Contenu principal du profil -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="675dp"
         android:layout_below="@id/toolbar"
         android:gravity="center"
         android:orientation="vertical"
@@ -53,33 +53,33 @@
             android:id="@+id/profileImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/profile_image"
-
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+
             android:background="@drawable/circle_background"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_image" />
 
         <!-- Nom et Prénom -->
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="Nom Prénom"
             android:textColor="#000000"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:textStyle="bold" />
 
         <!-- Email -->
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
             android:text="email@exemple.com"
             android:textColor="#000000"
-            android:textSize="16sp"
-            android:layout_marginBottom="32dp"/>
+            android:textSize="16sp" />
 
         <!-- Bouton retour -->
         <Button
