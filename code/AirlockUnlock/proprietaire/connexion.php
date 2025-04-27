@@ -1,60 +1,86 @@
 <?php
-include '../config.php'; // Assurez-vous que le fichier config.php est dans le même répertoire
+header('Content-Type: application/json');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Vérifier si les données nécessaires existent pour la connexion
+include '../config.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Vérifie que les données nécessaires sont présentes
     if (!isset($_POST['email'], $_POST['mot_de_passe'])) {
-        echo 'Erreur: Email et mot de passe sont requis.';
+        echo json_encode(['status' => 'error', 'message' => 'Email et mot de passe requis.']);
         exit();
     }
 
-    // Récupérer les données envoyées par le propriétaire
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $mot_de_passe = $_POST['mot_de_passe'];
 
-    // Validation des données
+    // Validation de base
     if (empty($email) || empty($mot_de_passe)) {
-        echo 'Erreur: L\'email et le mot de passe sont requis.';
+        echo json_encode(['status' => 'error', 'message' => 'Champs obligatoires manquants.']);
         exit();
     }
 
-    // Vérification de la validité de l'email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo 'Erreur: Adresse email invalide.';
+        echo json_encode(['status' => 'error', 'message' => 'Email invalide.']);
         exit();
     }
 
-    // Préparer la requête pour vérifier si le propriétaire existe
-    $sql = "SELECT id_proprietaire, nom, email, mot_de_passe FROM proprietaires WHERE email = :email";
     try {
+        // Requête SQL pour récupérer les infos du propriétaire
+        $sql = "SELECT id_proprietaire, nom, email, mot_de_passe FROM proprietaires WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
-
-        // Vérifier si l'utilisateur existe
         $proprietaire = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($proprietaire) {
-            // Vérifier le mot de passe
+            // Vérification du mot de passe
             if (password_verify($mot_de_passe, $proprietaire['mot_de_passe'])) {
-                // Connexion réussie
-                echo 'Connexion réussie, bienvenue ' . $proprietaire['nom'] . '!';
-                // Rediriger vers une page protégée (par exemple : tableau_de_bord.php)
-                session_start();
-                $_SESSION['proprietaire_id'] = $proprietaire['id_proprietaire'];
-                $_SESSION['proprietaire_nom'] = $proprietaire['nom'];
-                header('Location: tableau_de_bord.php');
-                exit();
+
+                // Génération du token JWT
+                $key = "votre_cle_secrete"; // Mets ici ta vraie clé secrète
+                $iat = time();
+                $exp = $iat + 3600; // expire en 1h
+
+                $payload = [
+                    'id_proprietaire' => $proprietaire['id_proprietaire'],
+                    'nom' => $proprietaire['nom'],
+                    'email' => $proprietaire['email'],
+                    'role' => 'proprietaire',
+                    'iat' => $iat,
+                    'exp' => $exp
+                ];
+
+                $token = JWT::encode($payload, $key, 'HS256');
+
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Connexion réussie.',
+                    'token' => $token
+                ]);
             } else {
-                // Mot de passe incorrect
-                echo 'Mot de passe incorrect.';
+                echo json_encode(['status' => 'error', 'message' => 'Mot de passe incorrect.']);
             }
         } else {
-            // L'email n'existe pas
-            echo 'Utilisateur non trouvé.';
+            echo json_encode(['status' => 'error', 'message' => 'Aucun compte trouvé avec cet email.']);
         }
     } catch (PDOException $e) {
-        echo 'Erreur lors de l\'exécution de la requête : ' . $e->getMessage();
+        echo json_encode(['status' => 'error', 'message' => 'Erreur serveur : ' . $e->getMessage()]);
     }
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
 }
+
+$pdo = null;
 ?>

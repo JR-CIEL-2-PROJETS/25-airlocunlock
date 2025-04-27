@@ -2,16 +2,6 @@
 header('Content-Type: application/json');
 include '../config.php';
 
-// Vérifie si l'ID client est passé en paramètre GET
-$client_id = isset($_GET['client_id']) ? intval($_GET['client_id']) : 0;
-
-if ($client_id <= 0) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'ID client invalide ou manquant.'
-    ]);
-    exit();
-}
 
 // Requête SQL pour récupérer les réservations avec les infos du bien
 $sql = "SELECT 

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Réservations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .reservation {
+            background: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+        }
+        .reservation img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .reservation-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .reservation-info h3 {
+            margin: 0;
+        }
+        .dates {
+            margin-top: 10px;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        form {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        form input, form button {
+            display: block;
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Mes Réservations</h1>
+
+<div id="reservations-container">
+    <!-- Les réservations s'afficheront ici -->
+</div>
+
+<h2>Publier une Réservation</h2>
+<form id="publishForm">
+    <input type="date" name="date_arrivee" required>
+    <input type="date" name="date_depart" required>
+    <input type="number" name="nombre_personnes" placeholder="Nombre de personnes" required>
+    <button type="submit">Publier</button>
+</form>
+
+<script>
+// 🧠 Met ici l’ID client connecté
+const clientId = 1;
+
+// 🧠 Met ici l’ID du bien que le client veut réserver
+const bienId = 1;
+
+// Charger les réservations
+fetch(`get_reservations_client.php?client_id=${clientId}`)
+    .then(response => response.json())
+    .then(data => {
+        const container = document.getElementById('reservations-container');
+
+        if (data.status === 'success' && data.reservations.length > 0) {
+            data.reservations.forEach(res => {
+                const div = document.createElement('div');
+                div.className = 'reservation';
+                div.innerHTML = `
+                    <img src="${res.photo_url}" alt="Photo du bien">
+                    <div class="reservation-info">
+                        <h3>${res.titre}</h3>
+                        <div class="dates">
+                            <strong>Date d'arrivée :</strong> ${res.date_arrivee}<br>
+                            <strong>Date de départ :</strong> ${res.date_depart}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        } else {
+            container.innerHTML = "<p>Aucune réservation trouvée pour ce client.</p>";
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors de la récupération des réservations :', error);
+        document.getElementById('reservations-container').innerHTML = "<p>Erreur lors du chargement des réservations.</p>";
+    });
+
+// Envoi du formulaire
+document.getElementById('publishForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formElement = e.target;
+    const formData = new FormData(formElement);
+
+    // Injecte automatiquement l'ID client et l'ID bien dans la requête
+    formData.append("id_client", clientId);
+    formData.append("id_bien", bienId);
+
+    try {
+        const response = await fetch('http://192.168.1.194:8080/AirlockUnlock/client/reservations.php', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const contentType = response.headers.get("content-type");
+
+        if (!response.ok) throw new Error(`Erreur HTTP : ${response.status}`);
+
+        if (contentType && contentType.includes("application/json")) {
+            const result = await response.json();
+            alert(result.message || "Réservation publiée avec succès !");
+        } else {
+            const text = await response.text();
+            console.warn("Réponse non JSON :", text);
+            alert("Réponse inattendue : " + text);
+        }
+
+    } catch (error) {
+        console.error('Erreur lors de la requête API:', error);
+        alert('Erreur lors de la publication : ' + error.message);
+    }
+});
+</script>
+
+</body>
+</html>

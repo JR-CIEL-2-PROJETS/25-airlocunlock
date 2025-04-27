@@ -1,5 +1,14 @@
 <?php
+header('Content-Type: application/json');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include '../config.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -34,12 +43,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($client) {
             if (password_verify($mot_de_passe, $client['mot_de_passe'])) {
-                session_start();
-                $_SESSION['client_id'] = $client['id_client'];
-                $_SESSION['client_nom'] = $client['nom'];
+                // Connexion réussie, génération du token
+                $key = "votre_cle_secrete"; // à garder sécurisé
+                $iat = time();
+                $exp = $iat + 3600; // 1 heure
 
-                // Connexion réussie
-                echo json_encode(['status' => 'success', 'message' => 'Connexion réussie.', 'client_id' => $client['id_client'], 'nom' => $client['nom']]);
+                $payload = [
+                    'id_client' => $client['id_client'],
+                    'nom' => $client['nom'],
+                    'role' => 'client',
+                    'iat' => $iat,
+                    'exp' => $exp
+                ];
+
+                $jwt = JWT::encode($payload, $key, 'HS256');
+
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Connexion réussie.',
+                    'token' => $jwt
+                ]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Mot de passe incorrect.']);
             }
