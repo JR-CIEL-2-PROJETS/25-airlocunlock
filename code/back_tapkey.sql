@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.4.4, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.4.5, for Linux (x86_64)
 --
 -- Host: localhost    Database: Tapkey
 -- ------------------------------------------------------
--- Server version	8.4.4
+-- Server version	8.4.5
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-27 21:40:14
+-- Dump completed on 2025-04-27 22:25:25

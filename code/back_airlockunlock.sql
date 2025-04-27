@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.4.4, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.4.5, for Linux (x86_64)
 --
 -- Host: localhost    Database: airlockunlock
 -- ------------------------------------------------------
--- Server version	8.4.4
+-- Server version	8.4.5
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -54,7 +54,7 @@ CREATE TABLE `biens` (
 
 LOCK TABLES `biens` WRITE;
 /*!40000 ALTER TABLE `biens` DISABLE KEYS */;
-INSERT INTO `biens` VALUES (1,1,'Maison','Villa en bord de mer',120.00,'Superbe villa avec vue sur la mer.',150,5,6,'12 Rue des Vagues, Marseille','test1.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne proche des commodit??s.',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureau ??quip?? ?? louer',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(36,NULL,'Appartement','houme',160.00,'fxvdrgd',20,3,2,'68 avenue des neuils ','bien_680cdc3f1120c7.04455858.jpg',0,1,0,0,1,1,0,'TK-003-TEST');
+INSERT INTO `biens` VALUES (1,1,'Maison','Villa en bord de mer',120.00,'Superbe villa avec vue sur la mer.',150,5,6,'12 Rue des Vagues, Marseille','test1.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne proche des commodit??s.',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureau ??quip?? ?? louer',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ');
 /*!40000 ALTER TABLE `biens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','en attente'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','en attente'),(3,2,2,'Bilal Taoufik','2025-05-01','2025-05-03',2,'2025-04-08 09:35:08','en attente'),(7,NULL,NULL,NULL,'2025-04-10','2025-04-17',4,'2025-04-10 14:22:23','en attente'),(15,NULL,2,NULL,'2025-04-27','2025-04-30',3,'2025-04-27 17:24:50','confirmée');
+INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-04-13','2025-04-26',2,'2025-04-08 09:35:08','confirmée'),(4,2,4,'Bilal Taoufik','2025-04-28','2025-05-10',10,'2025-04-27 22:23:04','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-27 21:40:22
+-- Dump completed on 2025-04-27 22:25:24

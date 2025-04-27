@@ -58,10 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $jwt = JWT::encode($payload, $key, 'HS256');
 
+                // ➔ ICI, on renvoie aussi les infos attendues par Android
                 echo json_encode([
                     'status' => 'success',
                     'message' => 'Connexion réussie.',
-                    'token' => $jwt
+                    'token' => $jwt,
+                    'client_id' => $client['id_client'],
+                    'nom' => $client['nom'],
+                    'email' => $client['email']
                 ]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Mot de passe incorrect.']);
