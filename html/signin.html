@@ -7,8 +7,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chargement de l'API Google -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -79,26 +77,6 @@
             background-color: #2c5282;
         }
 
-        .button-secondary {
-            width: 100%;
-            padding: 12px;
-            background-color: white;
-            color: #4682b4;
-            border-radius: 8px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border: 1px solid #cbd5e0;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .button-secondary:hover {
-            background-color: #f7fafc;
-        }
-
         .form-container {
             background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
@@ -154,34 +132,6 @@
             width: 20px;
             height: 20px;
         }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: #718096;
-            font-size: 14px;
-        }
-
-        .divider::before, .divider::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .divider::before {
-            margin-right: 10px;
-        }
-
-        .divider::after {
-            margin-left: 10px;
-        }
-
-        #g_id_onload {
-            position: absolute;
-            left: -9999px;
-        }
     </style>
 </head>
 <body>
@@ -209,48 +159,31 @@
             <div id="errorMessage" class="error-message"></div>
 
             <div id="clientContent">
-                <form>
+                <form id="client-login-form">
                     <input id="clientEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
                     <div style="position: relative;">
-                        <input id="clientMotDePasse" type="mot_de_passe" placeholder="Mot de passe" class="input-field" required>
+                        <input id="clientMotDePasse" type="password" placeholder="Mot de passe" class="input-field" required>
                         <img id="eyeIcon-client" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="toggleMotDePasseVisibility('client')">
                     </div>
-                    <button type="button" class="button-primary" onclick="login('Client')">Se connecter</button>
+                    <button type="submit" class="button-primary">Se connecter</button>
+                    <div class="signup-link">
+                        <a href="forgot_password.html">Mot de passe oublié ?</a>
+                    </div>
                 </form>
             </div>
 
             <div id="ownerContent" style="display: none;">
-                <form>
+                <form id="owner-login-form">
                     <input id="ownerEmail" type="email" placeholder="Adresse e-mail" class="input-field" required>
                     <div style="position: relative;">
-                        <input id="ownerMotDePasse" type="mot_de_passe" placeholder="Mot de passe" class="input-field" required>
+                        <input id="ownerMotDePasse" type="password" placeholder="Mot de passe" class="input-field" required>
                         <img id="eyeIcon-owner" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="toggleMotDePasseVisibility('owner')">
                     </div>
-                    <button type="button" class="button-primary" onclick="login('Propriétaire')">Se connecter</button>
+                    <button type="submit" class="button-primary">Se connecter</button>
+                    <div class="signup-link">
+                        <a href="forgot_password.html">Mot de passe oublié ?</a>
+                    </div>
                 </form>
-            </div>
-
-            <div class="divider">OU</div>
-
-            <!-- Bouton Google personnalisé -->
-            <button id="googleSignInButton" class="button-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    <path fill="none" d="M1 1h22v22H1z"/>
-                </svg>
-                Continuer avec Google
-            </button>
-
-            <!-- Configuration Google Sign-In (invisible) -->
-            <div id="g_id_onload"
-                data-client_id="969554437112-psjmqfaehb0fb563b9g9bsbv3qeuv2rn.apps.googleusercontent.com"
-                data-context="signin"
-                data-ux_mode="popup"
-                data-callback="handleGoogleSignIn"
-                data-auto_prompt="false">
             </div>
 
             <div class="signup-link">
@@ -268,148 +201,105 @@
             }
         });
 
-        // Gestion de la connexion Google
-        function handleGoogleSignIn(response) {
-            console.log("Google Sign-In response:", response);
+        document.getElementById('client-login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Empêche la soumission classique
 
-            // Vérifier que le token est valide
-            if (!response.credential) {
-                document.getElementById('errorMessage').textContent = "Échec de la connexion Google";
-                document.getElementById('errorMessage').style.display = 'block';
+            const email = document.getElementById('clientEmail').value.trim();
+            const mot_de_passe = document.getElementById('clientMotDePasse').value.trim();
+            const messageElement = document.getElementById('errorMessage');
+
+            if (!email || !mot_de_passe) {
+                messageElement.textContent = 'Veuillez remplir tous les champs.';
+                messageElement.style.display = 'block';
                 return;
             }
 
-            // Décoder le JWT pour obtenir les informations de l'utilisateur
-            const jwt = response.credential;
-            const payload = JSON.parse(atob(jwt.split('.')[1]));
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('mot_de_passe', mot_de_passe);
 
-            console.log("Google user payload:", payload);
-
-            // Déterminer le type d'utilisateur (Client ou Propriétaire)
-            const userType = document.getElementById('clientTab').classList.contains('tab-active') ? 'Client' : 'Propriétaire';
-
-            // Envoyer les données au serveur
-            authenticateWithGoogle(jwt, userType, payload);
-        }
-
-        // Authentification avec Google côté serveur
-        async function authenticateWithGoogle(jwt, userType, userData) {
-            const errorMessage = document.getElementById('errorMessage');
-
-            try {
-                const url = userType === 'Propriétaire'
-                    ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/google-auth.php'
-                    : 'http://172.16.15.63:8080/AirlockUnlock/client/google-auth.php';
-
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        token: jwt,
-                        email: userData.email,
-                        name: userData.name,
-                        picture: userData.picture
-                    })
-                });
-
-                const result = await response.json();
-                console.log("Server response:", result);
-
-                if (response.ok && result.status === 'success') {
-                    // Stocker les informations de l'utilisateur
-                    localStorage.setItem('userType', userType);
-                    localStorage.setItem('currentUser', JSON.stringify({
-                        user_id: result.user_id,
-                        username: result.username || userData.name,
-                        email: userData.email,
-                        picture: userData.picture
-                    }));
-
-                    // Rediriger vers la page appropriée
-                    if (userType === 'Client') {
-                        window.location.href = 'accueil.html';
-                    } else {
-                        window.location.href = 'accueilpro.html';
-                    }
-                } else {
-                    errorMessage.textContent = result.message || 'Échec de la connexion avec Google';
-                    errorMessage.style.display = 'block';
+            fetch('http://172.16.15.63:8080/AirlockUnlock/client/connexion.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async (response) => {
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new Error("La réponse du serveur n'est pas au format JSON.");
                 }
-            } catch (error) {
-                console.error("Google auth error:", error);
-                errorMessage.textContent = 'Erreur lors de la connexion avec Google';
-                errorMessage.style.display = 'block';
-            }
-        }
-
-        // Gestion du clic sur le bouton Google personnalisé
-        document.getElementById('googleSignInButton').addEventListener('click', function() {
-            // Déclencher le flux Google Sign-In
-            window.google.accounts.id.prompt();
+                return response.json();
+            })
+            .then(data => {
+                console.log('Client Response:', data); // Log the response
+                if (data.status === 'success') {
+                    // Stockage du token
+                    localStorage.setItem('token', data.token);
+                    messageElement.textContent = 'Connexion réussie ! Redirection...';
+                    messageElement.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = 'accueil.html';
+                    }, 1000);
+                } else {
+                    messageElement.textContent = data.message;
+                    messageElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                messageElement.textContent = 'Erreur lors de la connexion.';
+                messageElement.style.display = 'block';
+            });
         });
 
-        async function login(type) {
-            const errorMessage = document.getElementById('errorMessage');
-            let email, mot_de_passe;
+        document.getElementById('owner-login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Empêche la soumission classique
 
-            if (type === 'Client') {
-                email = document.getElementById('clientEmail').value;
-                mot_de_passe = document.getElementById('clientMotDePasse').value;
-            } else if (type === 'Propriétaire') {
-                email = document.getElementById('ownerEmail').value;
-                mot_de_passe = document.getElementById('ownerMotDePasse').value;
-            }
+            const email = document.getElementById('ownerEmail').value.trim();
+            const mot_de_passe = document.getElementById('ownerMotDePasse').value.trim();
+            const messageElement = document.getElementById('errorMessage');
 
-            // Validation de base
             if (!email || !mot_de_passe) {
-                errorMessage.textContent = 'Veuillez remplir tous les champs';
-                errorMessage.style.display = 'block';
+                messageElement.textContent = 'Veuillez remplir tous les champs.';
+                messageElement.style.display = 'block';
                 return;
             }
 
-            const url = type === 'Propriétaire'
-                ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/connexion.php'
-                : 'http://172.16.15.63:8080/AirlockUnlock/client/connexion.php';
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('mot_de_passe', mot_de_passe);
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: `email=${encodeURIComponent(email)}&mot_de_passe=${encodeURIComponent(mot_de_passe)}`
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.status === 'success') {
-                    // Stocker le type d'utilisateur et les données pour la gestion de session
-                    localStorage.setItem('userType', type);
-                    localStorage.setItem('currentUser', JSON.stringify({
-                        user_id: result.user_id,
-                        username: result.username,
-                        email: email
-                    }));
-
-                    // Rediriger vers la page d'accueil appropriée
-                    if (type === 'Client') {
-                        window.location.href = 'accueil.html';
-                    } else if (type === 'Propriétaire') {
-                        window.location.href = 'accueilpro.html';
-                    }
-                } else {
-                    // Afficher un message d'erreur si la connexion échoue
-                    errorMessage.textContent = result.message || 'Email ou mot de passe incorrect';
-                    errorMessage.style.display = 'block';
+            fetch('http://172.16.15.63:8080/AirlockUnlock/proprietaire/connexion.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async (response) => {
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new Error("La réponse du serveur n'est pas au format JSON.");
                 }
-            } catch (error) {
-                // Afficher un message d'erreur réseau
-                errorMessage.textContent = 'Erreur réseau: ' + error.message;
-                errorMessage.style.display = 'block';
-            }
-        }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Owner Response:', data); // Log the response
+                if (data.status === 'success') {
+                    // Stockage du token
+                    localStorage.setItem('token', data.token);
+                    messageElement.textContent = 'Connexion réussie ! Redirection...';
+                    messageElement.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = 'accueil.html';
+                    }, 1000);
+                } else {
+                    messageElement.textContent = data.message;
+                    messageElement.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                messageElement.textContent = 'Erreur lors de la connexion.';
+                messageElement.style.display = 'block';
+            });
+        });
 
         function changeTab(tab) {
             const clientTab = document.getElementById('clientTab');
@@ -441,11 +331,11 @@
             const motDePasseField = document.getElementById(`${type}MotDePasse`);
             const eyeIcon = document.getElementById(`eyeIcon-${type}`);
 
-            if (motDePasseField.type === 'mot_de_passe') {
+            if (motDePasseField.type === 'password') {
                 motDePasseField.type = 'text';
                 eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
             } else {
-                motDePasseField.type = 'mot_de_passe';
+                motDePasseField.type = 'password';
                 eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/invisible.png';
             }
         }

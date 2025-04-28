@@ -319,26 +319,29 @@
             <a href="accueilpro.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour</a>
         </div>
 
-        <form class="property-form" id="publishForm" enctype="multipart/form-data">
+        <form id="publishForm" method="POST" action="publier-bien.php" enctype="multipart/form-data">
+
+
             <div class="form-group">
-                <label for="propertyType" class="form-label required">Type de bien</label>
-                <select id="propertyType" class="form-control" name="propertyType" required>
+                <label for="type_bien" class="form-label required">Type de bien</label>
+                <select id="type_bien" class="form-control" name="type_bien" required>
                     <option value="">Sélectionnez un type</option>
-                    <option value="apartment">Appartement</option>
-                    <option value="house">Maison</option>
-                    <option value="office">Bureau</option>
-                    <option value="other">Autre</option>
+                    <option value="Appartement">Appartement</option>
+                    <option value="Maison">Maison</option>
+                    <option value="Bureau">Bureau</option>
+                    <option value="Autre">Autre</option>
                 </select>
             </div>
+            
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="title" class="form-label required">Titre de l'annonce</label>
-                    <input type="text" id="title" class="form-control" name="title" placeholder="Ex: Magnifique appartement avec vue" required>
+                    <label for="titre" class="form-label required">Titre de l'annonce</label>
+                    <input type="text" id="titre" class="form-control" name="titre" placeholder="Ex: Magnifique appartement avec vue" required>
                 </div>
                 <div class="form-group">
-                    <label for="price" class="form-label required">Prix par nuit (€)</label>
-                    <input type="number" id="price" class="form-control" name="price" min="0" step="0.01" required>
+                    <label for="prix_par_nuit" class="form-label required">Prix par nuit (€)</label>
+                    <input type="number" id="prix_par_nuit" class="form-control" name="prix_par_nuit" min="0" step="0.01" required>
                 </div>
             </div>
 
@@ -353,24 +356,24 @@
                     <input type="number" id="surface" class="form-control" name="surface" min="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="rooms" class="form-label required">Nombre de pièces</label>
-                    <input type="number" id="rooms" class="form-control" name="rooms" min="1" required>
+                    <label for="nombre_pieces" class="form-label required">Nombre de pièces</label>
+                    <input type="number" id="nombre_pieces" class="form-control" name="nombre_pieces" min="1" required>
                 </div>
                 <div class="form-group">
-                    <label for="capacity" class="form-label required">Capacité (personnes)</label>
-                    <input type="number" id="capacity" class="form-control" name="capacity" min="1" required>
+                    <label for="capacite" class="form-label required">Capacité (personnes)</label>
+                    <input type="number" id="capacite" class="form-control" name="capacite" min="1" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="address" class="form-label required">Adresse complète</label>
-                <input type="text" id="address" class="form-control" name="address" required>
+                <label for="adresse" class="form-label required">Adresse complète</label>
+                <input type="text" id="adresse" class="form-control" name="adresse" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label required">Photos du bien</label>
                 <div class="upload-area" id="uploadArea">
-                    <input type="file" id="fileInput" name="photos[]" accept="image/*" multiple>
+                    <input type="file" id="photos" name="photos" accept="image/*" multiple>
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
@@ -384,147 +387,102 @@
                 <label for="amenities" class="form-label">Équipements</label>
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.75rem;">
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities[]" value="wifi"> WiFi
+                        <input type="checkbox" name="wifi" value="1"> WiFi
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities[]" value="parking"> Parking
+                        <input type="checkbox" name="parking" value="1"> Parking
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities[]" value="kitchen"> Cuisine
+                        <input type="checkbox" name="cuisine" value="1"> Cuisine
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities[]" value="tv"> TV
+                        <input type="checkbox" name="tv" value="1"> TV
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities[]" value="ac"> Climatisation
+                        <input type="checkbox" name="climatisation" value="1"> Climatisation
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities[]" value="heating"> Chauffage
+                        <input type="checkbox" name="chauffage" value="1"> Chauffage
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="amenities[]" value="heating"> Serrure électronique 
+                        <input type="checkbox" id="serrure_electronique" name="serrure_electronique" value="1"> Serrure électronique
                     </label>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="tapkeySerial" class="form-label">Numéro de série Tapkey</label>
-                <input type="text" id="tapkeySerial" class="form-control" name="tapkeySerial" placeholder="Si vous avez déjà une serrure Tapkey">
+            <div class="form-group" id="tapkeyField" style="display: none;">
+                <label for="numero_serie_tapkey" class="form-label">Numéro de série Tapkey</label>
+                <input type="text" id="numero_serie_tapkey" class="form-control" name="numero_serie_tapkey" placeholder="Si vous avez déjà une serrure Tapkey">
             </div>
 
-            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Publier le bien</button>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Publier
+            </button>
         </form>
     </div>
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
+            <div class="logo">
+                <img src="img/logo (2).png" alt="AirLockUnlock Logo">
+                <span class="logo-text">AirLockUnlock</span>
+            </div>
             <div class="footer-links">
-                <a href="politique-confidentialite.html">Confidentialité</a>
-                <a href="conditions-utilisation.html">Conditions</a>
-                <a href="contact.html">Contact</a>
+                <a href="#">Accueil</a>
+                <a href="#">À propos</a>
+                <a href="#">Contact</a>
             </div>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const userType = localStorage.getItem('userType');
-            const currentUser = localStorage.getItem('currentUser');
-
-            if (!currentUser || userType !== 'Propriétaire') {
-                alert('Vous devez être connecté en tant que propriétaire pour publier un bien.');
-                window.location.href = 'signin.html';
+        // Gestion de l'affichage du champ Tapkey
+        document.getElementById('serrure_electronique').addEventListener('change', function() {
+            const tapkeyField = document.getElementById('tapkeyField');
+            if (this.checked) {
+                tapkeyField.style.display = 'block';
+            } else {
+                tapkeyField.style.display = 'none';
+                document.getElementById('numero_serie_tapkey').value = ''; // Réinitialise la valeur
             }
         });
 
-        // Gestion de l'upload d'images
-        const fileInput = document.getElementById('fileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const previewContainer = document.getElementById('previewContainer');
-
-        uploadArea.addEventListener('click', () => fileInput.click());
-
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.style.borderColor = '#007BFF';
-            uploadArea.style.backgroundColor = '#f0f7ff';
-        });
-
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.borderColor = '#e2e8f0';
-            uploadArea.style.backgroundColor = '#f8fafc';
-        });
-
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.style.borderColor = '#e2e8f0';
-            uploadArea.style.backgroundColor = '#f8fafc';
-
-            if (e.dataTransfer.files.length) {
-                fileInput.files = e.dataTransfer.files;
-                handleFiles(e.dataTransfer.files);
-            }
-        });
-
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length) {
-                handleFiles(fileInput.files);
-            }
-        });
-
-        function handleFiles(files) {
-            previewContainer.innerHTML = '';
-
-            Array.from(files).forEach(file => {
-                if (!file.type.startsWith('image/')) return;
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
-
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-
-                    const removeBtn = document.createElement('div');
-                    removeBtn.className = 'remove-btn';
-                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-                    removeBtn.addEventListener('click', () => {
-                        previewItem.remove();
-                    });
-
-                    previewItem.appendChild(img);
-                    previewItem.appendChild(removeBtn);
-                    previewContainer.appendChild(previewItem);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Validation du formulaire
-        document.getElementById('publishForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-
-            fetch('http://172.16.15.63:8080/AirlockUnlock/bien/publier-bien.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Votre bien a été publié avec succès !');
-                    window.location.href = 'index.html'; // Redirection après publication
-                } else {
-                    alert('Erreur lors de la publication du bien.');
+        document.getElementById('publishForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Empêche la soumission classique du formulaire
+        
+            const formElement = e.target;
+            const formData = new FormData(formElement);
+        
+            try {
+                // Affiche toutes les données avant l'envoi (debug)
+                for (let [key, value] of formData.entries()) {
+                    console.log(key, value);
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Une erreur s\'est produite. Veuillez réessayer.');
-            });
+        
+                const response = await fetch('http://172.16.15.63:8080/AirlockUnlock/bien/publier-bien.php', {
+                    method: 'POST',
+                    body: formData,
+                });
+        
+                const contentType = response.headers.get("content-type");
+        
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP : ${response.status}`);
+                }
+        
+                if (contentType && contentType.includes("application/json")) {
+                    const result = await response.json();
+                    alert(result.message || "Bien publié avec succès !");
+                } else {
+                    const text = await response.text();
+                    console.warn("Réponse non JSON :", text);
+                    alert("Réponse inattendue : " + text);
+                }
+        
+            } catch (error) {
+                console.error('Erreur lors de la requête API:', error);
+                alert('Erreur lors de la publication : ' + error.message);
+            }
         });
     </script>
 </body>
