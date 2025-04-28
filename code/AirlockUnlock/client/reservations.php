@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 include '../config.php';
 
+$client_id = $_GET['id_client']; // Récupérer l'ID client depuis l'URL
 
 // Requête SQL pour récupérer les réservations avec les infos du bien
 $sql = "SELECT 

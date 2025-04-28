@@ -37,8 +37,7 @@
             const formData = new FormData();
             formData.append('email', email);
             formData.append('mot_de_passe', mot_de_passe);
-
-            fetch('http://192.168.1.194:8080/AirlockUnlock/proprietaire/connexion.php', {
+            fetch('http://172.16.15.63:8080/AirlockUnlock/proprietaire/connexion.php', {
                 method: 'POST',
                 body: formData
             })

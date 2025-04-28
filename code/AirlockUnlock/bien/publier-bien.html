@@ -405,75 +405,12 @@
                         <input type="checkbox" name="chauffage" value="1"> Chauffage
                     </label>
                     <label style="display: flex; align-items: center; gap: 0.5rem;">
-                        <input type="checkbox" name="serrure_electronique" value="1"> Serrure électronique
+                        <input type="checkbox" id="serrure_electronique" name="serrure_electronique" value="1"> Serrure électronique
                     </label>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="tapkeyField" style="display: none;">
                 <label for="numero_serie_tapkey" class="form-label">Numéro de série Tapkey</label>
                 <input type="text" id="numero_serie_tapkey" class="form-control" name="numero_serie_tapkey" placeholder="Si vous avez déjà une serrure Tapkey">
-            </div>
-
-            <button type="submit" class="btn-submit">
-                <i class="fas fa-paper-plane"></i> Publier
-            </button>
-        </form>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="logo">
-                <img src="img/logo (2).png" alt="AirLockUnlock Logo">
-                <span class="logo-text">AirLockUnlock</span>
-            </div>
-            <div class="footer-links">
-                <a href="#">Accueil</a>
-                <a href="#">À propos</a>
-                <a href="#">Contact</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Ajout de la requête pour envoyer les données au fichier PHP -->
-    <script>
-        document.getElementById('publishForm').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Empêche la soumission classique du formulaire
-        
-            const formElement = e.target;
-            const formData = new FormData(formElement);
-        
-            try {
-                // Affiche toutes les données avant l'envoi (debug)
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
-        
-                const response = await fetch('http://192.168.1.194:8080/AirlockUnlock/bien/publier-bien.php', {
-                    method: 'POST',
-                    body: formData,
-                });
-        
-                const contentType = response.headers.get("content-type");
-        
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP : ${response.status}`);
-                }
-        
-                if (contentType && contentType.includes("application/json")) {
-                    const result = await response.json();
-                    alert(result.message || "Bien publié avec succès !");
-                } else {
-                    const text = await response.text();
-                    console.warn("Réponse non JSON :", text);
-                    alert("Réponse inattendue : " + text);
-                }
-        
-            } catch (error) {
-                console.error('Erreur lors de la requête API:', error);
-                alert('Erreur lors de la publication : ' + error.message);
-            }
-        });
-        </script>
-</body>
-</html>
+            </div
