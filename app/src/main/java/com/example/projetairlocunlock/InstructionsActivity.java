@@ -23,7 +23,7 @@ public class InstructionsActivity extends Activity {
     private Button backToHomeButton;
     private String reservationDate;
 
-    private static final String ESP32_IP_ADDRESS = "http://192.168.137.68";
+    private static final String ESP32_IP_ADDRESS = "http://192.168.137.194";
     private static final String OPEN_URL = "/on";
     private static final String CLOSE_URL = "/off";
 
@@ -61,7 +61,6 @@ public class InstructionsActivity extends Activity {
                 return;
             }
 
-            // Affichage pour debug
             Toast.makeText(this, "Date reçue : " + reservationDate, Toast.LENGTH_LONG).show();
 
             String[] parts = reservationDate.split(" - ");
@@ -87,27 +86,32 @@ public class InstructionsActivity extends Activity {
     }
 
     private void sendCommand(String commandUrl) {
+        // Mise à jour immédiate de l'UI
+        runOnUiThread(() -> {
+            if (commandUrl.equals(OPEN_URL)) {
+                lockStatus.setText("Ouverture en cours...");
+                lockImage.setImageResource(R.drawable.ouvert);
+            } else {
+                lockStatus.setText("Fermeture en cours...");
+                lockImage.setImageResource(R.drawable.fermer);
+            }
+        });
+
+        // Lancement de la requête réseau en arrière-plan
         new Thread(() -> {
             try {
                 URL url = new URL(ESP32_IP_ADDRESS + commandUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+                connection.setConnectTimeout(3000); // Timeout rapide
                 connection.connect();
 
                 int responseCode = connection.getResponseCode();
                 runOnUiThread(() -> {
                     if (responseCode == HttpURLConnection.HTTP_OK) {
-                        if (commandUrl.equals(OPEN_URL)) {
-                            lockStatus.setText("Ouvert");
-                            lockImage.setImageResource(R.drawable.ouvert);
-                            Toast.makeText(this, "Serrure ouverte", Toast.LENGTH_SHORT).show();
-                        } else {
-                            lockStatus.setText("Fermé");
-                            lockImage.setImageResource(R.drawable.fermer);
-                            Toast.makeText(this, "Serrure fermée", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(this, "Commande envoyée avec succès", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Erreur de communication avec l'ESP32", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Erreur de communication avec l'ESP32 (code : " + responseCode + ")", Toast.LENGTH_SHORT).show();
                     }
                 });
 

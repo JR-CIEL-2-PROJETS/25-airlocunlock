@@ -84,15 +84,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/apartmentImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/paris"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="12dp"/>
-
                 <TextView
                     android:id="@+id/dateRange"
                     android:layout_width="wrap_content"

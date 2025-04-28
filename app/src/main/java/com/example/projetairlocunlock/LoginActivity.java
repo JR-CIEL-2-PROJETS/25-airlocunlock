@@ -10,11 +10,15 @@ import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -23,7 +27,9 @@ public class LoginActivity extends Activity {
 
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
-    private ImageView eyeIcon;
+    private ImageView eyeIcon, logo;
+    private int logoClickCount = 0;
+    private long lastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +40,25 @@ public class LoginActivity extends Activity {
         passwordEditText = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
         eyeIcon = findViewById(R.id.eyeIcon);
+        logo = findViewById(R.id.logo); // Assure-toi d'avoir un logo avec id="@+id/logo" dans ton layout
 
         eyeIcon.setOnClickListener(v -> togglePasswordVisibility());
         loginButton.setOnClickListener(v -> new LoginTask().execute(
                 emailEditText.getText().toString(), passwordEditText.getText().toString()));
+
+        logo.setOnClickListener(v -> {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastClickTime < 600) {
+                logoClickCount++;
+                if (logoClickCount == 3) {
+                    logoClickCount = 0;
+                    showConfigDialog();
+                }
+            } else {
+                logoClickCount = 1;
+            }
+            lastClickTime = currentTime;
+        });
     }
 
     private void togglePasswordVisibility() {
@@ -53,13 +74,48 @@ public class LoginActivity extends Activity {
         passwordEditText.setText("");
     }
 
+    private void showConfigDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Configuration IP / Port");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 40, 50, 10);
+
+        final EditText ipInput = new EditText(this);
+        ipInput.setHint("Adresse IP");
+        ipInput.setText(Config.getIP(this));
+        layout.addView(ipInput);
+
+        final EditText portInput = new EditText(this);
+        portInput.setHint("Port");
+        portInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        portInput.setText(Config.getPort(this));
+        layout.addView(portInput);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Enregistrer", (dialog, which) -> {
+            Config.setIP(this, ipInput.getText().toString().trim());
+            Config.setPort(this, portInput.getText().toString().trim());
+            Toast.makeText(this, "Configuration enregistrée", Toast.LENGTH_SHORT).show();
+        });
+
+        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
     private class LoginTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
             try {
-                // Utilisation de HTTPS
-                URL url = new URL("http://192.168.1.160:8080/AirlockUnlock/client/connexion.php");
+                String ip = Config.getIP(LoginActivity.this);
+                String port = Config.getPort(LoginActivity.this);
+                String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/connexion.php";
+
+                URL url = new URL(urlString);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
@@ -72,7 +128,6 @@ public class LoginActivity extends Activity {
                     os.write(postData.getBytes());
                 }
 
-                // Vérification de la réponse HTTP
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                     return "{\"status\":\"error\",\"message\":\"Erreur serveur\"}";
                 }
@@ -84,7 +139,7 @@ public class LoginActivity extends Activity {
                     return response.toString();
                 }
 
-            } catch (Exception e) {
+            } catch (IOException e) {
                 return "{\"status\":\"error\",\"message\":\"Erreur de connexion : " + e.getMessage() + "\"}";
             }
         }
