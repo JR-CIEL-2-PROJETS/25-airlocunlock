@@ -460,7 +460,6 @@
                     <p><strong>4.7 étoiles</strong> - "Un appartement charmant avec une vue magnifique. Nous reviendrons sans hésiter !"</p>
                 </div>
             </div>
-
         </div>
 
         <div class="reservation-form">
@@ -490,6 +489,25 @@
     </footer>
 
     <script>
+        // Récupération du token JWT depuis le localStorage
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        // Fonction pour décoder le token JWT et récupérer l'email
+        function getEmailFromToken(token) {
+            if (!token) return null;
+            
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                return payload.email || null;
+            } catch (e) {
+                console.error('Erreur lors du décodage du token:', e);
+                return null;
+            }
+        }
+
+        // Gestion du carrousel d'images
         const images = document.querySelectorAll('.property-images img');
         const leftArrow = document.querySelector('.arrow-left');
         const rightArrow = document.querySelector('.arrow-right');
@@ -517,46 +535,6 @@
         // Initial display
         showImage(currentIndex);
 
-        // Form submission
-        document.getElementById('reservationForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const formElement = e.target;
-            const formData = new FormData(formElement);
-
-            try {
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
-
-                const response = await fetch('http://172.16.15.63:8080/AirlockUnlock/bien/reserver.php', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const contentType = response.headers.get("content-type");
-
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP : ${response.status}`);
-                }
-
-                const result = await response.json();
-                console.log("Réponse JSON :", result);
-
-                if (result.success) {
-                    alert(result.success);
-                } else if (result.error) {
-                    alert(result.error);
-                } else {
-                    alert("Réponse inattendue : " + JSON.stringify(result));
-                }
-
-            } catch (error) {
-                console.error('Erreur lors de la requête API:', error);
-                alert('Erreur lors de la réservation : ' + error.message);
-            }
-        });
-
         // Menu profil
         const profile = document.querySelector('.profile');
         const profileMenu = document.querySelector('.profile-menu');
@@ -570,6 +548,102 @@
                 profileMenu.classList.remove('active');
             }
         });
+
+        // Form submission avec envoi d'email
+        document.getElementById('reservationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formElement = e.target;
+            const formData = new FormData(formElement);
+            
+            // Récupérer le token et l'email du client
+            const token = getToken();
+            if (!token) {
+                alert('Vous devez être connecté pour effectuer une réservation');
+                return;
+            }
+            
+            const userEmail = getEmailFromToken(token);
+            if (!userEmail) {
+                alert('Impossible de récupérer votre email. Veuillez vérifier votre connexion.');
+                return;
+            }
+            
+            // Ajouter l'email et le token aux données du formulaire
+            formData.append('email', userEmail);
+            formData.append('token', token);
+
+            try {
+                // Envoyer la réservation
+                const reservationResponse = await fetch('http://172.16.15.63:8080/AirlockUnlock/bien/reserver.php', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!reservationResponse.ok) {
+                    throw new Error(`Erreur HTTP : ${reservationResponse.status}`);
+                }
+
+                const result = await reservationResponse.json();
+                console.log("Réponse JSON :", result);
+
+                if (result.success) {
+                    // Envoyer l'email de confirmation
+                    await sendConfirmationEmail(userEmail, formData);
+                    alert(result.success + "\nUn email de confirmation vous a été envoyé à " + userEmail);
+                } else if (result.error) {
+                    alert(result.error);
+                } else {
+                    alert("Réponse inattendue : " + JSON.stringify(result));
+                }
+
+            } catch (error) {
+                console.error('Erreur lors de la réservation:', error);
+                alert('Erreur lors de la réservation : ' + error.message);
+            }
+        });
+
+        // Fonction pour envoyer l'email de confirmation
+        async function sendConfirmationEmail(email, formData) {
+            try {
+                const emailData = {
+                    to: email,
+                    subject: 'Confirmation de votre réservation - AirLockUnlock',
+                    body: `
+                        <h1>Confirmation de réservation</h1>
+                        <p>Bonjour ${formData.get('nom')},</p>
+                        <p>Nous vous confirmons votre réservation pour l'appartement cosy à Paris.</p>
+                        <p><strong>Détails de votre réservation :</strong></p>
+                        <ul>
+                            <li>Date d'arrivée : ${formData.get('date_arrivee')}</li>
+                            <li>Date de départ : ${formData.get('date_depart')}</li>
+                            <li>Nombre de personnes : ${formData.get('nombre_personnes')}</li>
+                        </ul>
+                        <p>Montant total : 120 €</p>
+                        <p>Merci d'avoir choisi AirLockUnlock pour votre séjour à Paris.</p>
+                        <p>Cordialement,<br>L'équipe AirLockUnlock</p>
+                    `,
+                    token: getToken() // Ajout du token pour authentification côté serveur
+                };
+
+                const response = await fetch('http://172.16.15.63:8080/AirlockUnlock/send_email.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(emailData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'envoi de l\'email');
+                }
+
+                console.log('Email de confirmation envoyé avec succès');
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi de l\'email:', error);
+                // Ne pas alerter l'utilisateur pour ne pas perturber l'expérience
+            }
+        }
     </script>
 </body>
 </html>

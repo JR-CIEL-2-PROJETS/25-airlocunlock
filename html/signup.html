@@ -337,8 +337,8 @@
       });
 
       const url = type === 'Propriétaire'
-        ? 'http://172.16.15.63:8080/AirlockUnlock/proprietaire/proprietaire-inscription.php'
-        : 'http://172.16.15.63:8080/AirlockUnlock/client/client-inscription.php';
+        ? 'https://172.16.15.63:443/AirlockUnlock/proprietaire/proprietaire-inscription.php'
+        : 'https://172.16.15.63:443/AirlockUnlock/client/client-inscription.php';
 
       try {
         const response = await fetch(url, {
