@@ -1,18 +1,15 @@
-FROM php:8.3-apache
+FROM php:8.3-fpm
 
-# Installer les extensions PDO et PDO_MySQL
+# Install extensions
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Activer les extensions PHP pour MySQL
-RUN docker-php-ext-enable pdo_mysql
-
-# Répertoire de travail
+# Set the working directory
 WORKDIR /var/www/html
 
 # Set correct permissions on the 'photo-bien' directory
-RUN mkdir -p /var/www/html/AirlockUnlock/bien/photo-bien \
-    && chown -R www-data:www-data /var/www/html/AirlockUnlock/bien/photo-bien \
-    && chmod -R 755 /var/www/html/AirlockUnlock/bien/photo-bien
+RUN mkdir -p /var/www/html/AirlockUnlock/bien/photos \
+    && chown -R www-data:www-data /var/www/html/AirlockUnlock/bien/photos \
+    && chmod -R 755 /var/www/html/AirlockUnlock/bien/photos
 
-# Exposer le port 80
-EXPOSE 80
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
