@@ -23,7 +23,7 @@ public class InstructionsActivity extends Activity {
     private Button backToHomeButton;
     private String reservationDate;
 
-    private static final String ESP32_IP_ADDRESS = "http://192.168.137.194";
+    private static final String ESP32_IP_ADDRESS = "http://192.168.137.59";
     private static final String OPEN_URL = "/on";
     private static final String CLOSE_URL = "/off";
 

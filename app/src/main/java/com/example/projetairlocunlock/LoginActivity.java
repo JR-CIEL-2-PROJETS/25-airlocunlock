@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,6 +24,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 public class LoginActivity extends Activity {
 
     private EditText emailEditText, passwordEditText;
@@ -36,15 +46,16 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        disableSSLCertificateChecking();
+
         emailEditText = findViewById(R.id.emailInput);
         passwordEditText = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
         eyeIcon = findViewById(R.id.eyeIcon);
-        logo = findViewById(R.id.logo); // Assure-toi d'avoir un logo avec id="@+id/logo" dans ton layout
+        logo = findViewById(R.id.logo);
 
         eyeIcon.setOnClickListener(v -> togglePasswordVisibility());
-        loginButton.setOnClickListener(v -> new LoginTask().execute(
-                emailEditText.getText().toString(), passwordEditText.getText().toString()));
+        loginButton.setOnClickListener(v -> validateAndLogin());
 
         logo.setOnClickListener(v -> {
             long currentTime = System.currentTimeMillis();
@@ -61,6 +72,33 @@ public class LoginActivity extends Activity {
         });
     }
 
+    private void validateAndLogin() {
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString();
+
+        boolean isValid = true;
+
+        if (email.isEmpty()) {
+            emailEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
+            isValid = false;
+        } else {
+            emailEditText.setBackgroundTintList(getColorStateList(android.R.color.darker_gray));
+        }
+
+        if (password.isEmpty()) {
+            passwordEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
+            isValid = false;
+        } else {
+            passwordEditText.setBackgroundTintList(getColorStateList(android.R.color.darker_gray));
+        }
+
+        if (isValid) {
+            new LoginTask().execute(email, password);
+        } else {
+            Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void togglePasswordVisibility() {
         boolean isHidden = (passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD));
         passwordEditText.setInputType(isHidden ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -70,8 +108,15 @@ public class LoginActivity extends Activity {
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        emailEditText.setText("");
-        passwordEditText.setText("");
+
+        // Appliquer la couleur rouge sur les champs
+        emailEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
+        passwordEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
+    }
+
+    private void showSuccess() {
+        emailEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_green_light));
+        passwordEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_green_light));
     }
 
     private void showConfigDialog() {
@@ -107,7 +152,6 @@ public class LoginActivity extends Activity {
     }
 
     private class LoginTask extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... params) {
             try {
@@ -162,6 +206,8 @@ public class LoginActivity extends Activity {
                     editor.putString("email", email);
                     editor.apply();
 
+                    showSuccess(); // Changer en vert si success
+
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("id_client", clientId);
                     startActivity(intent);
@@ -172,6 +218,30 @@ public class LoginActivity extends Activity {
             } catch (Exception e) {
                 showError("Erreur de parsing : " + e.getMessage());
             }
+        }
+    }
+
+    private void disableSSLCertificateChecking() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                        public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+                    }
+            };
+
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

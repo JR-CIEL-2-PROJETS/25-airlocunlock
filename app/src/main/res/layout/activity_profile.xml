@@ -27,70 +27,129 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="304dp"
-                style="@style/CustomStyle"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Mon Profil"
                 android:textColor="@android:color/white"
                 android:textSize="30dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                style="@style/CustomStyle" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <!-- Contenu principal du profil -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="675dp"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginTop="80dp">
 
-        <!-- Image de profil en cercle -->
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-
-            android:background="@drawable/circle_background"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_image" />
-
-        <!-- Nom et Prénom -->
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Nom Prénom"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!-- Email -->
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="email@exemple.com"
-            android:textColor="#000000"
-            android:textSize="16sp" />
-
-        <!-- Bouton retour -->
-        <Button
-            android:id="@+id/backButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#6C92FF"
-            android:padding="16dp"
-            android:text="Retour à l'accueil"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <!-- Image de profil -->
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_image" />
+
+            <!-- Nom avec icône crayon -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <EditText
+                    android:id="@+id/editName"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:hint="Nom"
+                    android:enabled="false"
+                    android:padding="12dp"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/editNameIcon"
+                    android:layout_width="72dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:contentDescription="Modifier le nom"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_edit" />
+
+            </LinearLayout>
+
+            <!-- Email avec icône crayon -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="24dp">
+
+                <EditText
+                    android:id="@+id/editEmail"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:hint="Email"
+                    android:enabled="false"
+                    android:padding="12dp"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/editEmailIcon"
+                    android:layout_width="72dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:contentDescription="Modifier l'email"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_edit" />
+            </LinearLayout>
+
+            <!-- Bouton Enregistrer -->
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#4CAF50"
+                android:text="Enregistrer"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <!-- Bouton retour -->
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#6C92FF"
+                android:padding="16dp"
+                android:text="Retour à l'accueil"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
