@@ -23,12 +23,7 @@ try {
     $stmt->bindParam(':id_client', $client_id, PDO::PARAM_INT);
     $stmt->execute();
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Ajouter le chemin complet de l'image si besoin
-    foreach ($reservations as &$res) {
-        $res['photo_url'] = 'chemin/vers/tes/images/' . $res['photos']; // modifie ce chemin selon ton dossier
-    }
-
+    
     echo json_encode([
         'status' => 'success',
         'reservations' => $reservations

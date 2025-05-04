@@ -26,7 +26,7 @@ services:
       - dbdata:/var/lib/mysql
       - ./init-scripts:/docker-entrypoint-initdb.d:ro
     ports:
-      - "3306:3306"
+      - "3347:3306"  # <-- MODIFIÉ
     networks:
       - app_network
 
@@ -56,8 +56,8 @@ services:
       - ./ssl:/etc/nginx/certs:ro
       - ./logs/nginx:/var/log/nginx:cached
     ports:
-      - "8080:80"
-      - "443:443"
+      - "91:80"     # <-- MODIFIÉ
+      - "421:443"   # <-- MODIFIÉ
     networks:
       - app_network
 
