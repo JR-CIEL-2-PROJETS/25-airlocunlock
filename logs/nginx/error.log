@@ -1,50 +1,15 @@
-2025/04/30 09:27:54 [emerg] 1#1: unexpected end of file, expecting ";" or "}" in /etc/nginx/nginx.conf:63
-2025/04/30 09:28:55 [emerg] 1#1: unexpected end of file, expecting ";" or "}" in /etc/nginx/nginx.conf:63
-2025/04/30 09:32:56 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/04/30 09:32:56 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/04/30 09:33:12 [error] 34#34: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/bien/img/logo%20(2).png HTTP/2.0", upstream: "fastcgi://192.168.208.3:9000", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:33:12 [error] 34#34: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://192.168.208.3:9000", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:33:15 [error] 34#34: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/client/reservations.php?id_client=2 HTTP/2.0", upstream: "fastcgi://192.168.208.3:9000", host: "172.16.15.63"
-2025/04/30 09:33:15 [error] 34#34: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://192.168.208.3:9000", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/client/reservations.php?id_client=2"
-2025/04/30 09:33:57 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/04/30 09:33:57 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/04/30 09:34:14 [error] 31#31: *2 upstream sent unsupported FastCGI protocol version: 72 while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/bien/img/logo%20(2).png HTTP/2.0", upstream: "fastcgi://192.168.224.4:80", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:34:14 [error] 31#31: *2 upstream sent unsupported FastCGI protocol version: 72 while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://192.168.224.4:80", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:34:29 [error] 31#31: *2 upstream prematurely closed connection while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/client/reservations.php?id_client=2 HTTP/2.0", upstream: "fastcgi://192.168.224.4:80", host: "172.16.15.63"
-2025/04/30 09:34:29 [error] 31#31: *2 upstream sent unsupported FastCGI protocol version: 72 while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://192.168.224.4:80", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/client/reservations.php?id_client=2"
-2025/04/30 09:35:11 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/04/30 09:35:11 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/04/30 09:35:23 [error] 32#32: *2 upstream sent unsupported FastCGI protocol version: 72 while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/bien/img/logo%20(2).png HTTP/2.0", upstream: "fastcgi://192.168.240.4:80", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:35:23 [error] 32#32: *2 upstream sent unsupported FastCGI protocol version: 72 while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://192.168.240.4:80", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:35:36 [error] 32#32: *2 upstream prematurely closed connection while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/client/reservations.php?id_client=2 HTTP/2.0", upstream: "fastcgi://192.168.240.4:80", host: "172.16.15.63"
-2025/04/30 09:35:36 [error] 32#32: *2 upstream sent unsupported FastCGI protocol version: 72 while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://192.168.240.4:80", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/client/reservations.php?id_client=2"
-2025/04/30 09:35:39 [error] 32#32: *2 upstream prematurely closed connection while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/client/connexion.php HTTP/2.0", upstream: "fastcgi://192.168.240.4:80", host: "172.16.15.63"
-2025/04/30 09:35:39 [error] 32#32: *2 upstream sent unsupported FastCGI protocol version: 72 while reading response header from upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://192.168.240.4:80", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/client/connexion.php"
-2025/04/30 09:37:37 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/04/30 09:37:37 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/04/30 09:37:45 [error] 32#32: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/client/reservations.php?id_client=2 HTTP/2.0", upstream: "fastcgi://127.0.0.1:9000", host: "172.16.15.63"
-2025/04/30 09:37:45 [error] 32#32: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://127.0.0.1:9000", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/client/reservations.php?id_client=2"
-2025/04/30 09:37:53 [error] 32#32: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /AirlockUnlock/bien/img/logo%20(2).png HTTP/2.0", upstream: "fastcgi://127.0.0.1:9000", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:37:53 [error] 32#32: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.16.15.87, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://127.0.0.1:9000", host: "172.16.15.63", referrer: "https://172.16.15.63/AirlockUnlock/bien/publier-bien.html"
-2025/04/30 09:42:22 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/04/30 09:42:22 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/04/30 09:46:22 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/04/30 09:46:22 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/05/01 10:28:22 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/05/01 10:28:22 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/05/01 10:30:40 [error] 34#34: *9 directory index of "/var/www/html/" is forbidden, client: 172.18.0.1, server: localhost, request: "GET / HTTP/2.0", host: "192.168.1.160"
-2025/05/01 10:30:40 [error] 34#34: *9 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /favicon.ico HTTP/2.0", upstream: "fastcgi://172.18.0.4:9000", host: "192.168.1.160", referrer: "https://192.168.1.160/"
-2025/05/01 10:32:51 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/05/01 10:32:51 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/05/04 21:30:33 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/05/04 21:30:33 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/05/04 21:35:48 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/05/04 21:35:48 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/05/04 21:39:12 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/05/04 21:39:12 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/05/04 21:40:50 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:26
-2025/05/04 21:40:50 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:56
-2025/05/04 21:47:15 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:46
-2025/05/04 21:47:15 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:76
-2025/05/04 21:49:02 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
-2025/05/04 21:49:02 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73
+2025/05/04 23:08:13 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/04 23:08:13 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73
+2025/05/04 23:08:16 [error] 24#24: *1 directory index of "/var/www/html/airlockunlock/bien/photos/" is forbidden, client: 172.18.0.1, server: localhost, request: "GET /airlockunlock/bien/photos/ HTTP/1.1", host: "192.168.1.160:91"
+2025/05/04 23:36:06 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/04 23:36:06 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73
+2025/05/04 23:37:58 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/04 23:37:58 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73
+2025/05/04 23:43:46 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/04 23:43:46 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73
+2025/05/04 23:48:57 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/04 23:48:57 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73
+2025/05/04 23:50:11 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/04 23:50:11 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73
+2025/05/04 23:52:14 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/04 23:52:14 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:73

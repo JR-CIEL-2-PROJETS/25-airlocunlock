@@ -8,13 +8,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 include '../config.php';
-
 include __DIR__ . '/../../Tapkey/config.php';
 
-
-
 echo "Fichier de configuration Tapkey inclus avec succès.";
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_proprietaire = $_POST['id_proprietaire'];
@@ -55,9 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode(['error' => 'Erreur PDO : ' . $e->getMessage()]);
         exit();
     }
-    
-    
-    
 
     if (isset($_FILES['photos']) && $_FILES['photos']['error'] == 0) {
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
@@ -80,8 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode(['error' => 'Erreur lors du téléchargement de l\'image.']);
             exit();
         }
+
+        // URL dynamique vers le fichier
+        $host = $_SERVER['HTTP_HOST'];
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+        $baseUrl = "$protocol://$host/airlockunlock/bien/photos/";
+        $image_url = $baseUrl . $photo_name;
     } else {
         $photo_name = null;
+        $image_url = null;
     }
 
     $sql = "INSERT INTO biens (
@@ -117,7 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':numero_serie_tapkey', $numero_serie_tapkey);
 
         if ($stmt->execute()) {
-            echo json_encode(['message' => 'Bien publié avec succès !']);
+            echo json_encode([
+                'message' => 'Bien publié avec succès !',
+                'image_url' => $image_url
+            ]);
         } else {
             echo json_encode(['error' => 'Erreur lors de la publication du bien.']);
         }
