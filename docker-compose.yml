@@ -4,9 +4,13 @@ services:
   php:
     build: .
     container_name: php-container
+    environment:
+      - JWT_SECRET_KEY=votre_cle_secrete_sure
     volumes:
       - ./code:/var/www/html:cached
+      - /var/www/html/vendor
       - ./logs/php:/var/log/php:cached
+
     networks:
       - app_network
     ports:

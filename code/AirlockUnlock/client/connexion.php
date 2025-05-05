@@ -7,15 +7,12 @@ error_reporting(E_ALL);
 include '../config.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-
-
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['email'], $_POST['mot_de_passe'])) {
@@ -47,7 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($client) {
             if (password_verify($mot_de_passe, $client['mot_de_passe'])) {
                 // Connexion réussie, génération du token
-                $key = "votre_cle_secrete"; // à garder sécurisé
+                $key = getenv('JWT_SECRET_KEY'); // Récupérer la clé depuis la variable d'environnement
+                if (!$key) {
+                    echo json_encode(['status' => 'error', 'message' => 'Erreur: Clé secrète manquante.']);
+                    exit();
+                }
+
                 $iat = time();
                 $exp = $iat + 3600; // 1 heure
 
@@ -59,7 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'exp' => $exp
                 ];
 
-                $jwt = JWT::encode($payload, $key, 'HS256');
+                
+                $jwt = (new JWT())->encode($payload, $key, 'HS256');
 
                 // ➔ ICI, on renvoie aussi les infos attendues par Android
                 echo json_encode([
