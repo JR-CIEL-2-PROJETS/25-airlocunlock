@@ -6,11 +6,11 @@ services:
     container_name: php-container
     environment:
       - JWT_SECRET_KEY=votre_cle_secrete_sure
+    # volumes:
+    #   - ./code:/var/www/html:cached
     volumes:
-      - ./code:/var/www/html:cached
-      - /var/www/html/vendor
       - ./logs/php:/var/log/php:cached
-
+      - vendor:/var/www/html/vendor
     networks:
       - app_network
     ports:
@@ -29,7 +29,7 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
     ports:
-      - "3347:3306"  # <-- MODIFIÉ
+      - "3347:3306"
     networks:
       - app_network
 
@@ -59,14 +59,15 @@ services:
       - ./ssl:/etc/nginx/certs:ro
       - ./logs/nginx:/var/log/nginx:cached
     ports:
-      - "91:80"     # <-- MODIFIÉ
-      - "421:443"   # <-- MODIFIÉ
+      - "91:80"
+      - "421:443"
     networks:
       - app_network
 
 volumes:
   dbdata:
     driver: local
+  vendor:
 
 networks:
   app_network:

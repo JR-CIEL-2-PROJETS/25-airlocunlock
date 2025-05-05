@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $numero_serie_tapkey = $_POST['numero_serie_tapkey'];
 
     try {
-        if (!empty($_POST['numero_serie_tapkey'])) {
-            $numero = trim($_POST['numero_serie_tapkey']);
+        if (!empty($numero_serie_tapkey)) {
+            $numero = trim($numero_serie_tapkey);
             $stmt = $pdo_tapkey->prepare("SELECT COUNT(*) FROM Tapkey.cles_electroniques WHERE numero_serie = :numero");
             $stmt->execute([':numero' => $numero]);
             if ($stmt->fetchColumn() == 0) {
@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
+    // Traitement de l'upload de fichier
     if (isset($_FILES['photos']) && $_FILES['photos']['error'] == 0) {
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
         $file_extension = pathinfo($_FILES['photos']['name'], PATHINFO_EXTENSION);
@@ -62,10 +63,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $photo_name = uniqid('bien_', true) . '.' . $file_extension;
-        $target_directory = '../photos/';
+        $target_directory = '/var/www/html/AirlockUnlock/bien/photos/';
 
         if (!is_dir($target_directory)) {
-            mkdir($target_directory, 0755, true);
+            if (!mkdir($target_directory, 0775, true)) {
+                echo json_encode(['error' => 'Erreur lors de la création du répertoire.']);
+                exit();
+            }
         }
 
         $target_file = $target_directory . $photo_name;
@@ -84,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $image_url = null;
     }
 
+    // Insertion dans la base de données
     $sql = "INSERT INTO biens (
                 id_proprietaire, type_bien, titre, prix_par_nuit, description, surface, nombre_pieces,
                 capacite, adresse, photos, wifi, parking, cuisine, tv, climatisation, chauffage,
