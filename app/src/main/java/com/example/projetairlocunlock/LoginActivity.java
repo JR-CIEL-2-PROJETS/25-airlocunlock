@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -76,6 +77,8 @@ public class LoginActivity extends Activity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
 
+        Log.d("LOGIN", "Validation des champs - Email: " + email + ", Mot de passe: " + password);
+
         boolean isValid = true;
 
         if (email.isEmpty()) {
@@ -93,8 +96,10 @@ public class LoginActivity extends Activity {
         }
 
         if (isValid) {
+            Log.d("LOGIN", "Champs valides. Tentative de connexion.");
             new LoginTask().execute(email, password);
         } else {
+            Log.d("LOGIN", "Champs invalides. Affichage Toast.");
             Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
         }
     }
@@ -104,10 +109,13 @@ public class LoginActivity extends Activity {
         passwordEditText.setInputType(isHidden ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         eyeIcon.setImageResource(isHidden ? R.drawable.ic_eye_open : R.drawable.ic_eye_closed);
         passwordEditText.setSelection(passwordEditText.getText().length());
+
+        Log.d("LOGIN", "Visibilité du mot de passe modifiée.");
     }
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Log.d("LOGIN", "Erreur: " + message);
 
         // Appliquer la couleur rouge sur les champs
         emailEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
@@ -117,9 +125,12 @@ public class LoginActivity extends Activity {
     private void showSuccess() {
         emailEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_green_light));
         passwordEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_green_light));
+        Log.d("LOGIN", "Connexion réussie, changement de couleur en vert.");
     }
 
     private void showConfigDialog() {
+        Log.d("LOGIN", "Affichage du dialog de configuration.");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Configuration IP / Port");
 
@@ -144,6 +155,7 @@ public class LoginActivity extends Activity {
             Config.setIP(this, ipInput.getText().toString().trim());
             Config.setPort(this, portInput.getText().toString().trim());
             Toast.makeText(this, "Configuration enregistrée", Toast.LENGTH_SHORT).show();
+            Log.d("LOGIN", "Configuration IP/Port enregistrée.");
         });
 
         builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
@@ -159,6 +171,8 @@ public class LoginActivity extends Activity {
                 String port = Config.getPort(LoginActivity.this);
                 String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/connexion.php";
 
+                Log.d("LOGIN", "URL de la requête : " + urlString);
+
                 URL url = new URL(urlString);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -170,9 +184,11 @@ public class LoginActivity extends Activity {
 
                 try (OutputStream os = conn.getOutputStream()) {
                     os.write(postData.getBytes());
+                    Log.d("LOGIN", "Données envoyées : " + postData);
                 }
 
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    Log.d("LOGIN", "Erreur serveur, code réponse : " + conn.getResponseCode());
                     return "{\"status\":\"error\",\"message\":\"Erreur serveur\"}";
                 }
 
@@ -180,18 +196,20 @@ public class LoginActivity extends Activity {
                     StringBuilder response = new StringBuilder();
                     String line;
                     while ((line = in.readLine()) != null) response.append(line);
+                    Log.d("LOGIN", "Réponse reçue : " + response.toString());
                     return response.toString();
                 }
 
             } catch (IOException e) {
+                Log.e("LOGIN", "Erreur de connexion : " + e.getMessage());
                 return "{\"status\":\"error\",\"message\":\"Erreur de connexion : " + e.getMessage() + "\"}";
             }
         }
 
         @Override
         protected void onPostExecute(String result) {
+            Log.d("LOGIN", "Résultat du serveur : " + result);
             try {
-                android.util.Log.d("LOGIN_RESPONSE", result);
                 JSONObject json = new JSONObject(result);
                 if ("success".equals(json.getString("status"))) {
                     SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -217,13 +235,14 @@ public class LoginActivity extends Activity {
                 }
             } catch (Exception e) {
                 showError("Erreur de parsing : " + e.getMessage());
+                Log.e("LOGIN", "Erreur de parsing JSON : " + e.getMessage());
             }
         }
     }
 
     private void disableSSLCertificateChecking() {
         try {
-            TrustManager[] trustAllCerts = new TrustManager[]{
+            TrustManager[] trustAllCerts = new TrustManager[] {
                     new X509TrustManager() {
                         public void checkClientTrusted(X509Certificate[] chain, String authType) {}
                         public void checkServerTrusted(X509Certificate[] chain, String authType) {}
@@ -237,11 +256,11 @@ public class LoginActivity extends Activity {
 
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
                 public boolean verify(String hostname, SSLSession session) {
-                    return true;
+                    return true; // Accepte tous les hôtes, même ceux qui ne sont pas validés
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("SSL", "Erreur de configuration SSL : " + e.getMessage());
         }
     }
 }

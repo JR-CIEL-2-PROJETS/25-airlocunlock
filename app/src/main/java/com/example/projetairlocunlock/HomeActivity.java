@@ -102,7 +102,7 @@ public class HomeActivity extends Activity {
                 // Récupérer l'IP et le port depuis les SharedPreferences
                 SharedPreferences prefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
                 String ip = prefs.getString("server_ip", "172.16.15.63");  // Valeur par défaut
-                String port = prefs.getString("server_port", "8080");      // Valeur par défaut
+                String port = prefs.getString("server_port", "421");      // Valeur par défaut
 
                 // Construire l'URL dynamique
                 String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/reservations.php?id_client=" + clientId;
@@ -149,8 +149,10 @@ public class HomeActivity extends Activity {
 
                             // Mise à jour du lien de la photo avec l'IP et le chemin correct
                             SharedPreferences prefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
-                            String ip = prefs.getString("server_ip", "172.16.15.63");  // Récupérer l'IP
-                            String photoUrl = "https://" + ip + "/AirlockUnlock/bien/photos/" + photoFileName;
+                            String ip = prefs.getString("server_ip", "172.16.15.63");
+                            String port = prefs.getString("server_port", "421");
+                            String photoUrl = "https://" + ip + ":" + port + "/AirlockUnlock/bien/photos/" + photoFileName;
+
 
                             LinearLayout itemLayout = new LinearLayout(HomeActivity.this);
                             itemLayout.setOrientation(LinearLayout.VERTICAL);
