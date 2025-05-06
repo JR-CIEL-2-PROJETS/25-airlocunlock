@@ -1,7 +1,10 @@
 FROM php:8.3-fpm
 
 # Installer les dépendances
-RUN apt-get update && apt-get install -y unzip git zip libzip-dev && docker-php-ext-install pdo pdo_mysql
+RUN apt-get update && apt-get install -y unzip git zip libzip-dev && \
+    docker-php-ext-install pdo pdo_mysql mysqli && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html

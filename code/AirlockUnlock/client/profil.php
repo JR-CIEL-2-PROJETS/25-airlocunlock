@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-include '../config.php';
+include '../config.php'; // Assure-toi que le fichier config.php est bien configuré pour ta connexion à la base de données.
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
@@ -26,19 +26,27 @@ if (isset($_COOKIE['auth_token']) && !empty($_COOKIE['auth_token'])) {
     $token = $_COOKIE['auth_token'];
 }
 
-// 2. Sinon, essayer avec le header (application mobile)
-if (!$token) {
+$authHeader = null;
+
+// Méthode alternative pour s'assurer de récupérer l'en-tête Authorization même si Apache ne le transmet pas
+if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+} elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+    $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+} elseif (function_exists('getallheaders')) {
     $headers = getallheaders();
     if (isset($headers['Authorization'])) {
         $authHeader = $headers['Authorization'];
     } elseif (isset($headers['authorization'])) {
-        $authHeader = $headers['authorization']; // support lowercase
+        $authHeader = $headers['authorization'];
     }
+}
+
 
     if (isset($authHeader) && preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
         $token = $matches[1];
     }
-}
+
 
 // Si aucun token trouvé
 if (!$token) {
@@ -48,7 +56,7 @@ if (!$token) {
 
 try {
     // Clé secrète
-    $key = getenv('JWT_SECRET_KEY');
+    $key = getenv('JWT_SECRET_KEY'); // Assure-toi que la clé secrète est bien configurée dans ton .env ou ailleurs.
     if (!$key) {
         echo json_encode(['status' => 'error', 'message' => 'Erreur : Clé secrète manquante.']);
         exit();
@@ -57,31 +65,28 @@ try {
     // Décodage du token
     $decoded = JWT::decode($token, new Key($key, 'HS256'));
 
+    // Récupération de l'ID utilisateur
     $id_client = $decoded->id_client;
 
-    // Requête SQL
-    $sql = "SELECT 
-                r.id_reservation,
-                r.date_arrivee,
-                r.date_depart,
-                r.nombre_personnes,
-                r.statut,
-                b.titre,
-                b.photos
-            FROM reservations r
-            INNER JOIN biens b ON r.id_bien = b.id_bien
-            WHERE r.id_client = :id_client
-            ORDER BY r.date_arrivee DESC";
-
+    // Requête SQL pour obtenir les informations de l'utilisateur
+    $sql = "SELECT nom, email FROM clients WHERE id_client = :id_client";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
     $stmt->execute();
-    $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    echo json_encode([
-        'status' => 'success',
-        'reservations' => $reservations
-    ]);
+    // Si l'utilisateur est trouvé, renvoie les données
+    if ($user) {
+        echo json_encode([
+            'status' => 'success',
+            'user' => $user
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Utilisateur non trouvé.'
+        ]);
+    }
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Erreur serveur : ' . $e->getMessage()]);
 }

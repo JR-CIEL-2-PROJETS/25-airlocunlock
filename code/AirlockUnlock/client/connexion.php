@@ -62,11 +62,16 @@ try {
 
     $jwt = JWT::encode($payload, $key, 'HS256');
 
-    // ✅ Stockage du token dans la table `tokens`
-    $stmt = $pdo->prepare("INSERT INTO tokens (token, id_client) VALUES (:token, :id_client)");
-    $stmt->bindParam(':token', $jwt);
-    $stmt->bindParam(':id_client', $client['id_client'], PDO::PARAM_INT);
-    $stmt->execute();
+    // Stockage du token JWT dans un cookie sécurisé
+    $cookie_name = 'auth_token';
+    $cookie_value = $jwt;
+    $cookie_expiry = time() + 3600; // Le cookie expire dans 1 heure
+    $cookie_path = '/'; // Le cookie sera accessible pour tout le site
+    $cookie_domain = ''; // Laisse vide pour le domaine actuel
+    $cookie_secure = true; // True pour une connexion HTTPS
+    $cookie_httponly = true; // Empêche l'accès au cookie via JavaScript
+
+    setcookie($cookie_name, $cookie_value, $cookie_expiry, $cookie_path, $cookie_domain, $cookie_secure, $cookie_httponly);
 
     echo json_encode([
         'status' => 'success',
