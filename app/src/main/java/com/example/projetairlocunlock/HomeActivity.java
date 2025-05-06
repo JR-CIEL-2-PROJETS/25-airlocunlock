@@ -56,8 +56,20 @@ public class HomeActivity extends Activity {
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().equals("Profil")) {
-                    Intent intent = new Intent(this, ProfileActivity.class);
-                    startActivity(intent);
+                    // Récupération des données à envoyer
+                    SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    int clientId = prefs.getInt("id_client", -1);
+                    String token = prefs.getString("token", null);
+
+                    // Envoi des données à ProfileActivity
+                    if (clientId != -1 && token != null) {
+                        Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                        intent.putExtra("id_client", clientId);  // Envoi de l'ID client
+                        intent.putExtra("token", token);         // Envoi du token
+                        startActivity(intent);
+                    } else {
+                        showError("Erreur : Informations utilisateur manquantes.");
+                    }
                     return true;
                 } else if (item.getTitle().equals("Se déconnecter")) {
                     startActivity(new Intent(this, LoginActivity.class));
@@ -70,46 +82,42 @@ public class HomeActivity extends Activity {
             popupMenu.show();
         });
 
-        // Récupérer l'id_client depuis les SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        int clientId = prefs.getInt("id_client", -1);
 
-        if (clientId != -1) {
-            new FetchReservationsTask().execute(clientId);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        int clientId = prefs.getInt("id_client", -1);
+        String token = prefs.getString("token", null); // Utilise "token" ici également
+
+        if (clientId != -1 && token != null && !token.isEmpty()) {
+            new FetchReservationsTask(token).execute(clientId);
         } else {
-            showError("Identifiant client introuvable.");
+            showError("Token ou identifiant client introuvable. Veuillez vous reconnecter.");
         }
     }
 
-    private void showAlert(String title, String message) {
-        runOnUiThread(() -> new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .show());
-    }
-
-    private void showError(String message) {
-        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_LONG).show());
-    }
-
     private class FetchReservationsTask extends AsyncTask<Integer, Void, String> {
+        private final String token;
+
+        public FetchReservationsTask(String token) {
+            this.token = token;
+        }
+
         @Override
         protected String doInBackground(Integer... params) {
             try {
                 int clientId = params[0];
 
-                // Récupérer l'IP et le port depuis les SharedPreferences
                 SharedPreferences prefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
-                String ip = prefs.getString("server_ip", "172.16.15.63");  // Valeur par défaut
-                String port = prefs.getString("server_port", "421");      // Valeur par défaut
+                String ip = prefs.getString("server_ip", "172.16.15.63");
+                String port = prefs.getString("server_port", "421");
 
-                // Construire l'URL dynamique
+                Log.d("CONFIG_PREFS", "IP récupérée : " + ip + ", Port récupéré : " + port);
+
                 String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/reservations.php?id_client=" + clientId;
                 URL url = new URL(urlString);
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + token); // ✅ En-tête avec token
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();
@@ -147,52 +155,44 @@ public class HomeActivity extends Activity {
                             String dates = dateArriveeStr + " - " + dateDepartStr;
                             String photoFileName = res.getString("photos").trim();
 
-                            // Mise à jour du lien de la photo avec l'IP et le chemin correct
                             SharedPreferences prefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
                             String ip = prefs.getString("server_ip", "172.16.15.63");
                             String port = prefs.getString("server_port", "421");
                             String photoUrl = "https://" + ip + ":" + port + "/AirlockUnlock/bien/photos/" + photoFileName;
-
 
                             LinearLayout itemLayout = new LinearLayout(HomeActivity.this);
                             itemLayout.setOrientation(LinearLayout.VERTICAL);
                             itemLayout.setPadding(16, 16, 16, 16);
                             itemLayout.setBackgroundResource(R.drawable.card_background);
 
-                            // Ajouter l'ImageView pour l'affichage de la photo
                             ImageView imageView = new ImageView(HomeActivity.this);
                             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT, 500);
                             imageView.setLayoutParams(imageParams);
                             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                            // Charger l'image avec Glide
                             Glide.with(HomeActivity.this)
-                                    .load(photoUrl)  // URL de l'image à charger
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)  // Pas de cache
-                                    .skipMemoryCache(true)  // Pas de cache mémoire
-                                    .placeholder(R.drawable.placeholder)  // Image de remplacement si l'image est en chargement
-                                    .error(R.drawable.image_error)  // Image d'erreur en cas de problème de chargement
-                                    .into(imageView);  // Afficher l'image dans l'ImageView
+                                    .load(photoUrl)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .placeholder(R.drawable.placeholder)
+                                    .error(R.drawable.image_error)
+                                    .into(imageView);
 
-                            // TextView pour afficher le titre de la réservation
                             TextView nameView = new TextView(HomeActivity.this);
                             nameView.setText(title);
                             nameView.setTextSize(18);
                             nameView.setPadding(0, 16, 0, 8);
 
-                            // TextView pour afficher les dates
                             TextView dateView = new TextView(HomeActivity.this);
                             dateView.setText("Dates : " + dates);
                             dateView.setPadding(0, 0, 0, 8);
 
-                            // Button pour afficher les instructions
                             Button button = new Button(HomeActivity.this);
                             button.setText("VOIR LES INSTRUCTIONS");
                             button.setBackgroundColor(getResources().getColor(R.color.blue_fond));
                             button.setTextColor(getResources().getColor(android.R.color.white));
 
-                            // Vérifier les dates et rendre le bouton interactif si nécessaire
                             try {
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                                 Date now = new Date();
@@ -221,13 +221,11 @@ public class HomeActivity extends Activity {
                                 showError("Erreur de date : " + e.getMessage());
                             }
 
-                            // Ajouter tous les éléments dans l'itemLayout
                             itemLayout.addView(imageView);
                             itemLayout.addView(nameView);
                             itemLayout.addView(dateView);
                             itemLayout.addView(button);
 
-                            // Ajouter l'itemLayout à la vue principale
                             reservationLayout.addView(itemLayout);
                         }
                     }
@@ -238,5 +236,13 @@ public class HomeActivity extends Activity {
                 showError("Erreur de parsing : " + e.getMessage());
             }
         }
+    }
+
+    private void showError(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("Erreur")
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }
