@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.util.Log;
 import android.content.SharedPreferences;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.Glide;
 
@@ -77,14 +79,33 @@ public class HomeActivity extends Activity {
             popupMenu.show();
         });
 
+        // On récupère directement le token et charge les réservations dès l'ouverture
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String token = prefs.getString("token", null);
 
         if (token != null && !token.isEmpty()) {
-            new FetchReservationsTask(token).execute();
+            new FetchReservationsTask(token).execute(); // Charge les réservations immédiatement
         } else {
             showError("Token introuvable. Veuillez vous reconnecter.");
         }
+
+        // Configure le SwipeRefreshLayout pour le rafraîchissement manuel
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (token != null && !token.isEmpty()) {
+                new FetchReservationsTask(token) {
+                    @Override
+                    protected void onPostExecute(String result) {
+                        super.onPostExecute(result);
+                        swipeRefreshLayout.setRefreshing(false); // Stoppe l'animation de rafraîchissement
+                    }
+                }.execute();
+            } else {
+                swipeRefreshLayout.setRefreshing(false);
+                showError("Token introuvable. Veuillez vous reconnecter.");
+            }
+        });
     }
 
     private class FetchReservationsTask extends AsyncTask<Void, Void, String> {

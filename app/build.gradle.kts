@@ -61,6 +61,7 @@ dependencies {
         exclude(group = "androidx.profileinstaller", module = "profileinstaller")
     }
 
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("mysql:mysql-connector-java:8.0.23")
