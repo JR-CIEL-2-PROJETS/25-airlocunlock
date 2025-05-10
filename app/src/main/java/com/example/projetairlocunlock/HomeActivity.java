@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.util.Log;
 import android.content.SharedPreferences;
 
@@ -56,16 +55,12 @@ public class HomeActivity extends Activity {
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().equals("Profil")) {
-                    // Récupération des données à envoyer
                     SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                    int clientId = prefs.getInt("id_client", -1);
                     String token = prefs.getString("token", null);
 
-                    // Envoi des données à ProfileActivity
-                    if (clientId != -1 && token != null) {
+                    if (token != null) {
                         Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                        intent.putExtra("id_client", clientId);  // Envoi de l'ID client
-                        intent.putExtra("token", token);         // Envoi du token
+                        intent.putExtra("token", token);
                         startActivity(intent);
                     } else {
                         showError("Erreur : Informations utilisateur manquantes.");
@@ -82,19 +77,17 @@ public class HomeActivity extends Activity {
             popupMenu.show();
         });
 
-
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        int clientId = prefs.getInt("id_client", -1);
-        String token = prefs.getString("token", null); // Utilise "token" ici également
+        String token = prefs.getString("token", null);
 
-        if (clientId != -1 && token != null && !token.isEmpty()) {
-            new FetchReservationsTask(token).execute(clientId);
+        if (token != null && !token.isEmpty()) {
+            new FetchReservationsTask(token).execute();
         } else {
-            showError("Token ou identifiant client introuvable. Veuillez vous reconnecter.");
+            showError("Token introuvable. Veuillez vous reconnecter.");
         }
     }
 
-    private class FetchReservationsTask extends AsyncTask<Integer, Void, String> {
+    private class FetchReservationsTask extends AsyncTask<Void, Void, String> {
         private final String token;
 
         public FetchReservationsTask(String token) {
@@ -102,22 +95,20 @@ public class HomeActivity extends Activity {
         }
 
         @Override
-        protected String doInBackground(Integer... params) {
+        protected String doInBackground(Void... params) {
             try {
-                int clientId = params[0];
-
                 SharedPreferences prefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
                 String ip = prefs.getString("server_ip", "172.16.15.63");
                 String port = prefs.getString("server_port", "421");
 
                 Log.d("CONFIG_PREFS", "IP récupérée : " + ip + ", Port récupéré : " + port);
 
-                String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/reservations.php?id_client=" + clientId;
+                String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/reservations.php";
                 URL url = new URL(urlString);
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
-                conn.setRequestProperty("Authorization", "Bearer " + token); // ✅ En-tête avec token
+                conn.setRequestProperty("Authorization", "Bearer " + token);
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();

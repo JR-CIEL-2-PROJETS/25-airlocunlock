@@ -56,7 +56,7 @@ public class LoginActivity extends Activity {
         eyeIcon = findViewById(R.id.eyeIcon);
         logo = findViewById(R.id.logo);
 
-        Log.d(TAG, "onCreate: Initialisation des vues");
+        Log.d(TAG, "Initialisation des vues");
 
         eyeIcon.setOnClickListener(v -> togglePasswordVisibility());
         loginButton.setOnClickListener(v -> validateAndLogin());
@@ -80,7 +80,7 @@ public class LoginActivity extends Activity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
 
-        Log.d(TAG, "validateAndLogin: email=" + email + ", password=" + password);
+        Log.d(TAG, "email=" + email + ", password=" + password);
 
         boolean isValid = true;
 
@@ -99,7 +99,7 @@ public class LoginActivity extends Activity {
         }
 
         if (isValid) {
-            Log.d(TAG, "validateAndLogin: Champs valides, lancement de LoginTask");
+            Log.d(TAG, "Champs valides, lancement de LoginTask");
             new LoginTask().execute(email, password);
         } else {
             Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
@@ -114,14 +114,14 @@ public class LoginActivity extends Activity {
     }
 
     private void showError(String message) {
-        Log.e(TAG, "showError: " + message);
+        Log.e(TAG, "Error: " + message);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         emailEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
         passwordEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_red_light));
     }
 
     private void showSuccess() {
-        Log.d(TAG, "showSuccess: Connexion réussie");
+        Log.d(TAG, "Connexion réussie");
         emailEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_green_light));
         passwordEditText.setBackgroundTintList(getColorStateList(android.R.color.holo_green_light));
     }
@@ -152,7 +152,7 @@ public class LoginActivity extends Activity {
             String port = portInput.getText().toString().trim();
             Config.setIP(this, ip);
             Config.setPort(this, port);
-            Log.d(TAG, "Configuration enregistrée: IP=" + ip + ", Port=" + port);
+            Log.d(TAG, "Configuration enregistrée : IP=" + ip + ", Port=" + port);
             Toast.makeText(this, "Configuration enregistrée", Toast.LENGTH_SHORT).show();
         });
 
@@ -168,7 +168,7 @@ public class LoginActivity extends Activity {
                 String port = Config.getPort(LoginActivity.this);
                 String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/connexion.php";
 
-                Log.d(TAG, "doInBackground: URL=" + urlString);
+                Log.d(TAG, "URL=" + urlString);
 
                 URL url = new URL(urlString);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -179,14 +179,14 @@ public class LoginActivity extends Activity {
                 String postData = "email=" + URLEncoder.encode(params[0], "UTF-8") +
                         "&mot_de_passe=" + URLEncoder.encode(params[1], "UTF-8");
 
-                Log.d(TAG, "doInBackground: postData=" + postData);
+                Log.d(TAG, "postData=" + postData);
 
                 try (OutputStream os = conn.getOutputStream()) {
                     os.write(postData.getBytes());
                 }
 
                 int responseCode = conn.getResponseCode();
-                Log.d(TAG, "doInBackground: responseCode=" + responseCode);
+                Log.d(TAG, "responseCode =" + responseCode);
 
                 if (responseCode != HttpURLConnection.HTTP_OK) {
                     return "{\"status\":\"error\",\"message\":\"Erreur serveur\"}";
@@ -196,12 +196,12 @@ public class LoginActivity extends Activity {
                     StringBuilder response = new StringBuilder();
                     String line;
                     while ((line = in.readLine()) != null) response.append(line);
-                    Log.d(TAG, "doInBackground: response=" + response.toString());
+                    Log.d(TAG, "response=" + response.toString());
                     return response.toString();
                 }
 
             } catch (IOException e) {
-                Log.e(TAG, "doInBackground: Erreur de connexion", e);
+                Log.e(TAG, "Erreur de connexion", e);
                 return "{\"status\":\"error\",\"message\":\"Erreur de connexion : " + e.getMessage() + "\"}";
             }
         }
@@ -219,7 +219,7 @@ public class LoginActivity extends Activity {
                     editor.putString("token", token); // Enregistre uniquement le token
                     editor.apply(); // Sauvegarde du token
 
-                    Log.d(TAG, "onPostExecute: token=" + token);
+                    Log.d(TAG, "token =" + token);
 
                     showSuccess();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -229,7 +229,7 @@ public class LoginActivity extends Activity {
                     showError(json.getString("message"));
                 }
             } catch (Exception e) {
-                Log.e(TAG, "onPostExecute: Erreur de parsing JSON", e);
+                Log.e(TAG, "Erreur de parsing JSON", e);
                 showError("Erreur de parsing : " + e.getMessage());
             }
         }
@@ -249,9 +249,9 @@ public class LoginActivity extends Activity {
             sc.init(null, trustAllCerts, new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
-            Log.d(TAG, "disableSSLCertificateChecking: SSL désactivé avec succès");
+            Log.d(TAG, "SSL désactivé avec succès");
         } catch (Exception e) {
-            Log.e(TAG, "disableSSLCertificateChecking: Erreur", e);
+            Log.e(TAG, "Erreur", e);
         }
     }
 }
