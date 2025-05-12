@@ -7,9 +7,9 @@ services:
     environment:
       - JWT_SECRET_KEY=votre_cle_secrete_sure
     volumes:
-      - ./code:/var/www/html:cached           # ✅ montage du code
-      - ./logs/php:/var/log/php:cached        # ✅ logs PHP
-      - vendor:/var/www/html/vendor           # ✅ volume vendor
+      - ./code:/var/www/html:cached 
+      - ./logs/php:/var/log/php:cached
+      - vendor:/var/www/html/vendor
     networks:
       - app_network
     ports:
