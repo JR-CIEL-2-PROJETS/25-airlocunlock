@@ -8,11 +8,19 @@ ini_set('display_errors', 1);
 include '../config.php';
 
 try {
-    $sql = "SELECT titre, prix_par_nuit, capacite, adresse, photos FROM biens";
-    $stmt = $pdo->query($sql);
-    $biens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Vérifie si un id_bien est passé dans l'URL
+    if (isset($_GET['id_bien']) && is_numeric($_GET['id_bien'])) {
+        $sql = "SELECT id_bien, titre, description, prix_par_nuit, capacite, adresse, photos FROM biens WHERE id_bien = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$_GET['id_bien']]);
+        $biens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $sql = "SELECT id_bien, titre, description, prix_par_nuit, capacite, adresse, photos FROM biens";
+        $stmt = $pdo->query($sql);
+        $biens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-    // URL statique comme demandé
+    // URL de base pour les photos
     $baseUrl = "https://172.16.15.74:421/AirlockUnlock/bien/photos/";
 
     foreach ($biens as &$bien) {
@@ -21,7 +29,7 @@ try {
         } else {
             $bien['photo_url'] = null;
         }
-        unset($bien['photos']);
+        unset($bien['photos']); // Supprime le champ brut 'photos'
     }
 
     echo json_encode($biens);

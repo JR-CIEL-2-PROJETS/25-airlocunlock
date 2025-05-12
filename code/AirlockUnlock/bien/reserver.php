@@ -2,7 +2,6 @@
 session_start();
 include '../config.php';
 
-
 // Vérifie que toutes les données nécessaires sont là
 if (
     !isset($_POST['id_bien']) ||
@@ -18,6 +17,15 @@ $id_bien = $_POST['id_bien'];
 $date_arrivee = $_POST['date_arrivee'];
 $date_depart = $_POST['date_depart'];
 $nombre_personnes = $_POST['nombre_personnes'];
+
+// Vérifie que l'utilisateur est connecté
+if (!isset($_SESSION['id_client']) || !isset($_SESSION['email'])) {
+    echo json_encode(['error' => 'Utilisateur non connecté.']);
+    exit();
+}
+
+$id_client = $_SESSION['id_client'];
+$email_client = $_SESSION['email'];
 
 // Vérifier que le bien existe
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM biens WHERE id_bien = :id_bien");
@@ -47,7 +55,21 @@ try {
     $stmt->bindParam(':nombre_personnes', $nombre_personnes, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-        echo json_encode(['success' => 'Réservation confirmée avec succès.']);
+        // Envoi d'email de confirmation
+        $sujet = "Confirmation de votre réservation";
+        $message = "Bonjour,\n\nVotre réservation a bien été confirmée :\n" .
+                   "- Bien n°$id_bien\n" .
+                   "- Dates : du $date_arrivee au $date_depart\n" .
+                   "- Nombre de personnes : $nombre_personnes\n\n" .
+                   "Merci pour votre confiance.\nCordialement,\nL'équipe de réservation.";
+        $headers = "From: reservation@airlockunlock.com\r\n" .
+                   "Reply-To: contact@airlockunlock.com\r\n" .
+                   "X-Mailer: PHP/" . phpversion();
+
+        // Envoi de l'e-mail
+        mail($email_client, $sujet, $message, $headers);
+
+        echo json_encode(['success' => 'Réservation confirmée avec succès et email envoyé.']);
     } else {
         echo json_encode(['error' => 'Erreur lors de l\'enregistrement de la réservation.']);
     }
