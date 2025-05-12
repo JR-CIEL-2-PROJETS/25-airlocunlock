@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appartement Cosy à Paris - AirLockUnlock</title>
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=EUR"></script>
     <style>
         * {
             margin: 0;
@@ -311,19 +312,8 @@
             box-sizing: border-box;
         }
 
-        .reservation-form button {
-            padding: 0.7rem;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .reservation-form button:hover {
-            background-color: #FFBB33;
+        .paypal-button {
+            margin-top: 1rem;
         }
 
         @media (max-width: 768px) {
@@ -341,10 +331,6 @@
 
             .reservation-form input {
                 font-size: 0.9rem;
-            }
-
-            .reservation-form button {
-                font-size: 1rem;
             }
         }
 
@@ -393,72 +379,36 @@
     </header>
 
     <div class="container">
-        <h1>Appartement Cosy à Paris</h1>
+        <h1 id="property-title">Chargement en cours...</h1>
 
         <div class="property-images">
             <button class="arrow arrow-left">&#10094;</button>
-            <img src="img/appartementparis.PNG" alt="Salon Appartement Cosy Paris" class="active">
-            <img src="img/chambreappartementcosyparis.avif" alt="Chambre Appartement Cosy Paris">
-            <img src="img/cusineparis.webp" alt="Cuisine Appartement Cosy Paris">
+            <!-- Les images seront chargées dynamiquement -->
+            <div id="property-images-container"></div>
             <button class="arrow arrow-right">&#10095;</button>
         </div>
 
         <div class="details">
             <div class="left">
                 <h2>Description</h2>
-                <p>Ce magnifique appartement cosy situé dans le cœur de Paris vous offre tout le confort nécessaire pour un séjour agréable. Il est parfait pour une escapade en ville, avec une chambre spacieuse, un salon lumineux, une cuisine entièrement équipée et une salle de bain moderne. De plus, l'appartement est sécurisé avec une serrure électronique, vous permettant d'accéder facilement et en toute sécurité à votre logement.</p>
-                <p>À proximité des principaux monuments et attractions de Paris, cet appartement est l'endroit idéal pour explorer la ville lumière.</p>
+                <p id="property-description">Chargement de la description...</p>
 
-                <div class="amenities">
-                    <div class="amenity">Wi-Fi</div>
-                    <div class="amenity">Climatisation</div>
-                    <div class="amenity">Cuisine équipée</div>
-                    <div class="amenity">Machine à laver</div>
-                    <div class="amenity">Balcon</div>
-                    <div class="amenity">Serrure électronique</div>
+                <div class="amenities" id="amenities-container">
+                    <!-- Les équipements seront chargés dynamiquement -->
                 </div>
             </div>
 
             <div class="right">
                 <h2>Prix par nuit</h2>
-                <p><strong>120 €</strong></p>
-                <p><em>Réservez dès maintenant et profitez de Paris dans le confort d'un appartement cosy.</em></p>
+                <p id="property-price"><strong>Chargement...</strong></p>
+                <p><em id="property-subtext">Réservez dès maintenant et profitez de Paris dans le confort d'un appartement cosy.</em></p>
             </div>
         </div>
 
         <div class="reviews">
             <h2>Avis des visiteurs</h2>
-
-            <div class="review">
-                <img src="img/bilal.jpeg" alt="Avis de client">
-                <div class="review-details">
-                    <h3>Bilal Taoufik</h3>
-                    <p><strong>5 étoiles</strong> - "Un séjour parfait ! L'appartement est idéalement situé et très bien équipé. Nous avons adoré notre week-end à Paris !"</p>
-                </div>
-            </div>
-
-            <div class="review">
-                <img src="img/adel.jpeg" alt="Avis de client">
-                <div class="review-details">
-                    <h3>Adel Aichi</h3>
-                    <p><strong>4.8 étoiles</strong> - "Très agréable, spacieux et bien décoré. Quelques petits détails à améliorer, mais globalement excellent !"</p>
-                </div>
-            </div>
-
-            <div class="review">
-                <img src="img/amine.png" alt="Avis de client">
-                <div class="review-details">
-                    <h3>Amine El Mir</h3>
-                    <p><strong>4.8 étoiles</strong> - "Très agréable, spacieux et bien décoré. Quelques petits détails à améliorer, mais globalement excellent !"</p>
-                </div>
-            </div>
-
-            <div class="review">
-                <img src="img/lakshan.jpeg" alt="Avis de client">
-                <div class="review-details">
-                    <h3>Lakshan Sangaralingam</h3>
-                    <p><strong>4.7 étoiles</strong> - "Un appartement charmant avec une vue magnifique. Nous reviendrons sans hésiter !"</p>
-                </div>
+            <div id="reviews-container">
+                <!-- Les avis seront chargés dynamiquement -->
             </div>
         </div>
 
@@ -477,8 +427,18 @@
                 <label for="guests">Nombre de personnes:</label>
                 <input type="number" id="guests" name="nombre_personnes" min="1" required>
 
-                <input type="hidden" name="id_bien" value="2">
-                <button type="submit">Réserver</button>
+                <input type="hidden" id="property-id" name="id_bien" value="">
+
+                <!-- Bouton PayPal -->
+                <div id="paypal-button-container" class="paypal-button"></div>
+
+                <!-- Alternative PayPal.Me -->
+                <div id="paypalme-section" style="margin-top: 20px; text-align: center;">
+                    <p>Ou payez via PayPal.Me</p>
+                    <button type="button" id="paypalme-button" style="background-color: #0070BA; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Payer avec PayPal.Me
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -497,7 +457,7 @@
         // Fonction pour décoder le token JWT et récupérer l'email
         function getEmailFromToken(token) {
             if (!token) return null;
-            
+
             try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 return payload.email || null;
@@ -507,33 +467,159 @@
             }
         }
 
-        // Gestion du carrousel d'images
-        const images = document.querySelectorAll('.property-images img');
-        const leftArrow = document.querySelector('.arrow-left');
-        const rightArrow = document.querySelector('.arrow-right');
-        let currentIndex = 0;
+        // Variables globales
+        let currentProperty = null;
+        let pricePerNight = 0;
+        let totalPrice = 0;
+        let currentImageIndex = 0;
 
-        function showImage(index) {
-            images.forEach((img, i) => {
-                img.classList.remove('active');
-                if (i === index) {
-                    img.classList.add('active');
+        // Fonction pour récupérer les détails du bien depuis l'API
+        async function fetchPropertyDetails(id_bien) {
+            try {
+                console.log('Fetching property details for ID:', id_bien); // Log pour vérifier l'ID
+                const response = await fetch(`https://172.16.15.74:421/AirlockUnlock/bien/biens.php?id=${id_bien}`);
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la récupération des détails du bien');
                 }
-            });
+                const property = await response.json();
+                console.log('Property details:', id_bien); // Log pour vérifier les détails du bien
+                displayPropertyDetails(property);
+            } catch (error) {
+                console.error('Erreur:', error);
+                document.getElementById('property-title').textContent = 'Erreur lors du chargement des détails';
+            }
         }
 
-        leftArrow.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            showImage(currentIndex);
-        });
+        // Fonction pour afficher les détails du bien
+        function displayPropertyDetails(property) {
+            currentProperty = property;
+            pricePerNight = parseFloat(property.prix_par_nuit);
 
-        rightArrow.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % images.length;
-            showImage(currentIndex);
-        });
+            // Mettre à jour le titre
+            document.getElementById('property-title').textContent = property.titre;
 
-        // Initial display
-        showImage(currentIndex);
+            // Mettre à jour la description
+            document.getElementById('property-description').textContent = property.description;
+
+            // Mettre à jour le prix
+            document.getElementById('property-price').innerHTML = `<strong>${pricePerNight} €</strong>`;
+
+            // Mettre à jour l'ID du bien dans le formulaire
+            document.getElementById('property-id').value = property.id;
+
+            // Charger les images
+            const imagesContainer = document.getElementById('property-images-container');
+            imagesContainer.innerHTML = '';
+
+            if (property.photos && property.photos.length > 0) {
+                property.photos.forEach((photo, index) => {
+                    const img = document.createElement('img');
+                    img.src = photo.url;
+                    img.alt = property.titre;
+                    img.style.display = index === 0 ? 'block' : 'none';
+                    img.classList.add(index === 0 ? 'active' : '');
+                    imagesContainer.appendChild(img);
+                });
+
+                // Activer les flèches seulement s'il y a plusieurs images
+                if (property.photos.length > 1) {
+                    document.querySelector('.arrow-left').style.display = 'flex';
+                    document.querySelector('.arrow-right').style.display = 'flex';
+                } else {
+                    document.querySelector('.arrow-left').style.display = 'none';
+                    document.querySelector('.arrow-right').style.display = 'none';
+                }
+            } else {
+                // Image par défaut si aucune photo n'est disponible
+                const defaultImg = document.createElement('img');
+                defaultImg.src = 'img/default-property.jpg';
+                defaultImg.alt = property.titre;
+                defaultImg.classList.add('active');
+                imagesContainer.appendChild(defaultImg);
+                document.querySelector('.arrow-left').style.display = 'none';
+                document.querySelector('.arrow-right').style.display = 'none';
+            }
+
+            // Charger les équipements
+            const amenitiesContainer = document.getElementById('amenities-container');
+            amenitiesContainer.innerHTML = '';
+
+            if (property.equipements && property.equipements.length > 0) {
+                property.equipements.forEach(equipement => {
+                    const amenityDiv = document.createElement('div');
+                    amenityDiv.className = 'amenity';
+                    amenityDiv.textContent = equipement.nom;
+                    amenitiesContainer.appendChild(amenityDiv);
+                });
+            }
+
+            // Charger les avis
+            const reviewsContainer = document.getElementById('reviews-container');
+            reviewsContainer.innerHTML = '';
+
+            if (property.avis && property.avis.length > 0) {
+                property.avis.forEach(avis => {
+                    const reviewDiv = document.createElement('div');
+                    reviewDiv.className = 'review';
+
+                    const img = document.createElement('img');
+                    img.src = avis.photo_utilisateur || 'img/default-user.jpg';
+                    img.alt = `Avis de ${avis.nom_utilisateur}`;
+
+                    const detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'review-details';
+
+                    const h3 = document.createElement('h3');
+                    h3.textContent = avis.nom_utilisateur;
+
+                    const p = document.createElement('p');
+                    p.innerHTML = `<strong>${avis.note} étoiles</strong> - "${avis.commentaire}"`;
+
+                    detailsDiv.appendChild(h3);
+                    detailsDiv.appendChild(p);
+
+                    reviewDiv.appendChild(img);
+                    reviewDiv.appendChild(detailsDiv);
+
+                    reviewsContainer.appendChild(reviewDiv);
+                });
+            } else {
+                reviewsContainer.innerHTML = '<p>Aucun avis pour le moment.</p>';
+            }
+        }
+
+        // Gestion du carrousel d'images
+        function setupImageCarousel() {
+            const images = document.querySelectorAll('#property-images-container img');
+            const leftArrow = document.querySelector('.arrow-left');
+            const rightArrow = document.querySelector('.arrow-right');
+
+            function showImage(index) {
+                images.forEach((img, i) => {
+                    img.classList.remove('active');
+                    img.style.display = 'none';
+                    if (i === index) {
+                        img.classList.add('active');
+                        img.style.display = 'block';
+                    }
+                });
+            }
+
+            leftArrow.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                showImage(currentImageIndex);
+            });
+
+            rightArrow.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                showImage(currentImageIndex);
+            });
+
+            // Initial display
+            if (images.length > 0) {
+                showImage(currentImageIndex);
+            }
+        }
 
         // Menu profil
         const profile = document.querySelector('.profile');
@@ -549,81 +635,135 @@
             }
         });
 
-        // Form submission avec envoi d'email
-        document.getElementById('reservationForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // Configuration PayPal
+        function setupPayPalButton() {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: totalPrice.toFixed(2)
+                            }
+                        }]
+                    });
+                },
+                onApprove: async function(data, actions) {
+                    try {
+                        const details = await actions.order.capture();
+                        console.log('Paiement réussi:', details);
+                        await processReservation(details.id);
+                    } catch (error) {
+                        console.error('Erreur de paiement:', error);
+                        alert('Erreur lors du paiement: ' + error.message);
+                    }
+                },
+                onError: function(err) {
+                    console.error('Erreur PayPal:', err);
+                    alert('Une erreur est survenue lors du paiement avec PayPal');
+                }
+            }).render('#paypal-button-container');
+        }
 
-            const formElement = e.target;
+        // Bouton PayPal.Me
+        document.getElementById('paypalme-button').addEventListener('click', function() {
+            const formElement = document.getElementById('reservationForm');
             const formData = new FormData(formElement);
-            
+
+            // Calculer le nombre de nuits
+            const checkin = new Date(formData.get('date_arrivee'));
+            const checkout = new Date(formData.get('date_depart'));
+            const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+
+            // Calculer le prix total
+            totalPrice = pricePerNight * nights;
+
+            // Rediriger vers PayPal.Me
+            window.location.href = `https://www.paypal.com/paypalme/ericjunior936/${totalPrice.toFixed(2)}?locale.x=fr_FR`;
+        });
+
+        // Fonction pour traiter la réservation après paiement
+        async function processReservation(paymentId) {
+            const formElement = document.getElementById('reservationForm');
+            const formData = new FormData(formElement);
+
             // Récupérer le token et l'email du client
             const token = getToken();
             if (!token) {
                 alert('Vous devez être connecté pour effectuer une réservation');
                 return;
             }
-            
+
             const userEmail = getEmailFromToken(token);
             if (!userEmail) {
                 alert('Impossible de récupérer votre email. Veuillez vérifier votre connexion.');
                 return;
             }
-            
-            // Ajouter l'email et le token aux données du formulaire
+
+            // Ajouter l'email, le token et l'ID de paiement
             formData.append('email', userEmail);
             formData.append('token', token);
+            formData.append('payment_id', paymentId);
+            formData.append('amount', totalPrice.toFixed(2));
 
             try {
-                // Envoyer la réservation
+                // Envoyer la réservation à votre serveur
                 const reservationResponse = await fetch('http://172.16.15.63:8080/AirlockUnlock/bien/reserver.php', {
                     method: 'POST',
                     body: formData,
                 });
 
                 if (!reservationResponse.ok) {
-                    throw new Error(`Erreur HTTP : ${reservationResponse.status}`);
+                    throw new Error(`Erreur HTTP: ${reservationResponse.status}`);
                 }
 
                 const result = await reservationResponse.json();
-                console.log("Réponse JSON :", result);
+                console.log("Réponse du serveur:", result);
 
                 if (result.success) {
                     // Envoyer l'email de confirmation
-                    await sendConfirmationEmail(userEmail, formData);
+                    await sendConfirmationEmail(userEmail, formData, paymentId);
                     alert(result.success + "\nUn email de confirmation vous a été envoyé à " + userEmail);
                 } else if (result.error) {
                     alert(result.error);
                 } else {
-                    alert("Réponse inattendue : " + JSON.stringify(result));
+                    alert("Réponse inattendue du serveur");
                 }
-
             } catch (error) {
                 console.error('Erreur lors de la réservation:', error);
-                alert('Erreur lors de la réservation : ' + error.message);
+                alert('Erreur lors de la réservation: ' + error.message);
             }
-        });
+        }
 
         // Fonction pour envoyer l'email de confirmation
-        async function sendConfirmationEmail(email, formData) {
+        async function sendConfirmationEmail(email, formData, paymentId) {
             try {
+                // Calculer le nombre de nuits
+                const checkin = new Date(formData.get('date_arrivee'));
+                const checkout = new Date(formData.get('date_depart'));
+                const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+                const total = nights * pricePerNight;
+
                 const emailData = {
                     to: email,
-                    subject: 'Confirmation de votre réservation - AirLockUnlock',
+                    subject: `Confirmation de votre réservation - ${currentProperty.titre}`,
                     body: `
                         <h1>Confirmation de réservation</h1>
                         <p>Bonjour ${formData.get('nom')},</p>
-                        <p>Nous vous confirmons votre réservation pour l'appartement cosy à Paris.</p>
-                        <p><strong>Détails de votre réservation :</strong></p>
+                        <p>Nous vous confirmons votre réservation pour ${currentProperty.titre}.</p>
+                        <p><strong>Détails de votre réservation:</strong></p>
                         <ul>
-                            <li>Date d'arrivée : ${formData.get('date_arrivee')}</li>
-                            <li>Date de départ : ${formData.get('date_depart')}</li>
-                            <li>Nombre de personnes : ${formData.get('nombre_personnes')}</li>
+                            <li>Date d'arrivée: ${formData.get('date_arrivee')}</li>
+                            <li>Date de départ: ${formData.get('date_depart')}</li>
+                            <li>Nombre de nuits: ${nights}</li>
+                            <li>Nombre de personnes: ${formData.get('nombre_personnes')}</li>
+                            <li>ID de paiement: ${paymentId}</li>
                         </ul>
-                        <p>Montant total : 120 €</p>
-                        <p>Merci d'avoir choisi AirLockUnlock pour votre séjour à Paris.</p>
+                        <p>Montant total: ${total.toFixed(2)} €</p>
+                        <p>Adresse: ${currentProperty.adresse}</p>
+                        <p>Merci d'avoir choisi AirLockUnlock pour votre séjour.</p>
                         <p>Cordialement,<br>L'équipe AirLockUnlock</p>
                     `,
-                    token: getToken() // Ajout du token pour authentification côté serveur
+                    token: getToken()
                 };
 
                 const response = await fetch('http://172.16.15.63:8080/AirlockUnlock/send_email.php', {
@@ -641,9 +781,26 @@
                 console.log('Email de confirmation envoyé avec succès');
             } catch (error) {
                 console.error('Erreur lors de l\'envoi de l\'email:', error);
-                // Ne pas alerter l'utilisateur pour ne pas perturber l'expérience
             }
         }
+
+        // Initialisation de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer l'ID du bien depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const propertyId = urlParams.get('id');
+
+            if (propertyId) {
+                console.log('Property ID from URL:', propertyId); // Log pour vérifier l'ID de l'URL
+                fetchPropertyDetails(propertyId).then(() => {
+                    setupImageCarousel();
+                    setupPayPalButton();
+                });
+            } else {
+                document.getElementById('property-title').textContent = 'Aucun bien sélectionné';
+                console.error('Aucun ID de bien spécifié dans l\'URL');
+            }
+        });
     </script>
 </body>
 </html>

@@ -324,7 +324,7 @@
             <div>
                 <h1 id="username">Chargement...</h1>
                 <p id="email">Chargement...</p>
-                <p id="member-since">Membre depuis 2023</p>
+                <p id="member-since">Membre depuis -</p>
             </div>
         </div>
 
@@ -335,15 +335,15 @@
             <div class="info">
                 <div>
                     <p>Nombre de réservations</p>
-                    <span id="reservations-count">15</span>
+                    <span id="reservations-count">0</span>
                 </div>
                 <div>
                     <p>Avis reçus</p>
-                    <span id="reviews-rating">4.8/5</span>
+                    <span id="reviews-rating">0/5</span>
                 </div>
                 <div>
                     <p>Propriétés favorites</p>
-                    <span id="favorites-count">8</span>
+                    <span id="favorites-count">0</span>
                 </div>
             </div>
         </div>
@@ -370,27 +370,73 @@
             }
         });
 
-        // Récupération des données utilisateur depuis le localStorage
-        document.addEventListener('DOMContentLoaded', () => {
+        // Fonction pour récupérer les infos utilisateur depuis le backend
+        async function fetchUserProfile() {
             try {
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                if (currentUser) {
-                    document.getElementById('username').textContent = currentUser.username;
-                    document.getElementById('email').textContent = currentUser.email;
-                    document.getElementById('member-since').textContent = `Membre depuis 2023`;
-                    document.getElementById('reservations-count').textContent = 0;
-                    document.getElementById('reviews-rating').textContent = '0/5';
-                    document.getElementById('favorites-count').textContent = 0;
-                } else {
-                    document.getElementById('username').textContent = "Utilisateur";
-                    document.getElementById('email').textContent = "Email non disponible";
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('Aucun token trouvé');
                 }
+
+                const response = await fetch('https://172.16.15.63:421/AirlockUnlock/client/profil.php', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la récupération du profil');
+                }
+
+                const data = await response.json();
+                
+                // Mise à jour de l'interface utilisateur
+                document.getElementById('username').textContent = data.username || "Utilisateur";
+                document.getElementById('email').textContent = data.email || "Email non disponible";
+                
+                if (data.date_inscription) {
+                    const joinDate = new Date(data.date_inscription);
+                    document.getElementById('member-since').textContent = `Membre depuis ${joinDate.getFullYear()}`;
+                } else {
+                    document.getElementById('member-since').textContent = "Membre depuis -";
+                }
+
+                // Mettre à jour les autres stats si disponibles
+                if (data.reservations_count !== undefined) {
+                    document.getElementById('reservations-count').textContent = data.reservations_count;
+                }
+                if (data.reviews_rating !== undefined) {
+                    document.getElementById('reviews-rating').textContent = data.reviews_rating;
+                }
+                if (data.favorites_count !== undefined) {
+                    document.getElementById('favorites-count').textContent = data.favorites_count;
+                }
+
             } catch (error) {
-                console.error("Erreur lors du chargement des données:", error);
-                document.getElementById('username').textContent = "Utilisateur";
-                document.getElementById('email').textContent = "Email non disponible";
+                console.error("Erreur:", error);
+                showDefaultValues();
+                
+                // Rediriger vers la page de connexion si pas authentifié
+                if (error.message.includes('token')) {
+                    setTimeout(() => {
+                        window.location.href = 'connexion.html';
+                    }, 2000);
+                }
             }
-        });
+        }
+
+        function showDefaultValues() {
+            document.getElementById('username').textContent = "Utilisateur";
+            document.getElementById('email').textContent = "Email non disponible";
+            document.getElementById('member-since').textContent = "Membre depuis -";
+            document.getElementById('reservations-count').textContent = '0';
+            document.getElementById('reviews-rating').textContent = '0/5';
+            document.getElementById('favorites-count').textContent = '0';
+        }
+
+        // Charger les données du profil au chargement de la page
+        document.addEventListener('DOMContentLoaded', fetchUserProfile);
     </script>
 
 </body>
