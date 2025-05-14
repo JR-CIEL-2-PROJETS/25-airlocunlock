@@ -4,8 +4,8 @@ services:
     container_name: nginx_server
     # restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "92:92"
+      - "422:422"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./html:/usr/share/nginx/html

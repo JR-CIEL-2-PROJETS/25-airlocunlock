@@ -853,3 +853,6 @@
 2025/05/05 07:41:57 [error] 28#28: *31 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.41, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
 2025/05/05 07:45:05 [error] 28#28: *38 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.41, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
 2025/05/05 13:35:53 [error] 29#29: *503 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.97, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
+2025/05/12 12:34:04 [error] 23#23: *188 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.87, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
+2025/05/12 12:34:28 [error] 23#23: *188 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.87, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
+2025/05/14 13:24:26 [error] 24#24: *59 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.16.15.67, server: www.airlockunlock.com, request: "GET / HTTP/1.1", host: "172.16.15.106"
