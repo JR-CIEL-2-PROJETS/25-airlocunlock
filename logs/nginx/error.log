@@ -15,3 +15,9 @@
 2025/05/14 09:14:29 [error] 33#33: *496 directory index of "/var/www/html/" is forbidden, client: 172.16.15.92, server: localhost, request: "GET / HTTP/2.0", host: "172.16.15.74:421"
 2025/05/14 09:14:29 [error] 33#33: *496 directory index of "/var/www/html/" is forbidden, client: 172.16.15.92, server: localhost, request: "GET / HTTP/2.0", host: "172.16.15.74:421"
 2025/05/14 09:14:46 [error] 33#33: *496 directory index of "/var/www/html/" is forbidden, client: 172.16.15.92, server: localhost, request: "GET / HTTP/2.0", host: "172.16.15.74:421"
+2025/05/14 13:18:45 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/14 13:18:45 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:74
+2025/05/14 13:26:00 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/14 13:26:00 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:74
+2025/05/14 13:46:37 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/14 13:46:37 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:74
