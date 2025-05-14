@@ -23,9 +23,9 @@ public class InstructionsActivity extends Activity {
     private Button backToHomeButton;
     private String reservationDate;
 
-    private static final String ESP32_IP_ADDRESS = "http://192.168.137.59";
     private static final String OPEN_URL = "/on";
     private static final String CLOSE_URL = "/off";
+    private static final String TOKEN = "MON_TOKEN_SECRET";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,19 +64,21 @@ public class InstructionsActivity extends Activity {
             Toast.makeText(this, "Date reçue : " + reservationDate, Toast.LENGTH_LONG).show();
 
             String[] parts = reservationDate.split(" - ");
-            String startString = parts[0].trim() + " 09:00";
-            String endString = parts[1].trim() + " 09:00";
+            String startString = parts[0].trim(); // Exemple : "2025-05-14 15:00"
+            String endString = parts[1].trim();   // Exemple : "2025-05-14 16:00"
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
             Date reservationStartDate = dateFormat.parse(startString);
             Date reservationEndDate = dateFormat.parse(endString);
             Date currentDate = new Date();
 
-            if (currentDate.after(reservationStartDate) && currentDate.before(reservationEndDate)) {
-                openButton.setEnabled(true);
-            } else {
-                openButton.setEnabled(false);
-                Toast.makeText(this, "Il n'est pas encore l'heure d'ouverture", Toast.LENGTH_SHORT).show();
+            boolean isWithinReservation = currentDate.after(reservationStartDate) && currentDate.before(reservationEndDate);
+
+            openButton.setEnabled(isWithinReservation);
+            closeButton.setEnabled(isWithinReservation);
+
+            if (!isWithinReservation) {
+                Toast.makeText(this, "Hors période de réservation", Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
@@ -86,7 +88,6 @@ public class InstructionsActivity extends Activity {
     }
 
     private void sendCommand(String commandUrl) {
-        // Mise à jour immédiate de l'UI
         runOnUiThread(() -> {
             if (commandUrl.equals(OPEN_URL)) {
                 lockStatus.setText("Ouverture en cours...");
@@ -97,13 +98,16 @@ public class InstructionsActivity extends Activity {
             }
         });
 
-        // Lancement de la requête réseau en arrière-plan
+        // 🔧 Récupère l’adresse IP configurée de l’ESP32 depuis les préférences
+        String espIp = Config.getEspIP(InstructionsActivity.this);
+
         new Thread(() -> {
             try {
-                URL url = new URL(ESP32_IP_ADDRESS + commandUrl);
+                URL url = new URL("http://" + espIp + commandUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setConnectTimeout(3000); // Timeout rapide
+                connection.setConnectTimeout(3000);
+                connection.setRequestProperty("Authorization", "Bearer " + TOKEN);
                 connection.connect();
 
                 int responseCode = connection.getResponseCode();
@@ -111,7 +115,7 @@ public class InstructionsActivity extends Activity {
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         Toast.makeText(this, "Commande envoyée avec succès", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Erreur de communication avec l'ESP32 (code : " + responseCode + ")", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Erreur ESP32 (code : " + responseCode + ")", Toast.LENGTH_SHORT).show();
                     }
                 });
 

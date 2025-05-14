@@ -128,14 +128,14 @@ public class LoginActivity extends Activity {
 
     private void showConfigDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Configuration IP / Port");
+        builder.setTitle("Configuration Réseau");
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 40, 50, 10);
 
         final EditText ipInput = new EditText(this);
-        ipInput.setHint("Adresse IP");
+        ipInput.setHint("Adresse IP serveur");
         ipInput.setText(Config.getIP(this));
         layout.addView(ipInput);
 
@@ -145,20 +145,30 @@ public class LoginActivity extends Activity {
         portInput.setText(Config.getPort(this));
         layout.addView(portInput);
 
+        final EditText espIpInput = new EditText(this);
+        espIpInput.setHint("Adresse IP ESP32");
+        espIpInput.setText(Config.getEspIP(this)); // <-- Nouvelle méthode à ajouter
+        layout.addView(espIpInput);
+
         builder.setView(layout);
 
         builder.setPositiveButton("Enregistrer", (dialog, which) -> {
             String ip = ipInput.getText().toString().trim();
             String port = portInput.getText().toString().trim();
+            String espIp = espIpInput.getText().toString().trim();
+
             Config.setIP(this, ip);
             Config.setPort(this, port);
-            Log.d(TAG, "Configuration enregistrée : IP=" + ip + ", Port=" + port);
+            Config.setEspIP(this, espIp); // <-- Nouvelle méthode à ajouter
+
+            Log.d(TAG, "Configuration enregistrée : IP=" + ip + ", Port=" + port + ", ESP=" + espIp);
             Toast.makeText(this, "Configuration enregistrée", Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton("Annuler", (dialog, which) -> dialog.cancel());
         builder.show();
     }
+
 
     private class LoginTask extends AsyncTask<String, Void, String> {
         @Override
