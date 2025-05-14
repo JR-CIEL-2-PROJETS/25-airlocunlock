@@ -61,7 +61,10 @@ try {
                    "- Bien n°$id_bien\n" .
                    "- Dates : du $date_arrivee au $date_depart\n" .
                    "- Nombre de personnes : $nombre_personnes\n\n" .
-                   "Merci pour votre confiance.\nCordialement,\nL'équipe de réservation.";
+                   "Merci pour votre confiance.\n\n" .
+                   "Lien de téléchargement de l'application Airlockunlock :\n" .
+                   "👉 https://airlockunlock.com/download\n\n" .
+                   "Cordialement,\nL'équipe de réservation.";
         $headers = "From: reservation@airlockunlock.com\r\n" .
                    "Reply-To: contact@airlockunlock.com\r\n" .
                    "X-Mailer: PHP/" . phpversion();
