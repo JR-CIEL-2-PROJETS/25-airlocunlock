@@ -57,9 +57,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation("androidx.profileinstaller:profileinstaller:1.3.1") {
-        exclude(group = "androidx.profileinstaller", module = "profileinstaller")
-    }
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
