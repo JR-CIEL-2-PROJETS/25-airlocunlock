@@ -137,7 +137,10 @@ public class HomeActivity extends Activity {
                         noReservationText.setVisibility(TextView.GONE);
                         for (int i = 0; i < reservations.length(); i++) {
                             JSONObject res = reservations.getJSONObject(i);
-                            addReservationCard(res);
+                            String statut = res.optString("statut", "").toLowerCase(Locale.ROOT);
+                            if (statut.equals("confirmée")) {
+                                addReservationCard(res);
+                            }
                         }
                     }
                 } else {
@@ -229,7 +232,23 @@ public class HomeActivity extends Activity {
         new AlertDialog.Builder(this)
                 .setTitle("Erreur")
                 .setMessage(message)
-                .setPositiveButton("OK", null)
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    if (message.toLowerCase().contains("token") || message.toLowerCase().contains("expired")) {
+                        // Supprimer le token
+                        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.remove("token");
+                        editor.apply();
+
+                        // Redirection vers la page de login
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
                 .show();
     }
+
 }
