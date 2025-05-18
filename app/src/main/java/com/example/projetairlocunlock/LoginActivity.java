@@ -226,8 +226,8 @@ public class LoginActivity extends Activity {
 
                     SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("token", token); // Enregistre uniquement le token
-                    editor.apply(); // Sauvegarde du token
+                    editor.putString("token", token);
+                    editor.apply();
 
                     Log.d(TAG, "token =" + token);
 
