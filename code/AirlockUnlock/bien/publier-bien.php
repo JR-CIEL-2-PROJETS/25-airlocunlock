@@ -9,11 +9,49 @@ ini_set('display_errors', 1);
 
 include '../config.php';
 include __DIR__ . '/../../Tapkey/config.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-echo "Fichier de configuration Tapkey inclus avec succès.";
+use \Firebase\JWT\JWT;
+use \Firebase\JWT\Key;
+
+$token = null;
+if (isset($_COOKIE['auth_token']) && !empty($_COOKIE['auth_token'])) {
+    $token = $_COOKIE['auth_token'];
+} else {
+    $headers = getallheaders();
+    $authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+    if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+        $token = $matches[1];
+    }
+}
+
+if (!$token) {
+    echo json_encode(['error' => 'Token d\'authentification manquant.']);
+    exit();
+}
+
+$key = "votre_cle_secrete";
+
+try {
+    $decoded = JWT::decode($token, new Key($key, 'HS256'));
+    $id_proprietaire = $decoded->id_proprietaire;
+    $email_proprietaire = $decoded->email ?? null;
+} catch (Exception $e) {
+    echo json_encode(['error' => 'Token invalide : ' . $e->getMessage()]);
+    exit();
+}
+
+$stmt = $pdo->prepare("SELECT nom FROM proprietaires WHERE id_proprietaire = :id_proprietaire");
+$stmt->bindParam(':id_proprietaire', $id_proprietaire, PDO::PARAM_INT);
+$stmt->execute();
+$nom_proprietaire = $stmt->fetchColumn();
+
+if (!$nom_proprietaire) {
+    echo json_encode(['error' => 'Propriétaire introuvable.']);
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_proprietaire = $_POST['id_proprietaire'];
     $type_bien = $_POST['type_bien'];
     $titre = $_POST['titre'];
     $prix_par_nuit = $_POST['prix_par_nuit'];
@@ -40,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo json_encode(['error' => 'Ce numéro de série Tapkey n’existe pas.']);
                 exit();
             }
+
             $stmt = $pdo->prepare("SELECT COUNT(*) FROM biens WHERE numero_serie_tapkey = :numero");
             $stmt->execute([':numero' => $numero]);
             if ($stmt->fetchColumn() > 0) {
@@ -48,21 +87,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     } catch (PDOException $e) {
-        echo json_encode(['error' => 'Erreur PDO : ' . $e->getMessage()]);
+        echo json_encode(['error' => 'Erreur PDO Tapkey : ' . $e->getMessage()]);
         exit();
     }
 
-    // Traitement de l'upload de fichier
-    if (isset($_FILES['photos']) && $_FILES['photos']['error'] == 0) {
+    if (isset($_FILES['photos']) && $_FILES['photos']['error'] === 0) {
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-        $file_extension = pathinfo($_FILES['photos']['name'], PATHINFO_EXTENSION);
+        $file_extension = strtolower(pathinfo($_FILES['photos']['name'], PATHINFO_EXTENSION));
 
-        if (!in_array(strtolower($file_extension), $allowed_extensions)) {
+        if (!in_array($file_extension, $allowed_extensions)) {
             echo json_encode(['error' => 'Erreur : seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.']);
             exit();
         }
 
-        $photo_name = uniqid('bien_', true) . '.' . $file_extension;
+        $photo_name = str_replace('.', '_', uniqid('bien_', true)) . '.' . $file_extension;
         $target_directory = '/var/www/html/AirlockUnlock/bien/photos/';
 
         if (!is_dir($target_directory)) {
@@ -72,13 +110,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
+        if (!is_writable($target_directory)) {
+            echo json_encode(['error' => 'Le répertoire cible n’est pas accessible en écriture.']);
+            exit();
+        }
+
         $target_file = $target_directory . $photo_name;
+
         if (!move_uploaded_file($_FILES['photos']['tmp_name'], $target_file)) {
             echo json_encode(['error' => 'Erreur lors du téléchargement de l\'image.']);
             exit();
         }
 
-        // URL dynamique vers le fichier
         $host = $_SERVER['HTTP_HOST'];
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
         $baseUrl = "$protocol://$host/airlockunlock/bien/photos/";
@@ -88,7 +131,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $image_url = null;
     }
 
-    // Insertion dans la base de données
     $sql = "INSERT INTO biens (
                 id_proprietaire, type_bien, titre, prix_par_nuit, description, surface, nombre_pieces,
                 capacite, adresse, photos, wifi, parking, cuisine, tv, climatisation, chauffage,

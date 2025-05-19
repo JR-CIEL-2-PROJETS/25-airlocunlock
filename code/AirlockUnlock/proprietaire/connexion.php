@@ -7,7 +7,6 @@ error_reporting(E_ALL);
 include '../config.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
 
@@ -16,8 +15,6 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // Vérifie que les données nécessaires sont présentes
     if (!isset($_POST['email'], $_POST['mot_de_passe'])) {
         echo json_encode(['status' => 'error', 'message' => 'Email et mot de passe requis.']);
         exit();
@@ -26,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
     $mot_de_passe = $_POST['mot_de_passe'];
 
-    // Validation de base
     if (empty($email) || empty($mot_de_passe)) {
         echo json_encode(['status' => 'error', 'message' => 'Champs obligatoires manquants.']);
         exit();
@@ -38,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // Requête SQL pour récupérer les infos du propriétaire
         $sql = "SELECT id_proprietaire, nom, email, mot_de_passe FROM proprietaires WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':email', $email);
@@ -46,13 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $proprietaire = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($proprietaire) {
-            // Vérification du mot de passe
             if (password_verify($mot_de_passe, $proprietaire['mot_de_passe'])) {
-
-                // Génération du token JWT
-                $key = "votre_cle_secrete"; // Mets ici ta vraie clé secrète
+                $key = "votre_cle_secrete";
                 $iat = time();
-                $exp = $iat + 3600; // expire en 1h
+                $exp = $iat + 3600;
 
                 $payload = [
                     'id_proprietaire' => $proprietaire['id_proprietaire'],

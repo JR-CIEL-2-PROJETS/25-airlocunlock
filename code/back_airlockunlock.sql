@@ -45,7 +45,7 @@ CREATE TABLE `biens` (
   PRIMARY KEY (`id_bien`),
   KEY `id_proprietaire` (`id_proprietaire`),
   CONSTRAINT `biens_ibfk_1` FOREIGN KEY (`id_proprietaire`) REFERENCES `proprietaires` (`id_proprietaire`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,7 +54,7 @@ CREATE TABLE `biens` (
 
 LOCK TABLES `biens` WRITE;
 /*!40000 ALTER TABLE `biens` DISABLE KEYS */;
-INSERT INTO `biens` VALUES (1,1,'Maison','Villa en bord de mer',120.00,'Superbe villa avec vue sur la mer.',150,5,6,'12 Rue des Vagues, Marseille','test1.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne proche des commodit??s.',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureau ??quip?? ?? louer',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ');
+INSERT INTO `biens` VALUES (1,1,'Maison','Villa en bord de mer',120.00,'Superbe villa avec vue sur la mer.',150,5,6,'12 Rue des Vagues, Marseille','test1.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne proche des commodit??s.',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureaux',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,NULL);
 /*!40000 ALTER TABLE `biens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +83,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client Admin','client@admin.com','$2y$10$GEq6aEZHERl/tHB2b0fBr.nqfQ9SxvtFybmgWWbU2nyReZ0Qw5Fme','2025-04-08 09:27:45','0614589324'),(2,'Bilal Taoufik','bilal@gmail.com','$2y$10$Noi/ZpDGHQM/VPpOcBJW1eKhocXGg7yMeUgEgnPMZnUwbjBjUXyZm','2025-04-08 09:31:07','0626266252'),(3,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357'),(5,'toto','toto@lycee-jeanrostand.fr','$2y$10$vGYrKL5l2U0Uf1vmLgWXZ.35PK2BNvMQBaqNRoMNxX/gcXkXhCc2G','2025-04-10 13:36:07','0102030405');
+INSERT INTO `clients` VALUES (1,'Client Admin','client@admin.com','$2y$10$GEq6aEZHERl/tHB2b0fBr.nqfQ9SxvtFybmgWWbU2nyReZ0Qw5Fme','2025-04-08 09:27:45','0614589324'),(2,'Bilal Taoufik','bll.taoufik@gmail.com','$2y$10$Noi/ZpDGHQM/VPpOcBJW1eKhocXGg7yMeUgEgnPMZnUwbjBjUXyZm','2025-04-08 09:31:07','0626266252'),(3,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357'),(5,'toto','toto@lycee-jeanrostand.fr','$2y$10$vGYrKL5l2U0Uf1vmLgWXZ.35PK2BNvMQBaqNRoMNxX/gcXkXhCc2G','2025-04-10 13:36:07','0102030405');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `reservations` (
   KEY `id_bien` (`id_bien`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_bien`) REFERENCES `biens` (`id_bien`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-04-13','2025-04-26',2,'2025-04-08 09:35:08','confirmée'),(4,2,4,'Bilal Taoufik','2025-04-28','2025-06-14',10,'2025-04-27 22:23:04','confirmée');
+INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-04-13','2025-04-26',2,'2025-04-08 09:35:08','confirmée'),(4,2,4,'Bilal Taoufik','2025-05-18','2025-06-13',6,'2025-05-19 13:17:25','confirmée'),(22,2,3,'Bilal Taoufik','2025-05-26','2025-06-01',3,'2025-05-19 13:28:32','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-12  7:55:41
+-- Dump completed on 2025-05-19 15:05:12

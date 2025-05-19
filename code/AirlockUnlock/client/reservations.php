@@ -18,21 +18,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-// ✅ Récupération du token : soit dans le cookie, soit dans le header Authorization
+// Récupération du token : cookie ou header Authorization
 $token = null;
 
-// 1. D'abord essayer avec le cookie (navigateur web)
+// 1. Essayer le cookie
 if (isset($_COOKIE['auth_token']) && !empty($_COOKIE['auth_token'])) {
     $token = $_COOKIE['auth_token'];
 }
 
-// 2. Sinon, essayer avec le header (application mobile)
+// 2. Sinon, header Authorization
 if (!$token) {
     $headers = getallheaders();
     if (isset($headers['Authorization'])) {
         $authHeader = $headers['Authorization'];
     } elseif (isset($headers['authorization'])) {
-        $authHeader = $headers['authorization']; // support lowercase
+        $authHeader = $headers['authorization'];
     }
 
     if (isset($authHeader) && preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -40,7 +40,7 @@ if (!$token) {
     }
 }
 
-// Si aucun token trouvé
+// Token manquant
 if (!$token) {
     echo json_encode(['status' => 'error', 'message' => 'Token manquant.']);
     exit;
@@ -56,7 +56,6 @@ try {
 
     // Décodage du token
     $decoded = JWT::decode($token, new Key($key, 'HS256'));
-
     $id_client = $decoded->id_client;
 
     // Requête SQL
@@ -77,6 +76,20 @@ try {
     $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
     $stmt->execute();
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Construction de l'URL complète des photos
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $host = $_SERVER['HTTP_HOST']; // IP ou domaine + port automatiquement
+    $baseUrl = $protocol . $host . "/AirlockUnlock/bien/photos/";
+
+    foreach ($reservations as &$reservation) {
+        if (!empty($reservation['photos'])) {
+            $reservation['photo_url'] = $baseUrl . $reservation['photos'];
+        } else {
+            $reservation['photo_url'] = null;
+        }
+        unset($reservation['photos']); // Optionnel, supprime le champ brut
+    }
 
     echo json_encode([
         'status' => 'success',

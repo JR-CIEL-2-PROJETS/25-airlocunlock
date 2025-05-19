@@ -20,8 +20,10 @@ try {
         $biens = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // URL de base pour les photos
-    $baseUrl = "https://172.16.15.74:421/AirlockUnlock/bien/photos/";
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $host = $_SERVER['HTTP_HOST']; // Récupère automatiquement IP ou nom de domaine + port
+    $baseUrl = $protocol . $host . "/AirlockUnlock/bien/photos/";
+
 
     foreach ($biens as &$bien) {
         if (!empty($bien['photos'])) {
