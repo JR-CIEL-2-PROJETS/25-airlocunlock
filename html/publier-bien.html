@@ -320,7 +320,7 @@
             <img src="img/logo (2).png" alt="AirLockUnlock Logo">
             <span class="logo-text">AirLockUnlock</span>
         </div>
-        <a href="signup.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+        <a href="accueilpro.html" class="btn btn-logout"><i class="fas fa-home"></i> Accueil</a>
     </header>
 
     <div class="container">
@@ -348,7 +348,7 @@
                 </div>
                 <div class="form-group">
                     <label for="prix_par_nuit" class="form-label required">Prix par nuit (€)</label>
-                    <input type="number" id="prix_par_nuit" class="form-control" name="prix_par_nuit"  required>
+                    <input type="number" id="prix_par_nuit" class="form-control" name="prix_par_nuit" required>
                 </div>
             </div>
 
@@ -380,7 +380,7 @@
             <div class="form-group">
                 <label class="form-label required">Photos du bien</label>
                 <div class="upload-area" id="uploadArea">
-                    <input type="file" id="photos" name="photos" accept="image/*" multiple>
+                    <input type="file" id="photos" name="photo" accept="image/*" multiple>
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
@@ -444,64 +444,68 @@
     </footer>
 
     <script>
-        // Gestion de l'affichage du champ Tapkey
-        document.getElementById('serrure_electronique').addEventListener('change', function() {
-            const tapkeyField = document.getElementById('tapkeyField');
-            if (this.checked) {
-                tapkeyField.style.display = 'block';
-            } else {
-                tapkeyField.style.display = 'none';
-                document.getElementById('numero_serie_tapkey').value = ''; // Réinitialise la valeur
-                document.getElementById('numero_serie_tapkey').classList.remove('error'); // Enlève la classe d'erreur
-                document.getElementById('tapkeyError').style.display = 'none'; // Masque le message d'erreur
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+    
+        document.getElementById('publishForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+    
+            const form = e.target;
+            const formData = new FormData(form);
+            const token = getCookie('auth_token');
+    
+            if (!token) {
+                alert('Token manquant. Veuillez vous reconnecter.');
+                return;
             }
-        });
-
-        document.getElementById('publishForm').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Empêche la soumission classique du formulaire
-
-            const formElement = e.target;
-            const formData = new FormData(formElement);
-
+    
             try {
-                // Affiche toutes les données avant l'envoi (debug)
+                // Affichage pour debug
                 for (let [key, value] of formData.entries()) {
                     console.log(key, value);
                 }
-
+    
                 const response = await fetch('https://172.16.15.74:421/AirlockUnlock/bien/publier-bien.php', {
                     method: 'POST',
-                    body: formData,
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                        // Ne PAS définir 'Content-Type' ici pour laisser le navigateur gérer le boundary
+                    },
+                    body: formData
                 });
-
-                const contentType = response.headers.get("content-type");
-
+    
+                const contentType = response.headers.get('content-type');
+    
                 if (!response.ok) {
                     throw new Error(`Erreur HTTP : ${response.status}`);
                 }
-
-                if (contentType && contentType.includes("application/json")) {
+    
+                if (contentType && contentType.includes('application/json')) {
                     const result = await response.json();
+    
                     if (result.error) {
-                        document.getElementById('numero_serie_tapkey').classList.add('error'); // Ajoute la classe d'erreur
-                        document.getElementById('tapkeyError').textContent = result.error;
-                        document.getElementById('tapkeyError').style.display = 'block';
+                        alert(`Erreur : ${result.error}`);
                     } else {
-                        document.getElementById('numero_serie_tapkey').classList.remove('error'); // Enlève la classe d'erreur
-                        document.getElementById('tapkeyError').style.display = 'none'; // Masque le message d'erreur
-                        alert(result.message || "Bien publié avec succès !");
+                        alert(result.message + "\nURL de l'image : " + result.image_url);
+                        form.reset();
                     }
                 } else {
                     const text = await response.text();
-                    console.warn("Réponse non JSON :", text);
-                    alert("Réponse inattendue : " + text);
+                    console.warn('Réponse non JSON :', text);
+                    alert('Réponse inattendue : ' + text);
                 }
-
+    
             } catch (error) {
-                console.error('Erreur lors de la requête API:', error);
-                alert('Erreur lors de la publication : ' + error.message);
+                console.error('Erreur :', error);
+                alert('Erreur lors de l\'envoi : ' + error.message);
             }
         });
     </script>
+    
+    
 </body>
 </html>

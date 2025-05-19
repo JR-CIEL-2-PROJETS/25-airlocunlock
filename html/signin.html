@@ -200,24 +200,25 @@
                 document.getElementById('successMessage').style.display = 'block';
             }
         });
-
+    
+        // Connexion client
         document.getElementById('client-login-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Empêche la soumission classique
-
+            event.preventDefault();
+    
             const email = document.getElementById('clientEmail').value.trim();
             const mot_de_passe = document.getElementById('clientMotDePasse').value.trim();
             const messageElement = document.getElementById('errorMessage');
-
+    
             if (!email || !mot_de_passe) {
                 messageElement.textContent = 'Veuillez remplir tous les champs.';
                 messageElement.style.display = 'block';
                 return;
             }
-
+    
             const formData = new FormData();
             formData.append('email', email);
             formData.append('mot_de_passe', mot_de_passe);
-
+    
             fetch('https://172.16.15.74:421/AirlockUnlock/client/connexion.php', {
                 method: 'POST',
                 body: formData
@@ -230,10 +231,10 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Client Response:', data); // Log the response
+                console.log('Client Response:', data);
                 if (data.status === 'success') {
-                    // Stockage du token
-                    localStorage.setItem('token', data.token);
+                    // Stockage du token dans un cookie
+                    document.cookie = `auth_token=${data.token}; path=/; secure; SameSite=Lax`;
                     messageElement.textContent = 'Connexion réussie ! Redirection...';
                     messageElement.style.display = 'block';
                     setTimeout(() => {
@@ -250,24 +251,25 @@
                 messageElement.style.display = 'block';
             });
         });
-
+    
+        // Connexion propriétaire
         document.getElementById('owner-login-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Empêche la soumission classique
-
+            event.preventDefault();
+    
             const email = document.getElementById('ownerEmail').value.trim();
             const mot_de_passe = document.getElementById('ownerMotDePasse').value.trim();
             const messageElement = document.getElementById('errorMessage');
-
+    
             if (!email || !mot_de_passe) {
                 messageElement.textContent = 'Veuillez remplir tous les champs.';
                 messageElement.style.display = 'block';
                 return;
             }
-
+    
             const formData = new FormData();
             formData.append('email', email);
             formData.append('mot_de_passe', mot_de_passe);
-
+    
             fetch('https://172.16.15.74:421/AirlockUnlock/proprietaire/connexion.php', {
                 method: 'POST',
                 body: formData
@@ -280,14 +282,14 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Owner Response:', data); // Log the response
+                console.log('Owner Response:', data);
                 if (data.status === 'success') {
-                    // Stockage du token
-                    localStorage.setItem('token', data.token);
+                    // Stockage du token dans un cookie
+                    document.cookie = `auth_token=${data.token}; path=/; secure; SameSite=Lax`;
                     messageElement.textContent = 'Connexion réussie ! Redirection...';
                     messageElement.style.display = 'block';
                     setTimeout(() => {
-                        window.location.href = 'accueil.html';
+                        window.location.href = 'accueilpro.html';
                     }, 1000);
                 } else {
                     messageElement.textContent = data.message;
@@ -300,7 +302,7 @@
                 messageElement.style.display = 'block';
             });
         });
-
+    
         function changeTab(tab) {
             const clientTab = document.getElementById('clientTab');
             const ownerTab = document.getElementById('ownerTab');
@@ -308,10 +310,9 @@
             const ownerContent = document.getElementById('ownerContent');
             const sectionTitle = document.getElementById('sectionTitle');
             const errorMessage = document.getElementById('errorMessage');
-
-            // Réinitialiser les messages d'erreur
+    
             errorMessage.style.display = 'none';
-
+    
             if (tab === 'client') {
                 clientTab.classList.add('tab-active');
                 ownerTab.classList.remove('tab-active');
@@ -326,11 +327,11 @@
                 sectionTitle.textContent = 'Connexion - Propriétaire';
             }
         }
-
+    
         function toggleMotDePasseVisibility(type) {
             const motDePasseField = document.getElementById(`${type}MotDePasse`);
             const eyeIcon = document.getElementById(`eyeIcon-${type}`);
-
+    
             if (motDePasseField.type === 'password') {
                 motDePasseField.type = 'text';
                 eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
@@ -340,5 +341,6 @@
             }
         }
     </script>
+    
 </body>
 </html>
