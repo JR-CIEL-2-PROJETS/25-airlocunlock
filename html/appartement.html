@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appartement Cosy à Paris - AirLockUnlock</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AXIrDzQPFvg3bqD-sYgFACNflB6CiROV75XuRFGCusC0q52wAVSs5pbXPq6YhvYuZ4LyXmaM8xkNO2RS&currency=EUR"></script>
+    <!-- Utilisez le lien CDN mis à jour ici -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <style>
         * {
@@ -352,13 +354,21 @@
         footer a:hover {
             color: #FFBB33;
         }
+
+        /* Style pour les champs en lecture seule */
+        .reservation-form input[readonly] {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="img/logo (2).png" alt="Logo AirLockUnlock">
-            <span>AirLockUnlock</span>
+            <a href="accueil.html" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                <img src="img/logo (2).png" alt="Logo AirLockUnlock">
+                <span>AirLockUnlock</span>
+            </a>
         </div>
         <div class="profile">
             <img src="img/hasbula.jpg" alt="Profil">
@@ -401,34 +411,34 @@
             <div id="reviews-container">
                 <!-- Avis de Lakshan Sangaralingam -->
                 <div class="review">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Lakshan Sangaralingam" />
+                    <img src="img/lakshan.jpeg" alt="Lakshan Sangaralingam" />
                     <div class="review-details">
                         <h3>Lakshan Sangaralingam</h3>
                         <p>★★★★★ - Excellent séjour ! L'appartement était parfaitement propre, bien situé et correspondait exactement à la description. Je recommande vivement !</p>
                     </div>
                 </div>
-                
+
                 <!-- Avis de Adel Aichi -->
                 <div class="review">
-                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Adel Aichi" />
+                    <img src="img/adel.jpeg" alt="Adel Aichi" />
                     <div class="review-details">
                         <h3>Adel Aichi</h3>
                         <p>★★★★☆ - Très bon emplacement et appartement confortable. Petit bémol sur le bruit de la rue le soir, mais dans l'ensemble une très bonne expérience.</p>
                     </div>
                 </div>
-                
+
                 <!-- Avis de Bilal Taoufik -->
                 <div class="review">
-                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Bilal Taoufik" />
+                    <img src="img/bilal.jpeg" alt="Bilal Taoufik" />
                     <div class="review-details">
                         <h3>Bilal Taoufik</h3>
                         <p>★★★★★ - Séjour parfait ! L'hôte était très réactif et arrangeant. L'appartement est encore mieux en vrai que sur les photos. À refaire sans hésiter.</p>
                     </div>
                 </div>
-                
+
                 <!-- Avis de Amine El Mir -->
                 <div class="review">
-                    <img src="https://randomuser.me/api/portraits/men/28.jpg" alt="Amine El Mir" />
+                    <img src="img/amine.png" alt="Amine El Mir" />
                     <div class="review-details">
                         <h3>Amine El Mir</h3>
                         <p>★★★★☆ - Très bon rapport qualité-prix. L'appartement est bien équipé et proche des transports. Juste un peu petit pour 4 personnes mais parfait pour un couple.</p>
@@ -441,7 +451,7 @@
             <h2>Réservez maintenant</h2>
             <form id="reservationForm">
                 <label for="name">Nom:</label>
-                <input type="text" id="name" name="nom" required>
+                <input type="text" id="name" name="nom" required readonly>
 
                 <label for="checkin">Date d'arrivée:</label>
                 <input type="date" id="checkin" name="date_arrivee" required>
@@ -451,6 +461,8 @@
 
                 <label for="guests">Nombre de personnes:</label>
                 <input type="number" id="guests" name="nombre_personnes" min="1" required>
+
+                <p>Capacité maximale: <span id="property-capacity">-</span> personnes</p>
 
                 <input type="hidden" id="property-id" name="id_bien" value="">
 
@@ -468,19 +480,48 @@
         <p><a href="politique-confidentialite.html">Politique de confidentialité</a> | <a href="conditions-utilisation.html">Conditions d'utilisation</a></p>
     </footer>
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
+        emailjs.init("qngsnA0v0RgtX9ypF"); // Clé publique EmailJS
+    
         let currentProperty = null;
         let pricePerNight = 0;
         let totalPrice = 0;
-        let currentImageIndex = 0;
     
+        // Récupère un cookie spécifique
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
             return null;
         }
-    
+
+        // Décode un token JWT (JSON Web Token)
+        function decodeJWT(token) {
+            try {
+                const payloadBase64 = token.split('.')[1];
+                // Remplace les caractères non-url-safe et ajoute le padding si nécessaire
+                const base64 = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
+                const payloadJson = atob(base64);
+                return JSON.parse(payloadJson);
+            } catch (e) {
+                console.error("Erreur de décodage du token:", e);
+                return null;
+            }
+        }
+
+        // Remplit automatiquement le nom depuis le token
+        function fillNameFromToken() {
+            const token = getCookie('auth_token');
+            if (token) {
+                const decoded = decodeJWT(token);
+                if (decoded && decoded.name) {
+                    document.getElementById('name').value = decoded.name;
+                    document.getElementById('name').readOnly = true;
+                }
+            }
+        }
+            
         function getIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
             return params.get('id_bien');
@@ -515,12 +556,10 @@
         }
     
         function displayProperty(bien) {
-            const titleElement = document.getElementById('property-title');
-            titleElement.innerText = bien.titre;
-    
+            document.getElementById('property-title').innerText = bien.titre;
             document.getElementById('property-description').innerText = bien.description;
             document.getElementById('property-price').innerHTML = `${bien.prix_par_nuit} € par nuit`;
-    
+            document.getElementById('property-capacity').innerText = bien.capacite;
             document.getElementById('property-id').value = bien.id_bien;
         }
     
@@ -572,24 +611,18 @@
         document.getElementById('checkin').addEventListener('change', updateTotalPrice);
         document.getElementById('checkout').addEventListener('change', updateTotalPrice);
     
-        paypal.Buttons({
-            createOrder: function(data, actions) {
-                sendReservationToAPI();
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: totalPrice.toFixed(2)
-                        }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    window.location.href = 'https://www.paypal.com';
-                    alert('Transaction completed by ' + details.payer.name.given_name);
-                });
+        document.getElementById('guests').addEventListener('change', function() {
+            const guestsInput = document.getElementById('guests');
+            const capacity = parseInt(document.getElementById('property-capacity').innerText);
+            const guests = parseInt(guestsInput.value);
+    
+            if (guests > capacity) {
+                guestsInput.style.borderColor = 'red';
+                alert('Le nombre de personnes dépasse la capacité maximale du bien.');
+            } else {
+                guestsInput.style.borderColor = '';
             }
-        }).render('#paypal-button-container');
+        });
     
         function sendReservationToAPI() {
             const reservationData = {
@@ -611,17 +644,83 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                console.log('Réservation enregistrée:', data);
                 alert('Réservation enregistrée.');
             })
             .catch((error) => {
-                console.error('Error:', error);
+                console.error('Erreur lors de la réservation:', error);
                 alert('Erreur lors de l\'enregistrement de la réservation.');
             });
         }
     
+        function sendConfirmationEmail() {
+            if (!currentProperty) {
+                alert("Aucun bien chargé.");
+                return;
+            }
+    
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            const guests = document.getElementById('guests').value;
+    
+            if (!checkin || !checkout || !guests) {
+                alert("Veuillez remplir les dates et le nombre de personnes.");
+                return;
+            }
+    
+            const token = getCookie('auth_token');
+            const decoded = decodeJWT(token);
+            const to_email = decoded?.email;
+    
+            if (!to_email) {
+                console.error("Aucune adresse e-mail trouvée dans le token.");
+                alert("Erreur : adresse e-mail manquante.");
+                return;
+            }
+    
+            const emailParams = {
+                titre: currentProperty.titre,
+                nombre_personnes: guests,
+                date_arrivee: checkin,
+                date_depart: checkout,
+                to_email: to_email
+            };
+    
+            console.log("Envoi d'email avec paramètres :", emailParams);
+    
+            emailjs.send('service_xgn8hbm', 'template_9p9pkcm', emailParams)
+                .then(() => {
+                    alert("Email de confirmation envoyé !");
+                })
+                .catch((error) => {
+                    console.error("Erreur en envoyant l'email :", error);
+                    alert("Erreur lors de l'envoi de l'email de confirmation.");
+                });
+        }
+    
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                sendConfirmationEmail(); // Envoi l'e-mail ici
+                sendReservationToAPI();  // Et réserve en base
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: totalPrice.toFixed(2)
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Transaction complétée par ' + details.payer.name.given_name);
+                    window.location.href = 'https://www.paypal.com';
+                });
+            }
+        }).render('#paypal-button-container');
+    
         document.addEventListener('DOMContentLoaded', async function () {
             await fetchPropertyDetails();
+            fillNameFromToken(); // Remplit automatiquement le nom depuis le token
         });
     </script>
 </body>
