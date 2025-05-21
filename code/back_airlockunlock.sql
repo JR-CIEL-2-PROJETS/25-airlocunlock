@@ -45,7 +45,7 @@ CREATE TABLE `biens` (
   PRIMARY KEY (`id_bien`),
   KEY `id_proprietaire` (`id_proprietaire`),
   CONSTRAINT `biens_ibfk_1` FOREIGN KEY (`id_proprietaire`) REFERENCES `proprietaires` (`id_proprietaire`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,7 +54,7 @@ CREATE TABLE `biens` (
 
 LOCK TABLES `biens` WRITE;
 /*!40000 ALTER TABLE `biens` DISABLE KEYS */;
-INSERT INTO `biens` VALUES (1,1,'Maison','Maison Lambda',120.00,'Test',150,5,6,'Maison de Azad & Eray','bien_682b53b906cb36.93415702.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne centre ville',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureaux',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,NULL),(5,1,'Maison','Maison bleu 2.4',150.00,'Du shield à disposition ',20,2,5,'rue 2.4 Salty Springs','bien_682d8a61b6cfa9.94400885.png',1,1,0,0,1,0,0,'');
+INSERT INTO `biens` VALUES (1,1,'Maison','Maison Lambda',120.00,'Test',150,5,6,'Maison de Azad & Eray','bien_682b53b906cb36.93415702.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne centre ville',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureaux',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,NULL),(5,1,'Maison','Maison bleu 2.4',150.00,'Du shield à disposition ',20,2,5,'rue 2.4 Salty Springs','bien_682d8a61b6cfa9.94400885.png',1,1,0,0,1,0,0,''),(55,1,'Maison','Maison des neuils',5.00,'Maison anciennement abrité par des gitans.',100,5,7,'40 7ème avenue','bien_682de1d73fa6b0.31228472.png',1,0,1,1,0,1,0,'');
 /*!40000 ALTER TABLE `biens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-21 13:57:10
+-- Dump completed on 2025-05-21 14:55:22
