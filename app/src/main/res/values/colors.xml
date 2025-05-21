@@ -12,4 +12,5 @@
     <color name="primaryDark">#315A7D</color>
     <color name="blue">#4682B4</color>
     <color name="blue_fond">#5b67ed</color>
+    <color name="red">#FF0000</color>
 </resources>
