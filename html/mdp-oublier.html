@@ -1,330 +1,214 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AirLockUnlock - Mot de passe oublié</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-image: url('img/still-life-keys-new-home.jpg');
-            background-size: cover;
-            background-position: center;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
-
-        .header {
-            background-color: rgba(70, 130, 180, 0.8);
-            padding: 20px;
-            border-bottom: 1px solid #e8edf3;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-            border-radius: 12px 12px 0 0;
-            box-sizing: border-box;
-        }
-
-        .header img {
-            width: 40px;
-            height: 40px;
-        }
-
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        input.input-field {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e0;
-            margin-bottom: 15px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        button.button-primary {
-            width: 100%;
-            padding: 12px;
-            background-color: #4682b4;
-            color: white;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        button.button-primary:hover {
-            background-color: #2c5282;
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .signup-link a {
-            color: #4682b4;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
-
-        .message {
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .message.error {
-            color: red;
-        }
-
-        .message.success {
-            color: green;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AirLockUnlock - Mot de passe oublié</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-image: url('img/still-life-keys-new-home.jpg');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .header {
+        background-color: rgba(70, 130, 180, 0.8);
+        padding: 20px;
+        border-bottom: 1px solid #e8edf3;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header img {
+        width: 40px;
+        height: 40px;
+    }
+    .input-field {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e0;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+    .button-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: #4682b4;
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+    .button-primary:hover {
+        background-color: #2c5282;
+    }
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+    .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .signup-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    .signup-link a {
+        color: #4682b4;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .signup-link a:hover {
+        text-decoration: underline;
+    }
+    .error-message {
+        color: red;
+        text-align: center;
+        margin-bottom: 15px;
+        display: none;
+    }
+    .success-message {
+        color: green;
+        text-align: center;
+        margin-bottom: 15px;
+        display: none;
+    }
+</style>
 </head>
 <body>
-    <div>
-        <header class="header">
-            <div class="flex items-center gap-4">
-                <img src="img/logo (2).png" alt="Logo" />
-                <h1 class="text-xl font-bold">AirLockUnlock</h1>
-            </div>
-        </header>
+<header class="header">
+    <div class="flex items-center gap-4">
+        <img src="img/logo (2).png" alt="Logo" />
+        <h1 class="text-xl font-bold">AirLockUnlock</h1>
+    </div>
+</header>
 
-        <div class="form-container">
-            <div id="formTitle" class="section-title">Mot de passe oublié</div>
+<div class="flex justify-center items-center flex-1">
+    <div class="form-container">
+        <div class="section-title">Mot de passe oublié</div>
 
-            <div id="message" class="message" style="display: none;"></div>
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
 
-            <!-- Formulaire étape 1 : demande du mail -->
-            <form id="requestCodeForm">
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="Adresse e-mail"
-                  class="input-field"
-                  required
-                />
-                <button type="submit" class="button-primary">
-                    Envoyer le lien de réinitialisation
-                </button>
-            </form>
+        <form id="forgot-password-form">
+            <input id="email" type="email" placeholder="Adresse e-mail" class="input-field" required />
+            <button type="submit" class="button-primary">Vérifier l'email</button>
+        </form>
 
-            <!-- Formulaire étape 2 : vérification du code -->
-            <form id="verifyCodeForm" style="display:none;">
-                <input
-                  id="code"
-                  type="text"
-                  placeholder="Code de vérification"
-                  class="input-field"
-                  required
-                  maxlength="6"
-                />
-                <button type="submit" class="button-primary">
-                    Vérifier le code
-                </button>
-            </form>
+        <form id="change-password-form" style="display:none; margin-top: 20px;">
+            <input id="new-password" type="password" placeholder="Nouveau mot de passe" class="input-field" required />
+            <button type="submit" class="button-primary">Changer le mot de passe</button>
+        </form>
 
-            <!-- Formulaire étape 3 : changement du mot de passe -->
-            <form id="changePasswordForm" style="display:none;">
-                <input
-                  id="newPassword"
-                  type="password"
-                  placeholder="Nouveau mot de passe"
-                  class="input-field"
-                  required
-                  minlength="6"
-                />
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Confirmer le mot de passe"
-                  class="input-field"
-                  required
-                />
-                <button type="submit" class="button-primary">
-                    Changer le mot de passe
-                </button>
-            </form>
-
-            <div class="signup-link">
-                <p>Retour à la <a href="signin.html">connexion</a></p>
-            </div>
+        <div class="signup-link">
+            <p>Retour à la <a href="signin.html">connexion</a></p>
         </div>
     </div>
+</div>
 
-    <script>
-        const requestCodeForm = document.getElementById('requestCodeForm');
-        const verifyCodeForm = document.getElementById('verifyCodeForm');
-        const changePasswordForm = document.getElementById('changePasswordForm');
-        const messageEl = document.getElementById('message');
-        const formTitle = document.getElementById('formTitle');
+<script>
+const forgotPasswordForm = document.getElementById('forgot-password-form');
+const changePasswordForm = document.getElementById('change-password-form');
+const errorMessage = document.getElementById('errorMessage');
+const successMessage = document.getElementById('successMessage');
 
-        function showMessage(text, type = 'error') {
-            messageEl.textContent = text;
-            messageEl.className = 'message ' + (type === 'success' ? 'success' : 'error');
-            messageEl.style.display = 'block';
+forgotPasswordForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+        errorMessage.textContent = 'Veuillez entrer votre adresse e-mail.';
+        errorMessage.style.display = 'block';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'verifier_email');
+    formData.append('email', email);
+
+    fetch('https://172.16.15.74:421/AirlockUnlock/client/changer-mdp.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            successMessage.textContent = data.message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            forgotPasswordForm.style.display = 'none';
+            changePasswordForm.style.display = 'block';
+        } else {
+            errorMessage.textContent = data.message;
+            errorMessage.style.display = 'block';
         }
+    })
+    .catch(() => {
+        errorMessage.textContent = 'Erreur lors de la communication avec le serveur.';
+        errorMessage.style.display = 'block';
+    });
+});
 
-        function clearMessage() {
-            messageEl.style.display = 'none';
-            messageEl.textContent = '';
-            messageEl.className = 'message';
+changePasswordForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+
+    const newPassword = document.getElementById('new-password').value.trim();
+    if (!newPassword) {
+        errorMessage.textContent = 'Veuillez entrer un nouveau mot de passe.';
+        errorMessage.style.display = 'block';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'changer_mdp');
+    formData.append('nouveau_mdp', newPassword);
+
+    fetch('https://172.16.15.74:421/AirlockUnlock/client/changer-mdp.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            successMessage.textContent = data.message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            changePasswordForm.style.display = 'none';
+        } else {
+            errorMessage.textContent = data.message;
+            errorMessage.style.display = 'block';
         }
-
-        // Étape 1 : demande du code
-        requestCodeForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearMessage();
-            const email = document.getElementById('email').value.trim();
-
-            if (!email) {
-                showMessage('Veuillez entrer votre adresse e-mail.');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('action', 'demande_code');
-            formData.append('email', email);
-
-            try {
-                const response = await fetch('https://172.16.15.74:421/AirlockUnlock/client/changer-mdp.php', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    showMessage(data.message, 'success');
-                    requestCodeForm.style.display = 'none';
-                    verifyCodeForm.style.display = 'block';
-                    formTitle.textContent = 'Vérification du code';
-                } else {
-                    showMessage(data.message);
-                }
-            } catch (error) {
-                showMessage("Erreur lors de l'envoi de la demande.");
-                console.error(error);
-            }
-        });
-
-        // Étape 2 : vérification du code
-        verifyCodeForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearMessage();
-            const email = document.getElementById('email').value.trim();
-            const code = document.getElementById('code').value.trim();
-
-            if (!code) {
-                showMessage('Veuillez entrer le code de vérification.');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('action', 'verifie_code');
-            formData.append('email', email);
-            formData.append('code', code);
-
-            try {
-                const response = await fetch('https://172.16.15.74:421/AirlockUnlock/client/changer-mdp.php', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    showMessage(data.message, 'success');
-                    verifyCodeForm.style.display = 'none';
-                    changePasswordForm.style.display = 'block';
-                    formTitle.textContent = 'Changer le mot de passe';
-                } else {
-                    showMessage(data.message);
-                }
-            } catch (error) {
-                showMessage("Erreur lors de la vérification du code.");
-                console.error(error);
-            }
-        });
-
-        // Étape 3 : changement du mot de passe
-        changePasswordForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearMessage();
-            const newPassword = document.getElementById('newPassword').value.trim();
-            const confirmPassword = document.getElementById('confirmPassword').value.trim();
-
-            if (newPassword.length < 6) {
-                showMessage('Le mot de passe doit contenir au moins 6 caractères.');
-                return;
-            }
-
-            if (newPassword !== confirmPassword) {
-                showMessage('Les mots de passe ne correspondent pas.');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('action', 'changer_mdp');
-            formData.append('nouveau_mdp', newPassword);
-
-            try {
-                const response = await fetch('https://172.16.15.74:421/AirlockUnlock/client/changer-mdp.php', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    showMessage(data.message, 'success');
-                    setTimeout(() => {
-                        window.location.href = 'signin.html';
-                    }, 3000);
-                } else {
-                    showMessage(data.message);
-                }
-            } catch (error) {
-                showMessage("Erreur lors du changement du mot de passe.");
-                console.error(error);
-            }
-        });
-    </script>
+    })
+    .catch(() => {
+        errorMessage.textContent = 'Erreur lors de la communication avec le serveur.';
+        errorMessage.style.display = 'block';
+    });
+});
+</script>
 </body>
 </html>
