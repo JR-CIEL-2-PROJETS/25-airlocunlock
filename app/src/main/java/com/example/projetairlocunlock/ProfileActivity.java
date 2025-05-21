@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -43,11 +45,10 @@ public class ProfileActivity extends Activity {
         String token = prefs.getString("token", null);
 
         if (token != null) {
-            SharedPreferences configPrefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
-            String ip = configPrefs.getString("server_ip", "172.16.15.63");
-            String port = configPrefs.getString("server_port", "421");
+            String ip = Config.getIP(this);
+            String port = Config.getPort(this);
 
-            Log.d("CONFIG_PREFS", "IP récupérée : " + ip + ", Port récupéré : " + port);
+            Log.d("CONFIG", "IP récupérée via Config : " + ip + ", Port : " + port);
 
             String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/profil.php";
             new Thread(() -> fetchUserProfile(urlString, token)).start();
@@ -71,19 +72,20 @@ public class ProfileActivity extends Activity {
             String newName = editName.getText().toString().trim();
             String newEmail = editEmail.getText().toString().trim();
 
-            if (!newName.isEmpty() && !newEmail.isEmpty()) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("nom", newName);
-                editor.putString("email", newEmail);
-                editor.apply();
-
-                Toast.makeText(this, "Profil mis à jour", Toast.LENGTH_SHORT).show();
-                editName.setEnabled(false);
-                editEmail.setEnabled(false);
-                isNameEditable = false;
-                isEmailEditable = false;
-            } else {
+            if (newName.isEmpty() || newEmail.isEmpty()) {
                 Toast.makeText(this, "Les champs ne peuvent pas être vides", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+                Toast.makeText(this, "Email invalide", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (token != null) {
+                new Thread(() -> updateUserProfile(newName, newEmail, token)).start();
+            } else {
+                Toast.makeText(this, "Token manquant. Veuillez vous reconnecter.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -138,6 +140,63 @@ public class ProfileActivity extends Activity {
 
         } catch (Exception e) {
             runOnUiThread(() -> Toast.makeText(ProfileActivity.this, "Erreur réseau : " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        }
+    }
+
+    private void updateUserProfile(String name, String email, String token) {
+        try {
+            String ip = Config.getIP(this);
+            String port = Config.getPort(this);
+            String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/profil.php";
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            conn.setDoOutput(true);
+
+            JSONObject jsonParam = new JSONObject();
+            jsonParam.put("nom", name);
+            jsonParam.put("email", email);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonParam.toString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = conn.getResponseCode();
+            Log.d("UPDATE_PROFILE", "Code réponse : " + responseCode);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) response.append(inputLine);
+            in.close();
+
+            JSONObject responseJson = new JSONObject(response.toString());
+            String status = responseJson.getString("status");
+
+            runOnUiThread(() -> {
+                if ("success".equals(status)) {
+                    Toast.makeText(this, "Profil mis à jour avec succès", Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences.Editor editor = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).edit();
+                    editor.putString("nom", name);
+                    editor.putString("email", email);
+                    editor.apply();
+
+                    editName.setEnabled(false);
+                    editEmail.setEnabled(false);
+                    isNameEditable = false;
+                    isEmailEditable = false;
+                } else {
+                    Toast.makeText(this, "Erreur : " + responseJson.optString("message", "Inconnue"), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (Exception e) {
+            runOnUiThread(() -> Toast.makeText(this, "Erreur : " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 }

@@ -152,14 +152,23 @@ public class HomeActivity extends Activity {
         }
     }
 
+    // ... tout le code inchangé jusqu'à addReservationCard()
+
     private void addReservationCard(JSONObject res) {
         try {
             String title = res.getString("titre");
             String dateArriveeStr = res.getString("date_arrivee") + " 09:00";
             String dateDepartStr = res.getString("date_depart") + " 09:00";
             String dates = dateArriveeStr + " - " + dateDepartStr;
-
             String photoUrl = res.optString("photo_url", null);
+            String numeroSerie = res.optString("numero_serie_tapkey", "");
+
+            // ✅ Nettoyage de l’URL pour éviter les erreurs de chargement
+            if (photoUrl != null) {
+                photoUrl = photoUrl.trim();
+            }
+
+            boolean hasTapkey = !numeroSerie.trim().isEmpty() && !numeroSerie.equalsIgnoreCase("null");
 
             LinearLayout itemLayout = new LinearLayout(this);
             itemLayout.setOrientation(LinearLayout.VERTICAL);
@@ -192,6 +201,10 @@ public class HomeActivity extends Activity {
             dateView.setText("Dates : " + dates);
             dateView.setPadding(0, 0, 0, 8);
 
+            TextView tapkeyView = new TextView(this);
+            tapkeyView.setText("Serrure Tapkey : " + (hasTapkey ? "oui" : "non"));
+            tapkeyView.setPadding(0, 0, 0, 8);
+
             Button instructionsButton = new Button(this);
             instructionsButton.setText("VOIR LES INSTRUCTIONS");
             instructionsButton.setBackgroundColor(getResources().getColor(R.color.blue_fond));
@@ -202,7 +215,9 @@ public class HomeActivity extends Activity {
             Date dateArrivee = sdf.parse(dateArriveeStr);
             Date dateDepart = sdf.parse(dateDepartStr);
 
-            if (now.after(dateArrivee) && now.before(dateDepart)) {
+            boolean isWithinDate = now.after(dateArrivee) && now.before(dateDepart);
+
+            if (hasTapkey && isWithinDate) {
                 instructionsButton.setEnabled(true);
                 instructionsButton.setAlpha(1f);
                 instructionsButton.setOnClickListener(v -> {
@@ -219,7 +234,13 @@ public class HomeActivity extends Activity {
             itemLayout.addView(imageView);
             itemLayout.addView(titleView);
             itemLayout.addView(dateView);
+            itemLayout.addView(tapkeyView);
             itemLayout.addView(instructionsButton);
+
+            if (!hasTapkey) {
+                itemLayout.setAlpha(0.4f);
+                itemLayout.setEnabled(false);
+            }
 
             reservationLayout.addView(itemLayout);
 
@@ -228,6 +249,8 @@ public class HomeActivity extends Activity {
         }
     }
 
+
+
     private void showError(String message) {
         new AlertDialog.Builder(this)
                 .setTitle("Erreur")
@@ -235,13 +258,11 @@ public class HomeActivity extends Activity {
                 .setCancelable(false)
                 .setPositiveButton("OK", (dialog, which) -> {
                     if (message.toLowerCase().contains("token") || message.toLowerCase().contains("expired")) {
-                        // Supprimer le token
                         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.remove("token");
                         editor.apply();
 
-                        // Redirection vers la page de login
                         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
@@ -250,5 +271,4 @@ public class HomeActivity extends Activity {
                 })
                 .show();
     }
-
 }
