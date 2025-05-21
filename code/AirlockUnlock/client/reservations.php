@@ -21,12 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 // Récupération du token : cookie ou header Authorization
 $token = null;
 
-// 1. Essayer le cookie
+// 1. Cookie
 if (isset($_COOKIE['auth_token']) && !empty($_COOKIE['auth_token'])) {
     $token = $_COOKIE['auth_token'];
 }
 
-// 2. Sinon, header Authorization
+// 2. Header Authorization
 if (!$token) {
     $headers = getallheaders();
     if (isset($headers['Authorization'])) {
@@ -40,25 +40,22 @@ if (!$token) {
     }
 }
 
-// Token manquant
 if (!$token) {
     echo json_encode(['status' => 'error', 'message' => 'Token manquant.']);
     exit;
 }
 
 try {
-    // Clé secrète
     $key = getenv('JWT_SECRET_KEY');
     if (!$key) {
         echo json_encode(['status' => 'error', 'message' => 'Erreur : Clé secrète manquante.']);
         exit();
     }
 
-    // Décodage du token
     $decoded = JWT::decode($token, new Key($key, 'HS256'));
     $id_client = $decoded->id_client;
 
-    // Requête SQL
+    // 🔧 Ajout de numero_serie_tapkey à la sélection SQL
     $sql = "SELECT 
                 r.id_reservation,
                 r.date_arrivee,
@@ -66,7 +63,8 @@ try {
                 r.nombre_personnes,
                 r.statut,
                 b.titre,
-                b.photos
+                b.photos,
+                b.numero_serie_tapkey
             FROM reservations r
             INNER JOIN biens b ON r.id_bien = b.id_bien
             WHERE r.id_client = :id_client
@@ -77,18 +75,13 @@ try {
     $stmt->execute();
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Construction de l'URL complète des photos
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-    $host = $_SERVER['HTTP_HOST']; // IP ou domaine + port automatiquement
+    $host = $_SERVER['HTTP_HOST'];
     $baseUrl = $protocol . $host . "/AirlockUnlock/bien/photos/";
 
     foreach ($reservations as &$reservation) {
-        if (!empty($reservation['photos'])) {
-            $reservation['photo_url'] = $baseUrl . $reservation['photos'];
-        } else {
-            $reservation['photo_url'] = null;
-        }
-        unset($reservation['photos']); // Optionnel, supprime le champ brut
+        $reservation['photo_url'] = !empty($reservation['photos']) ? $baseUrl . $reservation['photos'] : null;
+        unset($reservation['photos']); // facultatif
     }
 
     echo json_encode([
