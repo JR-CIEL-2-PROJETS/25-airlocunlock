@@ -45,7 +45,7 @@ CREATE TABLE `biens` (
   PRIMARY KEY (`id_bien`),
   KEY `id_proprietaire` (`id_proprietaire`),
   CONSTRAINT `biens_ibfk_1` FOREIGN KEY (`id_proprietaire`) REFERENCES `proprietaires` (`id_proprietaire`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,7 +54,7 @@ CREATE TABLE `biens` (
 
 LOCK TABLES `biens` WRITE;
 /*!40000 ALTER TABLE `biens` DISABLE KEYS */;
-INSERT INTO `biens` VALUES (1,1,'Maison','Villa en bord de mer',120.00,'Superbe villa avec vue sur la mer.',150,5,6,'12 Rue des Vagues, Marseille','test1.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne proche des commodit??s.',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureaux',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,NULL);
+INSERT INTO `biens` VALUES (1,1,'Maison','Maison Lambda',120.00,'Test',150,5,6,'Maison de Azad & Eray','bien_682b53b906cb36.93415702.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne centre ville',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureaux',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,NULL),(5,1,'Maison','Maison bleu 2.4',150.00,'Du shield à disposition ',20,2,5,'rue 2.4 Salty Springs','bien_682d8a61b6cfa9.94400885.png',1,1,0,0,1,0,0,'');
 /*!40000 ALTER TABLE `biens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `reservations` (
   KEY `id_bien` (`id_bien`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_bien`) REFERENCES `biens` (`id_bien`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-04-13','2025-04-26',2,'2025-04-08 09:35:08','confirmée'),(4,2,4,'Bilal Taoufik','2025-05-18','2025-06-13',6,'2025-05-19 13:17:25','confirmée'),(22,2,3,'Bilal Taoufik','2025-05-26','2025-06-01',3,'2025-05-19 13:28:32','confirmée');
+INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-04-13','2025-04-26',2,'2025-04-08 09:35:08','confirmée'),(4,2,4,'Bilal Taoufik','2025-05-18','2025-06-13',6,'2025-05-19 13:17:25','confirmée'),(5,2,1,'Bilal Taoufik','2025-05-18','2025-06-14',3,'2025-05-21 08:24:19','confirmée'),(6,2,3,'Bilal Taoufik','2025-05-11','2025-05-17',2,'2025-05-21 09:40:53','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-19 15:05:12
+-- Dump completed on 2025-05-21 13:57:10

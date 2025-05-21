@@ -98,25 +98,8 @@ try {
     $stmt->bindParam(':nombre_personnes', $nombre_personnes, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-        if ($email_client) {
-            $sujet = "Confirmation de votre réservation";
-            $message = "Bonjour,\n\nVotre réservation a bien été confirmée :\n" .
-                       "- Bien n°$id_bien\n" .
-                       "- Dates : du $date_arrivee au $date_depart\n" .
-                       "- Nombre de personnes : $nombre_personnes\n" .
-                       "- Photo : https://{$_SERVER['HTTP_HOST']}/AirlockUnlock/bien/photos/{$photo_bien}\n\n" .
-                       "Merci pour votre confiance.\n\n" .
-                       "Lien de téléchargement de l'application Airlockunlock :\n" .
-                       "👉 https://airlockunlock.com/download\n\n" .
-                       "Cordialement,\nL'équipe de réservation.";
-            $headers = "From: reservation@airlockunlock.com\r\n" .
-                       "Reply-To: contact@airlockunlock.com\r\n" .
-                       "X-Mailer: PHP/" . phpversion();
 
-            mail($email_client, $sujet, $message, $headers);
-        }
-
-        echo json_encode(['success' => 'Réservation confirmée avec succès et email envoyé.']);
+        echo json_encode(['success' => 'Réservation confirmée avec succès.']);
     } else {
         echo json_encode(['error' => 'Erreur lors de l\'enregistrement de la réservation.']);
     }

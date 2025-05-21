@@ -55,10 +55,12 @@ try {
     $payload = [
         'id_client' => $client['id_client'],
         'nom' => $client['nom'],
+        'email' => $client['email'],  // ajout de l'email ici
         'role' => 'client',
         'iat' => $iat,
         'exp' => $exp
     ];
+    
 
     $jwt = JWT::encode($payload, $key, 'HS256');
 

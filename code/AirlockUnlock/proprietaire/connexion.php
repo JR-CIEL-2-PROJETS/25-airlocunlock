@@ -55,11 +55,12 @@ try {
     $payload = [
         'id_proprietaire' => $proprietaire['id_proprietaire'],
         'nom' => $proprietaire['nom'],
-        'email' => $proprietaire['email'],
+        'email' => $proprietaire['email'],  // ajout de l'email ici
         'role' => 'proprietaire',
         'iat' => $iat,
         'exp' => $exp
     ];
+    
 
     $jwt = JWT::encode($payload, $key, 'HS256');
 

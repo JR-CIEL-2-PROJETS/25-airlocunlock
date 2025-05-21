@@ -10,20 +10,24 @@ include '../config.php';
 try {
     // Vérifie si un id_bien est passé dans l'URL
     if (isset($_GET['id_bien']) && is_numeric($_GET['id_bien'])) {
-        $sql = "SELECT id_bien, titre, description, prix_par_nuit, capacite, adresse, photos FROM biens WHERE id_bien = ?";
+        $sql = "SELECT b.id_bien, b.id_proprietaire, b.titre, b.description, b.prix_par_nuit, b.capacite, b.adresse, b.photos, r.date_arrivee, r.date_depart
+                FROM biens b
+                LEFT JOIN reservations r ON b.id_bien = r.id_bien
+                WHERE b.id_bien = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$_GET['id_bien']]);
         $biens = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
-        $sql = "SELECT id_bien, titre, description, prix_par_nuit, capacite, adresse, photos FROM biens";
+        $sql = "SELECT b.id_bien, b.id_proprietaire, b.titre, b.description, b.prix_par_nuit, b.capacite, b.adresse, b.photos, r.date_arrivee, r.date_depart
+                FROM biens b
+                LEFT JOIN reservations r ON b.id_bien = r.id_bien";
         $stmt = $pdo->query($sql);
         $biens = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-    $host = $_SERVER['HTTP_HOST']; // Récupère automatiquement IP ou nom de domaine + port
+    $host = $_SERVER['HTTP_HOST'];
     $baseUrl = $protocol . $host . "/AirlockUnlock/bien/photos/";
-
 
     foreach ($biens as &$bien) {
         if (!empty($bien['photos'])) {

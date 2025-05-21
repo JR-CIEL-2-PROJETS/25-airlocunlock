@@ -182,8 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             echo json_encode([
-                'message' => 'Bien publié avec succès !',
-                'image_url' => $image_url
+                'message' => 'Votre bien a été publié avec succès !',
             ]);
         } else {
             echo json_encode(['error' => 'Erreur lors de la publication du bien.']);
