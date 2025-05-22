@@ -16,3 +16,6 @@ recuperer ma base de donnés sur un autre pc
 
 docker exec -i mysql-container mysql -u root -proot airlockunlock < back_airlockunlock.sql  
 docker exec -i mysql-container mysql -u root -proot Tapkey < back_tapkey.sql 
+
+git fetch origin
+git reset --hard origin/API-1

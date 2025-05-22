@@ -49,12 +49,12 @@ try {
     if ($method === 'GET') {
         // ✅ Récupération des infos utilisateur + nombre de réservations
         $sql = "SELECT nom, email,
-                       (SELECT COUNT(*) FROM reservations WHERE id_client = :id_client) AS nombre_reservations
+                       (SELECT COUNT(*) FROM reservations WHERE id_proprietaire = :id_proprietaire) AS nombre_reservations
                 FROM clients
                 WHERE id_client = :id_client";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
+        $stmt->bindParam(':id_proprietaire', $id_client, PDO::PARAM_INT);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -81,11 +81,11 @@ try {
         }
 
         // Mise à jour en base
-        $sql = "UPDATE clients SET nom = :nom, email = :email WHERE id_client = :id_client";
+        $sql = "UPDATE proprietaires SET nom = :nom, email = :email WHERE id_proprietaire = :id_proprietaire";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
+        $stmt->bindParam(':id_proprietaire', $id_client, PDO::PARAM_INT);
         $stmt->execute();
 
         echo json_encode(['status' => 'success', 'message' => 'Profil mis à jour avec succès.']);

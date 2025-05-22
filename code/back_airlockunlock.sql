@@ -45,7 +45,7 @@ CREATE TABLE `biens` (
   PRIMARY KEY (`id_bien`),
   KEY `id_proprietaire` (`id_proprietaire`),
   CONSTRAINT `biens_ibfk_1` FOREIGN KEY (`id_proprietaire`) REFERENCES `proprietaires` (`id_proprietaire`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,7 +54,7 @@ CREATE TABLE `biens` (
 
 LOCK TABLES `biens` WRITE;
 /*!40000 ALTER TABLE `biens` DISABLE KEYS */;
-INSERT INTO `biens` VALUES (1,1,'Maison','Maison Lambda',120.00,'Test',150,5,6,'Maison de Azad & Eray','bien_682b53b906cb36.93415702.jpg\r\n',1,1,1,1,1,1,1,'TK-001-ADMIN'),(2,2,'Appartement','Studio cosy centre-ville',60.00,'Studio moderne centre ville',35,1,2,'88 Avenue Victor Hugo, Paris','studio1.jpg',1,0,1,1,0,1,0,NULL),(3,3,'Bureau','Bureaux',80.00,'Espace de travail calme et lumineux.',50,2,4,'45 Boulevard Haussmann, Paris','bureau1.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(4,2,'Maison','Villa moderne avec piscine',250.00,'Magnifique villa moderne avec piscine privée et jardin paysager.',200,6,10,'789 Avenue du Soleil, 06400 Cannes','villa1.jpg',1,1,1,1,1,1,1,NULL),(5,1,'Maison','Maison bleu 2.4',150.00,'Du shield à disposition ',20,2,5,'rue 2.4 Salty Springs','bien_682d8a61b6cfa9.94400885.png',1,1,0,0,1,0,0,''),(55,1,'Maison','Maison des neuils',5.00,'Maison anciennement abrité par des gitans.',100,5,7,'40 7ème avenue','bien_682de1d73fa6b0.31228472.png',1,0,1,1,0,1,0,'');
+INSERT INTO `biens` VALUES (1,1,'Appartement','Studio moderne au centre-ville',85.00,'Studio lumineux avec toutes commodités.',30,1,2,'13 Rue Lafayette, 75009 Paris','photo1.jpg',0,0,0,0,0,0,0,'TK-001-XYZ'),(2,1,'Maison','Maison avec jardin à Lyon',120.00,'Maison familiale avec grand jardin, parfaite pour les vacances.',120,5,6,'8 Chemin des Prés, 69008 Lyon','photo2.jpg',1,1,1,1,1,1,1,'TK-001-XYZ'),(3,1,'Bureau','Espace de coworking à Bordeaux',60.00,'Bureau moderne idéal pour freelances et startups.',50,2,4,'22 Rue Sainte-Catherine, 33000 Bordeaux','photo3.jpg',1,0,1,1,0,1,1,'TK-001-XYZ'),(4,1,'Appartement','Appartement cosy à Marseille',75.00,'Appartement avec vue mer à deux pas du Vieux-Port.',45,2,3,'5 Quai du Port, 13002 Marseille','photo4.jpg',1,0,1,1,1,1,0,NULL),(5,1,'Maison','Villa en Provence avec piscine',200.00,'Villa avec piscine privée dans un cadre paisible.',180,6,8,'99 Route des Vignes, 84110 Vaison-la-Romaine','photo5.jpg',1,1,1,1,1,1,0,NULL),(6,1,'Appartement','Loft design à Lille',95.00,'Grand loft avec mezzanine et espace détente.',70,3,4,'18 Rue de la Monnaie, 59000 Lille','photo6.jpg',1,1,1,1,1,1,0,NULL);
 /*!40000 ALTER TABLE `biens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +83,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Client Admin','client@admin.com','$2y$10$GEq6aEZHERl/tHB2b0fBr.nqfQ9SxvtFybmgWWbU2nyReZ0Qw5Fme','2025-04-08 09:27:45','0614589324'),(2,'Bilal Taoufik','bll.taoufik@gmail.com','$2y$10$Noi/ZpDGHQM/VPpOcBJW1eKhocXGg7yMeUgEgnPMZnUwbjBjUXyZm','2025-04-08 09:31:07','0626266252'),(3,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357'),(5,'toto','toto@lycee-jeanrostand.fr','$2y$10$vGYrKL5l2U0Uf1vmLgWXZ.35PK2BNvMQBaqNRoMNxX/gcXkXhCc2G','2025-04-10 13:36:07','0102030405');
+INSERT INTO `clients` VALUES (1,'Bilal Taoufik','bll.taoufik@gmail.com','$2y$10$ZdVUg9Bb92unjfpitayeyu6wUaSEZTG1PSVs2yU5GPZSK1wosuXrm','2025-04-08 09:31:07','0626266252'),(2,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +112,7 @@ CREATE TABLE `proprietaires` (
 
 LOCK TABLES `proprietaires` WRITE;
 /*!40000 ALTER TABLE `proprietaires` DISABLE KEYS */;
-INSERT INTO `proprietaires` VALUES (1,'Proprietaire Admin','proprietaire@admin.com','$2y$10$Cud4vOQAPZP4E43E3THQ2eB907V1DQuFW4sKAeTN9TCxWAXLuBw/a','2025-04-08','0698412368'),(2,'Lakshan Sangaralingam','lakshan@gmail.com','$2y$10$WdYcM8ObNmpj1hLd/ZwWHu4vYb56GLnZGP45OdJNu3If7iaQ21ajy','2025-04-08','0698478687'),(3,'Amine El mir','amine@gmail.com','$2y$10$vxPj544S8kvPsTD2cT4ds.j8k3q7nCscZeZZ4Otu/b3oDOr4VOC1y','2025-04-08','0658598747');
+INSERT INTO `proprietaires` VALUES (1,'Lakshan Sangaralingam','lakshan@gmail.com','$2y$10$MOdHF0Ln0Mra1FuL3Edv4.DUD96aDCdbMe0RTBOwH6DBV.eDW6k4O','2025-04-08','0698478687');
 /*!40000 ALTER TABLE `proprietaires` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,1,1,'Client Admin','2025-04-15','2025-04-20',4,'2025-04-08 09:35:08','confirmée'),(2,3,3,'Adel Aichi','2025-04-10','2025-04-12',1,'2025-04-08 09:35:08','confirmée'),(3,2,2,'Bilal Taoufik','2025-04-13','2025-04-26',2,'2025-04-08 09:35:08','confirmée'),(4,2,4,'Bilal Taoufik','2025-05-18','2025-06-13',6,'2025-05-19 13:17:25','confirmée'),(5,2,1,'Bilal Taoufik','2025-05-18','2025-06-14',3,'2025-05-21 08:24:19','confirmée'),(6,2,3,'Bilal Taoufik','2025-05-11','2025-05-17',2,'2025-05-21 09:40:53','confirmée');
+INSERT INTO `reservations` VALUES (1,1,1,'Bilal Taoufik','2025-05-04','2025-05-10',2,'2025-05-22 00:06:28','confirmée'),(2,1,4,'Bilal Taoufik','2025-06-22','2025-06-24',3,'2025-05-21 22:42:27','confirmée'),(3,1,2,'Bilal Taoufik','2025-05-18','2025-06-14',6,'2025-05-21 22:43:11','confirmée'),(4,1,6,'Bilal Taoufik','2024-12-01','2024-12-07',4,'2025-05-22 00:11:10','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-21 14:55:22
+-- Dump completed on 2025-05-22 15:08:53
