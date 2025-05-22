@@ -86,7 +86,7 @@ try {
         ':id_client' => $id_client
     ]);
 
-    echo json_encode(['status' => 'success', 'message' => 'Réservation annulée avec succès.']);
+    echo json_encode(['status' => 'success', 'message' => 'Votre réservation a aété annulée avec succès, le montant sera remboursé dans les 15 jours ouvrés.']);
 
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Erreur serveur : ' . $e->getMessage()]);
