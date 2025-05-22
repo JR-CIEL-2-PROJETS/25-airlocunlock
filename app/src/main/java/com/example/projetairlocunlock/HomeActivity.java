@@ -1,5 +1,6 @@
 package com.example.projetairlocunlock;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -170,8 +171,12 @@ public class HomeActivity extends Activity {
             Date dateArrivee = sdf.parse(dateArriveeStr);
             Date dateDepart = sdf.parse(dateDepartStr);
 
+
             boolean isWithinDate = now.after(dateArrivee) && now.before(dateDepart);
             boolean isPast = now.after(dateDepart);
+            long dixJoursMillis = 10L * 24 * 60 * 60 * 1000; // 10 jours en millisecondes
+            boolean peutAnnuler = now.getTime() < (dateArrivee.getTime() - dixJoursMillis);
+
 
             LinearLayout container = new LinearLayout(this);
             container.setOrientation(LinearLayout.VERTICAL);
@@ -218,7 +223,7 @@ public class HomeActivity extends Activity {
                 deleteIcon.setClickable(true);
 
                 deleteIcon.setOnClickListener(v -> {
-                    deleteReservationOnServer(idReservation, container);
+                    deleteReservation(idReservation, container);
                 });
 
                 imageFrame.addView(deleteIcon);
@@ -233,7 +238,7 @@ public class HomeActivity extends Activity {
                     LinearLayout.LayoutParams.WRAP_CONTENT));
 
             // Ajout du bouton d’annulation en haut à droite de l'image
-            if (now.before(dateArrivee)) {
+            if (peutAnnuler) {
                 Button cancelButton = new Button(this);
                 cancelButton.setText("ANNULER");
                 cancelButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
@@ -249,9 +254,10 @@ public class HomeActivity extends Activity {
                 cancelButton.setOnClickListener(v -> {
                     new AlertDialog.Builder(HomeActivity.this)
                             .setTitle("Annuler la réservation")
-                            .setMessage("Voulez-vous vraiment annuler cette réservation ?")
+                            .setMessage("Voulez-vous vraiment annuler cette réservation ?\nLe montant sera remboursé dans les 15 jours ouvrés.")
                             .setPositiveButton("Oui", (dialog, which) -> {
-                                deleteReservationOnServer(idReservation, container);
+                                cancelReservation(idReservation, container);
+
                             })
                             .setNegativeButton("Non", null)
                             .show();
@@ -322,7 +328,8 @@ public class HomeActivity extends Activity {
 
 
 
-    private void deleteReservationOnServer(int idReservation, LinearLayout container) {
+    @SuppressLint("StaticFieldLeak")
+    private void deleteReservation(int idReservation, LinearLayout container) {
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String token = prefs.getString("token", null);
 
@@ -331,11 +338,15 @@ public class HomeActivity extends Activity {
             return;
         }
 
+        SharedPreferences configPrefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
+        String ip = configPrefs.getString("server_ip", "172.16.15.74");
+        String port = configPrefs.getString("server_port", "421");
+
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
                 try {
-                    String urlString = "https://172.16.15.74:421/AirlockUnlock/client/annuler-reservations.php";
+                    String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/delete-reservation.php";
                     URL url = new URL(urlString);
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -344,11 +355,9 @@ public class HomeActivity extends Activity {
                     conn.setRequestProperty("Content-Type", "application/json");
                     conn.setDoOutput(true);
 
-                    // Créer le corps JSON avec l'id_reservation
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("id_reservation", idReservation);
 
-                    // Envoyer les données JSON
                     byte[] postData = jsonParam.toString().getBytes("UTF-8");
                     conn.getOutputStream().write(postData);
 
@@ -373,7 +382,7 @@ public class HomeActivity extends Activity {
                     JSONObject json = new JSONObject(result);
                     if ("success".equals(json.getString("status"))) {
                         reservationLayout.removeView(container);
-                        Toast.makeText(HomeActivity.this, "Réservation supprimée", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, "Réservation supprimée avec succès.", Toast.LENGTH_SHORT).show();
                     } else {
                         showError("Erreur lors de la suppression : " + json.getString("message"));
                     }
@@ -383,6 +392,73 @@ public class HomeActivity extends Activity {
             }
         }.execute();
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private void cancelReservation(int idReservation, LinearLayout container) {
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String token = prefs.getString("token", null);
+
+        if (token == null) {
+            showError("Token introuvable. Veuillez vous reconnecter.");
+            return;
+        }
+
+        SharedPreferences configPrefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
+        String ip = configPrefs.getString("server_ip", "172.16.15.74");
+        String port = configPrefs.getString("server_port", "421");
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                try {
+                    String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/annuler-reservations.php";
+                    URL url = new URL(urlString);
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Authorization", "Bearer " + token);
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("id_reservation", idReservation);
+
+                    byte[] postData = jsonParam.toString().getBytes("UTF-8");
+                    conn.getOutputStream().write(postData);
+
+                    int responseCode = conn.getResponseCode();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(
+                            (responseCode >= 200 && responseCode < 300) ? conn.getInputStream() : conn.getErrorStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null) response.append(line);
+                    in.close();
+
+                    return response.toString();
+
+                } catch (Exception e) {
+                    return "{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}";
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                try {
+                    JSONObject json = new JSONObject(result);
+                    if ("success".equals(json.getString("status"))) {
+                        reservationLayout.removeView(container);
+                        Toast.makeText(HomeActivity.this, "Votre réservation a été annulée avec succès.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        showError("Erreur lors de l'annulation : " + json.getString("message"));
+                    }
+                } catch (Exception e) {
+                    showError("Erreur de réponse : " + e.getMessage());
+                }
+            }
+        }.execute();
+    }
+
+
 
     private void showError(String message) {
         runOnUiThread(() -> {
