@@ -160,11 +160,9 @@ public class HomeActivity extends Activity {
             String dates = dateArriveeStr + " - " + dateDepartStr;
             String photoUrl = res.optString("photo_url", null);
             String numeroSerie = res.optString("numero_serie_tapkey", "");
-
             int idReservation = res.getInt("id_reservation");
 
             if (photoUrl != null) photoUrl = photoUrl.trim();
-
             boolean hasTapkey = !numeroSerie.trim().isEmpty() && !numeroSerie.equalsIgnoreCase("null");
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
@@ -175,7 +173,6 @@ public class HomeActivity extends Activity {
             boolean isWithinDate = now.after(dateArrivee) && now.before(dateDepart);
             boolean isPast = now.after(dateDepart);
 
-            // Conteneur principal vertical
             LinearLayout container = new LinearLayout(this);
             container.setOrientation(LinearLayout.VERTICAL);
             container.setPadding(16, 16, 16, 16);
@@ -184,7 +181,6 @@ public class HomeActivity extends Activity {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            // FrameLayout pour superposer image + icône delete
             FrameLayout imageFrame = new FrameLayout(this);
             imageFrame.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -211,11 +207,10 @@ public class HomeActivity extends Activity {
 
             imageFrame.addView(imageView);
 
-            // Si réservation dépassée, ajout de l'icône poubelle superposée
             if (isPast) {
                 ImageView deleteIcon = new ImageView(this);
                 deleteIcon.setImageResource(R.drawable.ic_delete_red);
-                int size = 80; // taille icône en px
+                int size = 80;
                 FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(size, size);
                 iconParams.setMargins(0, 16, 16, 0);
                 iconParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
@@ -231,12 +226,41 @@ public class HomeActivity extends Activity {
 
             container.addView(imageFrame);
 
-            // Carte verticale avec les infos sous l'image
             LinearLayout itemLayout = new LinearLayout(this);
             itemLayout.setOrientation(LinearLayout.VERTICAL);
             itemLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            // Ajout du bouton d’annulation en haut à droite de l'image
+            if (now.before(dateArrivee)) {
+                Button cancelButton = new Button(this);
+                cancelButton.setText("ANNULER");
+                cancelButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+                cancelButton.setTextColor(getResources().getColor(android.R.color.white));
+
+                FrameLayout.LayoutParams cancelParams = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT);
+                cancelParams.setMargins(0, 16, 16, 0);
+                cancelParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+                cancelButton.setLayoutParams(cancelParams);
+
+                cancelButton.setOnClickListener(v -> {
+                    new AlertDialog.Builder(HomeActivity.this)
+                            .setTitle("Annuler la réservation")
+                            .setMessage("Voulez-vous vraiment annuler cette réservation ?")
+                            .setPositiveButton("Oui", (dialog, which) -> {
+                                deleteReservationOnServer(idReservation, container);
+                            })
+                            .setNegativeButton("Non", null)
+                            .show();
+                });
+
+                imageFrame.addView(cancelButton);
+            }
+
+
 
             TextView titleView = new TextView(this);
             titleView.setText(title);
@@ -270,24 +294,33 @@ public class HomeActivity extends Activity {
                 instructionsButton.setAlpha(0.5f);
             }
 
+            LinearLayout buttonsLayout = new LinearLayout(this);
+            buttonsLayout.setOrientation(LinearLayout.HORIZONTAL);
+            buttonsLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            buttonsLayout.setPadding(0, 0, 0, 8);
+
+            LinearLayout.LayoutParams instrParams = new LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            instructionsButton.setLayoutParams(instrParams);
+            buttonsLayout.addView(instructionsButton);
+
             itemLayout.addView(titleView);
             itemLayout.addView(dateView);
             itemLayout.addView(tapkeyView);
-            itemLayout.addView(instructionsButton);
-
-            if (!hasTapkey) {
-                itemLayout.setAlpha(0.4f);
-                itemLayout.setEnabled(false);
-            }
+            itemLayout.addView(buttonsLayout);
 
             container.addView(itemLayout);
-
             reservationLayout.addView(container);
 
         } catch (Exception e) {
             showError("Erreur d'affichage : " + e.getMessage());
         }
     }
+
+
 
     private void deleteReservationOnServer(int idReservation, LinearLayout container) {
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -302,21 +335,22 @@ public class HomeActivity extends Activity {
             @Override
             protected String doInBackground(Void... voids) {
                 try {
-                    SharedPreferences configPrefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
-                    String ip = configPrefs.getString("server_ip", "172.16.15.63");
-                    String port = configPrefs.getString("server_port", "421");
-
-                    String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/delete.php";
+                    String urlString = "https://172.16.15.74:421/AirlockUnlock/client/annuler-reservations.php";
                     URL url = new URL(urlString);
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("DELETE");
+                    conn.setRequestMethod("POST");
                     conn.setRequestProperty("Authorization", "Bearer " + token);
-                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setRequestProperty("Content-Type", "application/json");
                     conn.setDoOutput(true);
 
-                    String urlParameters = "id_reservation=" + idReservation;
-                    conn.getOutputStream().write(urlParameters.getBytes());
+                    // Créer le corps JSON avec l'id_reservation
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("id_reservation", idReservation);
+
+                    // Envoyer les données JSON
+                    byte[] postData = jsonParam.toString().getBytes("UTF-8");
+                    conn.getOutputStream().write(postData);
 
                     int responseCode = conn.getResponseCode();
                     BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -338,7 +372,6 @@ public class HomeActivity extends Activity {
                 try {
                     JSONObject json = new JSONObject(result);
                     if ("success".equals(json.getString("status"))) {
-                        // Suppression côté serveur OK, retirer la carte UI
                         reservationLayout.removeView(container);
                         Toast.makeText(HomeActivity.this, "Réservation supprimée", Toast.LENGTH_SHORT).show();
                     } else {
