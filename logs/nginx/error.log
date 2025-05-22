@@ -114,3 +114,5 @@
 2025/05/22 14:43:48 [warn] 31#31: *1173 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000002, client: 172.16.15.67, server: localhost, request: "POST /AirlockUnlock/bien/publier-bien.php HTTP/2.0", host: "172.16.15.74:421", referrer: "https://172.16.15.106:422/"
 2025/05/22 22:19:43 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
 2025/05/22 22:19:43 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:74
+2025/05/22 22:25:25 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:43
+2025/05/22 22:25:25 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:74
