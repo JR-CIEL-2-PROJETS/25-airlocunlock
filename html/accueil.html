@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <style>
+        /* Vos styles existants */
         :root {
             --primary: #007BFF;
             --secondary: #0056b3;
@@ -584,17 +585,13 @@
             <img src="img/logo (2).png" alt="AirLockUnlock Logo">
             <span class="logo-text">AirLockUnlock</span>
         </div>
-        <nav class="nav-links">
-            <a href="reservations.html"><i class="fas fa-calendar-check"></i> Réservations</a>
-        </nav>
         <div class="profile-container">
-            <a href="sign.html" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
+            <a href="signup.html" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
             <div class="profile">
                 <img src="img/hasbula.jpg" alt="User Icon" class="user-icon">
                 <div class="profile-menu">
                     <ul>
                         <li><a href="profile.html"><i class="fas fa-user"></i> Profil</a></li>
-                        <li><a href="setting.html"><i class="fas fa-cog"></i> Paramètres</a></li>
                         <li><a href="accueilpro.html" class="owner-only"><i class="fas fa-user-tie"></i> Accueil Pro</a></li>
                         <li><a href="signin.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                     </ul>
@@ -721,6 +718,25 @@
                         { text: 'Contacter le support', value: '3' }
                     ]);
                 }
+            }
+        });
+        // Fonction pour supprimer un cookie
+        function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+
+        // Fonction pour gérer la déconnexion
+        function handleLogout(event) {
+            event.preventDefault(); // Empêcher le comportement par défaut du lien
+            deleteCookie('auth_token'); // Supprimer le cookie contenant le token
+            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
+        }
+
+        // Ajouter un gestionnaire d'événements pour la déconnexion
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', handleLogout);
             }
         });
 
@@ -884,10 +900,26 @@
                 geocoder.geocode({ 'address': bien.adresse }, function(results, status) {
                     if (status === 'OK') {
                         const location = results[0].geometry.location;
+
+                        // Déterminer l'icône du marqueur en fonction de la présence d'une serrure électronique
+                        let markerIcon;
+                        if (bien.serrure_electronique) {
+                            markerIcon = {
+                                url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Icône avec serrure
+                                scaledSize: new google.maps.Size(32, 32)
+                            };
+                        } else {
+                            markerIcon = {
+                                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png', // Icône sans serrure
+                                scaledSize: new google.maps.Size(32, 32)
+                            };
+                        }
+
                         const marker = new google.maps.Marker({
                             position: location,
                             map: map,
-                            title: bien.titre
+                            title: bien.titre,
+                            icon: markerIcon
                         });
 
                         marker.addListener('click', () => {
@@ -911,6 +943,38 @@
             initMap(); // Re-initialize the map to ensure it's visible
         });
 
+        // Fonction pour ajouter un message à la boîte de chat
+        function addMessageToChatBox(sender, message, options = []) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = message;
+            chatBox.appendChild(messageDiv);
+
+            if (options.length > 0) {
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'options-container';
+
+                options.forEach(option => {
+                    const optionButton = document.createElement('button');
+                    optionButton.className = 'option-button';
+                    optionButton.textContent = option.text;
+                    optionButton.addEventListener('click', () => {
+                        chatInput.value = option.value;
+                        sendBtn.click();
+                    });
+                    optionsContainer.appendChild(optionButton);
+                });
+
+                chatBox.appendChild(optionsContainer);
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Fonction pour effacer la boîte de chat
+        function clearChatBox() {
+            chatBox.innerHTML = '';
+        }
     </script>
 </body>
 </html>

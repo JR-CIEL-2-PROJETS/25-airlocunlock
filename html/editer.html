@@ -251,7 +251,6 @@
         </div>
         <a href="signin.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
     </header>
-
     <div class="container">
         <a href="gerer.html" class="btn-back"><i class="fas fa-arrow-left"></i> Retour à la gestion des biens</a>
 
@@ -337,6 +336,26 @@
     </footer>
 
     <script>
+                // Fonction pour supprimer un cookie
+        function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+
+        // Fonction pour gérer la déconnexion
+        function handleLogout(event) {
+            event.preventDefault(); // Empêcher le comportement par défaut du lien
+            deleteCookie('auth_token'); // Supprimer le cookie contenant le token
+            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
+        }
+
+        // Ajouter un gestionnaire d'événements pour la déconnexion
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', handleLogout);
+            }
+        });
+
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -422,34 +441,59 @@
                 numero_serie_tapkey: document.getElementById('id_serrure_tapkey').value || null // Peut être vide
             };
     
-            fetch('https://172.16.15.74:421/AirlockUnlock/bien/editer-bien.php', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(payload)
+            fetch('https://172.16.15.74:421/AirlockUnlock/bien/editer.php', {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(payload)
+})
+.then(response => {
+    if (!response.ok) {
+        return response.json().then(err => { throw new Error(err.message || 'Erreur serveur'); });
+    }
+    return response.json();
+})
+.then(data => {
+    if (data.success) {
+        alert('Bien mis à jour avec succès!');
+
+        // Suppression du bien juste après la mise à jour
+        fetch('https://172.16.15.74:421/AirlockUnlock/bien/supprimer.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                id_bien: payload.id_bien,
+                id_proprietaire: getCookie('id_proprietaire') // Assure-toi que ce cookie est bien défini
             })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw new Error(err.message || 'Erreur serveur'); });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('Bien mis à jour avec succès!');
-                    window.location.href = 'gerer.html';
-                } else {
-                    throw new Error(data.message || 'Erreur lors de la mise à jour');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                alert('Erreur lors de la mise à jour: ' + error.message);
-            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Bien supprimé avec succès.');
+                window.location.href = 'gerer.html';
+            } else {
+                throw new Error(data.error || 'Erreur lors de la suppression');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur de suppression:', error);
+            alert('Erreur lors de la suppression: ' + error.message);
         });
+
+    } else {
+        throw new Error(data.message || 'Erreur lors de la mise à jour');
+    }
+})
+.catch(error => {
+    console.error('Erreur:', error);
+    alert('Erreur lors de la mise à jour: ' + error.message);
+});
+});
     </script>
-    
+
 </body>
 </html>

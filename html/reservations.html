@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AirLockUnlock - Mes Réservations</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <style>
         :root {
@@ -17,20 +17,18 @@
             --gray: #94a3b8;
             --light-gray: #e2e8f0;
         }
-
+        /* ... ton CSS inchangé ... */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f1f5f9;
             color: var(--dark);
             line-height: 1.6;
         }
-
         header {
             background-color: var(--primary);
             padding: 1rem 2rem;
@@ -42,30 +40,25 @@
             top: 0;
             z-index: 100;
         }
-
         .logo {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-
         .logo img {
             width: 2.5rem;
             height: 2.5rem;
         }
-
         .logo-text {
             color: white;
             font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: -0.025em;
         }
-
         .nav-links {
             display: flex;
             gap: 1.5rem;
         }
-
         .nav-links a {
             color: white;
             text-decoration: none;
@@ -74,11 +67,9 @@
             position: relative;
             transition: all 0.3s ease;
         }
-
         .nav-links a:hover {
             color: var(--accent);
         }
-
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -89,11 +80,9 @@
             background-color: var(--accent);
             transition: width 0.3s ease;
         }
-
         .nav-links a:hover::after {
             width: 100%;
         }
-
         .btn {
             display: inline-flex;
             align-items: center;
@@ -105,46 +94,38 @@
             text-decoration: none;
             gap: 0.5rem;
         }
-
         .btn-primary {
             background-color: white;
             color: var(--primary);
         }
-
         .btn-primary:hover {
             background-color: var(--light-gray);
             transform: translateY(-1px);
         }
-
         .btn-logout {
             background-color: transparent;
             color: white;
             border: 1px solid white;
         }
-
         .btn-logout:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-
         .container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1.5rem;
         }
-
         h1 {
             font-size: 2rem;
             margin-bottom: 1.5rem;
             color: var(--dark);
             text-align: center;
         }
-
         .reservations {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
         }
-
         .reservation {
             background-color: white;
             border-radius: 0.5rem;
@@ -154,39 +135,32 @@
             position: relative;
             cursor: pointer;
         }
-
         .reservation:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-
         .reservation img {
             width: 100%;
             height: 200px;
             object-fit: cover;
         }
-
         .reservation-details {
             padding: 1.25rem;
         }
-
         .reservation-details h3 {
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--dark);
         }
-
         .reservation-details p {
             font-size: 0.875rem;
             color: var(--gray);
         }
-
         .reservation-details span {
             font-weight: bold;
             color: var(--primary);
         }
-
         .reservation-details .lock-icon {
             position: absolute;
             top: 1rem;
@@ -194,14 +168,12 @@
             font-size: 1.5rem;
             color: var(--primary);
         }
-
         footer {
             background-color: var(--primary);
             color: white;
             padding: 2rem 0;
             margin-top: 4rem;
         }
-
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -210,36 +182,30 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .footer-links {
             display: flex;
             gap: 1.5rem;
         }
-
         .footer-links a {
             color: white;
             text-decoration: none;
             transition: color 0.3s ease;
         }
-
         .footer-links a:hover {
             color: var(--accent);
         }
-
         /* Profile Menu Styles */
         .profile-container {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-
         .profile {
             position: relative;
             display: flex;
             align-items: center;
             cursor: pointer;
         }
-
         .profile img {
             width: 2.5rem;
             height: 2.5rem;
@@ -247,11 +213,9 @@
             border: 2px solid white;
             transition: transform 0.3s ease;
         }
-
         .profile img:hover {
             transform: scale(1.1);
         }
-
         .profile-menu {
             display: none;
             position: absolute;
@@ -267,37 +231,30 @@
             overflow: hidden;
             min-width: 200px;
         }
-
         .profile-menu.active {
             display: block;
             opacity: 1;
             transform: translateY(0);
         }
-
         .profile-menu ul {
             list-style: none;
         }
-
         .profile-menu ul li {
             padding: 0.75rem 1.25rem;
             transition: background-color 0.3s ease;
         }
-
         .profile-menu ul li:hover {
             background-color: var(--light-gray);
         }
-
         .profile-menu ul li a {
             text-decoration: none;
             color: var(--dark);
             font-weight: 500;
             display: block;
         }
-
         .profile-menu ul li a:hover {
             color: var(--primary);
         }
-
         .owner-only {
             display: none;
         }
@@ -306,7 +263,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="img/logo (2).png" alt="AirLockUnlock Logo">
+            <img src="img/logo (2).png" alt="AirLockUnlock Logo" />
             <span class="logo-text">AirLockUnlock</span>
         </div>
         <nav class="nav-links">
@@ -315,7 +272,7 @@
         <div class="profile-container">
             <a href="sign.html" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
             <div class="profile">
-                <img src="img/hasbula.jpg" alt="User Icon" class="user-icon">
+                <img src="img/hasbula.jpg" alt="User Icon" class="user-icon" />
                 <div class="profile-menu">
                     <ul>
                         <li><a href="profile.html"><i class="fas fa-user"></i> Profil</a></li>
@@ -349,72 +306,117 @@
     </footer>
 
     <script>
-        // Attendre que le DOM soit complètement chargé
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fonction pour récupérer les réservations depuis l'API
-            async function fetchReservations() {
-                try {
-                    const response = await fetch('https://172.16.15.74:421/AirlockUnlock/client/reservations.php', {
+        // Récupère un cookie par son nom
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        // Décodage simple JWT (payload base64)
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(
+                    atob(base64)
+                        .split('')
+                        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                        .join('')
+                );
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function fetchReservations() {
+            const token = getCookie('auth_token');
+            if (!token) {
+                alert("Token d'authentification manquant. Veuillez vous connecter.");
+                return;
+            }
+
+            const payload = parseJwt(token);
+            if (!payload || !payload.id_client) {
+                alert("Token invalide ou ID utilisateur introuvable.");
+                return;
+            }
+
+            const userId = payload.id; // Adapte selon ton token (ex: payload.user_id)
+
+            console.log("ID utilisateur extrait du token:", userId);
+
+            try {
+                const response = await fetch(
+                    'https://172.16.15.74:421/AirlockUnlock/client/reservations.php',
+                    {
                         method: 'GET',
-                        credentials: 'include' // Inclure les cookies dans la requête
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`Erreur HTTP: ${response.status}`);
+                        headers: {
+                            Authorization: 'Bearer ' + token,
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include',
                     }
+                );
 
-                    const data = await response.json();
-                    console.log('Réponse de l\'API:', data); // Log pour vérifier les données reçues
-
-                    if (data.status === 'success' && data.reservations) {
-                        displayReservations(data.reservations); // Accéder au tableau de réservations
-                    } else {
-                        console.error('Erreur: Aucune réservation trouvée dans la réponse.');
-                    }
-                } catch (error) {
-                    console.error('Erreur:', error);
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ${response.status}`);
                 }
+
+                const data = await response.json();
+
+                if (data.status !== 'success') {
+                    throw new Error(data.message || 'Erreur lors de la récupération des réservations.');
+                }
+
+                // Filtrer côté client les réservations liées à l'utilisateur
+                // Remplace "user_id" par le champ correct de ta réponse
+                const userReservations = data.reservations.filter(
+                    reservation => reservation.user_id == userId
+                );
+
+                displayReservations(userReservations);
+            } catch (error) {
+                console.error(error);
+                alert('Impossible de récupérer les réservations : ' + error.message);
+            }
+        }
+
+        function displayReservations(reservations) {
+            const container = document.getElementById('reservations-list');
+            container.innerHTML = '';
+
+            if (!reservations || reservations.length === 0) {
+                container.innerHTML = '<p>Aucune réservation trouvée.</p>';
+                return;
             }
 
-            // Fonction pour afficher les réservations dans la div
-            function displayReservations(reservations) {
-                const reservationsContainer = document.getElementById('reservations-list');
-                if (reservationsContainer) {
-                    reservationsContainer.innerHTML = ''; // Effacer le contenu existant
+            reservations.forEach(reservation => {
+                const div = document.createElement('div');
+                div.className = 'reservation';
+                div.innerHTML = `
+                    <img src="${reservation.photo_url || 'https://via.placeholder.com/400x200?text=Pas+de+photo'}" alt="${reservation.titre}" />
+                    <div class="reservation-details">
+                        <h3>${reservation.titre}</h3>
+                        <p>${reservation.adresse || ''}</p>
+                        <p><strong>Date de début :</strong> ${reservation.date_arrivee}</p>
+                        <p><strong>Date de fin :</strong> ${reservation.date_depart}</p>
+                        <p><strong>Nombre de personnes :</strong> ${reservation.nombre_personnes}</p>
+                        <p><strong>Statut :</strong> ${reservation.statut}</p>
+                    </div>
+                `;
 
-                    if (!reservations || reservations.length === 0) {
-                        reservationsContainer.innerHTML = '<p>Aucune réservation trouvée.</p>';
-                        return;
-                    }
+                div.addEventListener('click', () => {
+                    window.location.href = `reservation.html?id_reservation=${reservation.id_reservation}`;
+                });
 
-                    reservations.forEach(reservation => {
-                        const reservationDiv = document.createElement('div');
-                        reservationDiv.className = 'reservation';
-                        reservationDiv.innerHTML = `
-                            <img src="${reservation.photo_url}" alt="${reservation.titre}">
-                            <div class="reservation-details">
-                                <h3>${reservation.titre}</h3>
-                                <p>${reservation.adresse}</p>
-                                <p>Date de début: ${reservation.date_arrivee}</p>
-                                <p>Date de fin: ${reservation.date_depart}</p>
-                                <p>Nombre de personnes: ${reservation.nombre_personnes}</p>
-                                <p>Statut: ${reservation.statut}</p>
-                            </div>
-                        `;
+                container.appendChild(div);
+            });
+        }
 
-                        // Ajouter un événement de clic pour rediriger vers la page détaillée de la réservation
-                        reservationDiv.addEventListener('click', () => {
-                            window.location.href = `reservation.html?id_reservation=${reservation.id_reservation}`;
-                        });
-
-                        reservationsContainer.appendChild(reservationDiv);
-                    });
-                }
-            }
-
-            // Appeler la fonction pour récupérer les réservations
-            fetchReservations();
-        });
+        document.addEventListener('DOMContentLoaded', fetchReservations);
     </script>
 </body>
 </html>

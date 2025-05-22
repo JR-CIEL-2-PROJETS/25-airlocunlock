@@ -379,9 +379,9 @@
                                 <h3 class="property-title">${bien.titre}</h3>
                                 <div class="property-location">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span>${bien.localisation}</span>
+                                    <span>${bien.adresse}</span>
                                 </div>
-                                <div class="property-price">${bien.prix} €/mois</div>
+                                <div class="property-price">${bien.prix_par_nuit} €/nuits</div>
                                 <div class="property-actions">
                                     <a href="editer.html?id=${bien.id_bien}" class="btn-edit"><i class="fas fa-edit"></i> Modifier</a>
                                     <button class="btn-delete" data-id="${bien.id_bien}"><i class="fas fa-trash"></i> Supprimer</button>
@@ -396,14 +396,15 @@
                         button.addEventListener('click', function () {
                             if (confirm('Êtes-vous sûr de vouloir supprimer ce bien ?')) {
                                 const bienId = this.getAttribute('data-id');
-                                fetch('https://172.16.15.74:421/AirlockUnlock/bien/supprimer-bien.php', {
-                                    method: 'POST',  // ou 'DELETE' selon ton API
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${auth_token}` // si ton API utilise un token
-                                    },
-                                    body: JSON.stringify({ id: bienId })
-                                })
+                                
+                                fetch('https://172.16.15.74:421/AirlockUnlock/bien/supprimer.php', {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${auth_token}`
+                                        },
+                                        body: JSON.stringify({ id_bien: bienId })
+                                    })
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {

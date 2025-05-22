@@ -490,6 +490,27 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
+
+                // Fonction pour supprimer un cookie
+        function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+
+        // Fonction pour gérer la déconnexion
+        function handleLogout(event) {
+            event.preventDefault(); // Empêcher le comportement par défaut du lien
+            deleteCookie('auth_token'); // Supprimer le cookie contenant le token
+            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
+        }
+
+        // Ajouter un gestionnaire d'événements pour la déconnexion
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', handleLogout);
+            }
+        });
+
         emailjs.init("qngsnA0v0RgtX9ypF"); // Clé publique EmailJS
 
         let currentProperty = null;

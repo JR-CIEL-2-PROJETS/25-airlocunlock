@@ -436,13 +436,6 @@
             </div>
         </section>
 
-        <section class="verify-section">
-            <h3 class="verify-title">Vérifier une serrure Tapkey</h3>
-            <div class="verify-form">
-                <input type="text" class="verify-input" placeholder="Entrez le numéro de série">
-                <button class="verify-btn">Vérifier</button>
-            </div>
-        </section>
     </div>
 
     <footer>
@@ -457,50 +450,108 @@
     </footer>
 
     <script>
+        // Fonction pour supprimer un cookie
+        function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+
+        // Fonction pour gérer la déconnexion
+        function handleLogout(event) {
+            event.preventDefault(); // Empêcher le comportement par défaut du lien
+            deleteCookie('auth_token'); // Supprimer le cookie contenant le token
+            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
+        }
+
+        // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
-            // Message de bienvenue par défaut
-            document.getElementById('welcome-message').textContent = 'Bienvenue, Utilisateur';
-        });
-
-        // Vérification du numéro de série
-        document.querySelector('.verify-btn').addEventListener('click', function() {
-            const serialNumber = document.querySelector('.verify-input').value;
-            if (serialNumber.trim() === '') {
-                alert('Veuillez entrer un numéro de série');
-                return;
+            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', handleLogout);
             }
-
-            // Simulation de vérification
-            alert(`Numéro de série ${serialNumber} vérifié avec succès!`);
-
-            // En production, vous feriez une requête AJAX ici
-            // fetch('/verify-serial', {
-            //     method: 'POST',
-            //     body: JSON.stringify({ serial: serialNumber }),
-            //     headers: { 'Content-Type': 'application/json' }
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     if (data.valid) {
-            //         alert('Serrure vérifiée avec succès!');
-            //     } else {
-            //         alert('Numéro de série invalide');
-            //     }
-            // });
         });
 
-        // Animation au survol des cartes
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-                this.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+        // Fonction pour lire un cookie
+        function getCookie(nom) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${nom}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+    
+        // Fonction pour décoder la payload d’un JWT
+        function parseJwt(token) {
+            try {
+                const base64Payload = token.split('.')[1]; // payload = 2ème partie
+                const payload = atob(base64Payload); // décoder base64
+                return JSON.parse(payload);
+            } catch (e) {
+                console.error('Erreur de décodage du JWT:', e);
+                return null;
+            }
+        }
+    
+        // Fonction principale pour insérer le nom dans la page
+        function fillNameFromToken() {
+            const token = getCookie('auth_token');
+            let nom = 'Utilisateur';
+    
+            if (token) {
+                const payload = parseJwt(token);
+                if (payload && payload.nom) {
+                    nom = payload.nom;
+                } else if (payload && payload.username) {
+                    nom = payload.username;
+                }
+    
+                // Champ de formulaire s’il existe
+                const nameInput = document.getElementById('name');
+                if (nameInput) {
+                    nameInput.value = nom;
+                    nameInput.readOnly = true;
+                }
+    
+                // Élément d'affichage utilisateur s’il existe
+                const userNameDisplay = document.getElementById('user-name');
+                if (userNameDisplay) {
+                    userNameDisplay.innerText = nom;
+                }
+            }
+    
+            // Message de bienvenue
+            const welcomeMessage = document.getElementById('welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.textContent = `Bienvenue, ${nom}`;
+            }
+        }
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            fillNameFromToken();
+    
+            // Vérification du numéro de série
+            document.querySelector('.verify-btn').addEventListener('click', function () {
+                const serialNumber = document.querySelector('.verify-input').value;
+                if (serialNumber.trim() === '') {
+                    alert('Veuillez entrer un numéro de série');
+                    return;
+                }
+    
+                alert(`Numéro de série ${serialNumber} vérifié avec succès!`);
             });
-
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = '';
-                this.style.boxShadow = '';
+    
+            // Animation au survol des cartes
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                });
+    
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                });
             });
         });
     </script>
+    
+    
 </body>
 </html>
