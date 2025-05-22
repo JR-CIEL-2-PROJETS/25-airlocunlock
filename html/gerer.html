@@ -424,7 +424,26 @@
                 })
                 .catch(error => console.error('Erreur récupération biens :', error));
         }
-    
+         // Fonction pour supprimer un cookie
+         function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+
+        // Fonction pour gérer la déconnexion
+        function handleLogout(event) {
+            event.preventDefault(); // Empêcher le comportement par défaut du lien
+            deleteCookie('auth_token'); // Supprimer le cookie contenant le token
+            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
+        }
+
+        // Ajouter un gestionnaire d'événements pour la déconnexion
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', handleLogout);
+            }
+        });
+
         // Lire le token depuis le cookie
         const auth_token = getCookie('auth_token');
         console.log('Token récupéré :', auth_token);

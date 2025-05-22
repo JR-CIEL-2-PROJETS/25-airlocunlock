@@ -119,6 +119,7 @@
             background-color: transparent;
             color: white;
             border: 1px solid white;
+            cursor: pointer;
         }
 
         .btn-logout:hover {
@@ -395,7 +396,7 @@
             <img src="img/logo (2).png" alt="AirLockUnlock Logo">
             <span class="logo-text">AirLockUnlock</span>
         </div>
-        <a href="signin.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+        <button id="logout-btn" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
     </header>
 
     <div class="container">
@@ -450,34 +451,61 @@
     </footer>
 
     <script>
-        // Fonction pour supprimer un cookie
+        // Fonction pour supprimer un cookie de manière plus robuste
         function deleteCookie(name) {
-            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            // Supprimer le cookie avec différents chemins et domaines possibles
+            const paths = ['/', '/signin.html', ''];
+            const domains = [window.location.hostname, '.' + window.location.hostname, ''];
+            
+            paths.forEach(path => {
+                domains.forEach(domain => {
+                    let cookieString = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path};`;
+                    if (domain) {
+                        cookieString += ` domain=${domain};`;
+                    }
+                    document.cookie = cookieString;
+                });
+            });
+            
+            // Vérifier si le cookie a été supprimé
+            console.log('Cookie auth_token après suppression:', getCookie('auth_token'));
         }
 
         // Fonction pour gérer la déconnexion
-        function handleLogout(event) {
-            event.preventDefault(); // Empêcher le comportement par défaut du lien
-            deleteCookie('auth_token'); // Supprimer le cookie contenant le token
-            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
-        }
-
-        // Ajouter un gestionnaire d'événements pour la déconnexion
-        document.addEventListener('DOMContentLoaded', function() {
-            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
-            if (logoutLink) {
-                logoutLink.addEventListener('click', handleLogout);
+        function handleLogout() {
+            // Afficher une confirmation
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                // Supprimer le token d'authentification
+                deleteCookie('auth_token');
+                
+                // Supprimer également du localStorage et sessionStorage si présent
+                localStorage.removeItem('auth_token');
+                sessionStorage.removeItem('auth_token');
+                
+                // Optionnel : Vider tout le localStorage/sessionStorage lié à l'auth
+                Object.keys(localStorage).forEach(key => {
+                    if (key.includes('auth') || key.includes('user') || key.includes('token')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                
+                // Afficher un message de confirmation
+                alert('Déconnexion réussie !');
+                
+                // Rediriger vers la page de connexion
+                window.location.href = 'signin.html';
             }
-        });
+        }
 
         // Fonction pour lire un cookie
         function getCookie(nom) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${nom}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
         }
     
-        // Fonction pour décoder la payload d’un JWT
+        // Fonction pour décoder la payload d'un JWT
         function parseJwt(token) {
             try {
                 const base64Payload = token.split('.')[1]; // payload = 2ème partie
@@ -502,14 +530,14 @@
                     nom = payload.username;
                 }
     
-                // Champ de formulaire s’il existe
+                // Champ de formulaire s'il existe
                 const nameInput = document.getElementById('name');
                 if (nameInput) {
                     nameInput.value = nom;
                     nameInput.readOnly = true;
                 }
     
-                // Élément d'affichage utilisateur s’il existe
+                // Élément d'affichage utilisateur s'il existe
                 const userNameDisplay = document.getElementById('user-name');
                 if (userNameDisplay) {
                     userNameDisplay.innerText = nom;
@@ -522,20 +550,44 @@
                 welcomeMessage.textContent = `Bienvenue, ${nom}`;
             }
         }
+
+        // Fonction pour vérifier si l'utilisateur est connecté
+        function checkAuthentication() {
+            const token = getCookie('auth_token');
+            if (!token) {
+                // Si pas de token, rediriger vers la page de connexion
+                alert('Session expirée. Veuillez vous reconnecter.');
+                window.location.href = 'signin.html';
+                return false;
+            }
+            return true;
+        }
     
         document.addEventListener('DOMContentLoaded', function () {
+            // Vérifier l'authentification au chargement de la page
+            checkAuthentication();
+            
+            // Remplir le nom de l'utilisateur
             fillNameFromToken();
+
+            // Ajouter l'événement de déconnexion au bouton
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', handleLogout);
+            }
     
-            // Vérification du numéro de série
-            document.querySelector('.verify-btn').addEventListener('click', function () {
-                const serialNumber = document.querySelector('.verify-input').value;
-                if (serialNumber.trim() === '') {
-                    alert('Veuillez entrer un numéro de série');
-                    return;
-                }
-    
-                alert(`Numéro de série ${serialNumber} vérifié avec succès!`);
-            });
+            // Vérification du numéro de série (si la section existe)
+            const verifyBtn = document.querySelector('.verify-btn');
+            if (verifyBtn) {
+                verifyBtn.addEventListener('click', function () {
+                    const serialNumber = document.querySelector('.verify-input').value;
+                    if (serialNumber.trim() === '') {
+                        alert('Veuillez entrer un numéro de série');
+                        return;
+                    }
+                    alert(`Numéro de série ${serialNumber} vérifié avec succès!`);
+                });
+            }
     
             // Animation au survol des cartes
             document.querySelectorAll('.stat-card').forEach(card => {
@@ -550,8 +602,15 @@
                 });
             });
         });
+
+        // Vérification périodique de l'authentification (optionnel)
+        setInterval(function() {
+            const token = getCookie('auth_token');
+            if (!token) {
+                alert('Session expirée. Veuillez vous reconnecter.');
+                window.location.href = 'signin.html';
+            }
+        }, 300000); // Vérifier toutes les 5 minutes
     </script>
-    
-    
 </body>
 </html>
