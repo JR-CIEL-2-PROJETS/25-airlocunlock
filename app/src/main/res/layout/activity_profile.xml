@@ -63,6 +63,16 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/profile_image" />
 
+            <!-- Nombre de réservations -->
+            <TextView
+                android:id="@+id/reservationCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre de réservations : 0"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:layout_marginBottom="16dp" />
+
             <!-- Nom avec icône crayon -->
             <LinearLayout
                 android:layout_width="match_parent"

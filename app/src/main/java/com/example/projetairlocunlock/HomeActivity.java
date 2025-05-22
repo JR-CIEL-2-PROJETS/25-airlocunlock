@@ -152,8 +152,6 @@ public class HomeActivity extends Activity {
         }
     }
 
-    // ... tout le code inchangé jusqu'à addReservationCard()
-
     private void addReservationCard(JSONObject res) {
         try {
             String title = res.getString("titre");
@@ -163,21 +161,40 @@ public class HomeActivity extends Activity {
             String photoUrl = res.optString("photo_url", null);
             String numeroSerie = res.optString("numero_serie_tapkey", "");
 
-            // ✅ Nettoyage de l’URL pour éviter les erreurs de chargement
-            if (photoUrl != null) {
-                photoUrl = photoUrl.trim();
-            }
+            int idReservation = res.getInt("id_reservation");
+
+            if (photoUrl != null) photoUrl = photoUrl.trim();
 
             boolean hasTapkey = !numeroSerie.trim().isEmpty() && !numeroSerie.equalsIgnoreCase("null");
 
-            LinearLayout itemLayout = new LinearLayout(this);
-            itemLayout.setOrientation(LinearLayout.VERTICAL);
-            itemLayout.setPadding(16, 16, 16, 16);
-            itemLayout.setBackgroundResource(R.drawable.bg_reservation_card);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            Date now = new Date();
+            Date dateArrivee = sdf.parse(dateArriveeStr);
+            Date dateDepart = sdf.parse(dateDepartStr);
+
+            boolean isWithinDate = now.after(dateArrivee) && now.before(dateDepart);
+            boolean isPast = now.after(dateDepart);
+
+            // Conteneur principal vertical
+            LinearLayout container = new LinearLayout(this);
+            container.setOrientation(LinearLayout.VERTICAL);
+            container.setPadding(16, 16, 16, 16);
+            container.setBackgroundResource(R.drawable.bg_reservation_card);
+            container.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            // FrameLayout pour superposer image + icône delete
+            FrameLayout imageFrame = new FrameLayout(this);
+            imageFrame.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    500));
 
             ImageView imageView = new ImageView(this);
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 500));
+            FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT);
+            imageView.setLayoutParams(imageParams);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             if (photoUrl != null && !photoUrl.isEmpty()) {
@@ -191,6 +208,35 @@ public class HomeActivity extends Activity {
             } else {
                 imageView.setImageResource(R.drawable.placeholder);
             }
+
+            imageFrame.addView(imageView);
+
+            // Si réservation dépassée, ajout de l'icône poubelle superposée
+            if (isPast) {
+                ImageView deleteIcon = new ImageView(this);
+                deleteIcon.setImageResource(R.drawable.ic_delete_red);
+                int size = 80; // taille icône en px
+                FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(size, size);
+                iconParams.setMargins(0, 16, 16, 0);
+                iconParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
+                deleteIcon.setLayoutParams(iconParams);
+                deleteIcon.setClickable(true);
+
+                deleteIcon.setOnClickListener(v -> {
+                    deleteReservationOnServer(idReservation, container);
+                });
+
+                imageFrame.addView(deleteIcon);
+            }
+
+            container.addView(imageFrame);
+
+            // Carte verticale avec les infos sous l'image
+            LinearLayout itemLayout = new LinearLayout(this);
+            itemLayout.setOrientation(LinearLayout.VERTICAL);
+            itemLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
 
             TextView titleView = new TextView(this);
             titleView.setText(title);
@@ -210,13 +256,6 @@ public class HomeActivity extends Activity {
             instructionsButton.setBackgroundColor(getResources().getColor(R.color.blue_fond));
             instructionsButton.setTextColor(getResources().getColor(android.R.color.white));
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-            Date now = new Date();
-            Date dateArrivee = sdf.parse(dateArriveeStr);
-            Date dateDepart = sdf.parse(dateDepartStr);
-
-            boolean isWithinDate = now.after(dateArrivee) && now.before(dateDepart);
-
             if (hasTapkey && isWithinDate) {
                 instructionsButton.setEnabled(true);
                 instructionsButton.setAlpha(1f);
@@ -231,7 +270,6 @@ public class HomeActivity extends Activity {
                 instructionsButton.setAlpha(0.5f);
             }
 
-            itemLayout.addView(imageView);
             itemLayout.addView(titleView);
             itemLayout.addView(dateView);
             itemLayout.addView(tapkeyView);
@@ -242,33 +280,84 @@ public class HomeActivity extends Activity {
                 itemLayout.setEnabled(false);
             }
 
-            reservationLayout.addView(itemLayout);
+            container.addView(itemLayout);
+
+            reservationLayout.addView(container);
 
         } catch (Exception e) {
             showError("Erreur d'affichage : " + e.getMessage());
         }
     }
 
+    private void deleteReservationOnServer(int idReservation, LinearLayout container) {
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String token = prefs.getString("token", null);
 
+        if (token == null) {
+            showError("Token introuvable. Veuillez vous reconnecter.");
+            return;
+        }
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                try {
+                    SharedPreferences configPrefs = getSharedPreferences("config_prefs", MODE_PRIVATE);
+                    String ip = configPrefs.getString("server_ip", "172.16.15.63");
+                    String port = configPrefs.getString("server_port", "421");
+
+                    String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/delete.php";
+                    URL url = new URL(urlString);
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("DELETE");
+                    conn.setRequestProperty("Authorization", "Bearer " + token);
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setDoOutput(true);
+
+                    String urlParameters = "id_reservation=" + idReservation;
+                    conn.getOutputStream().write(urlParameters.getBytes());
+
+                    int responseCode = conn.getResponseCode();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(
+                            (responseCode >= 200 && responseCode < 300) ? conn.getInputStream() : conn.getErrorStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = in.readLine()) != null) response.append(line);
+                    in.close();
+
+                    return response.toString();
+
+                } catch (Exception e) {
+                    return "{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}";
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                try {
+                    JSONObject json = new JSONObject(result);
+                    if ("success".equals(json.getString("status"))) {
+                        // Suppression côté serveur OK, retirer la carte UI
+                        reservationLayout.removeView(container);
+                        Toast.makeText(HomeActivity.this, "Réservation supprimée", Toast.LENGTH_SHORT).show();
+                    } else {
+                        showError("Erreur lors de la suppression : " + json.getString("message"));
+                    }
+                } catch (Exception e) {
+                    showError("Erreur de réponse : " + e.getMessage());
+                }
+            }
+        }.execute();
+    }
 
     private void showError(String message) {
-        new AlertDialog.Builder(this)
-                .setTitle("Erreur")
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("OK", (dialog, which) -> {
-                    if (message.toLowerCase().contains("token") || message.toLowerCase().contains("expired")) {
-                        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.remove("token");
-                        editor.apply();
-
-                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .show();
+        runOnUiThread(() -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+            builder.setTitle("Erreur")
+                    .setMessage(message)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
     }
 }

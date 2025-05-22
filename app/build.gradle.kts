@@ -26,9 +26,6 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("debug")
-
-            // Désactive le profile installer pour éviter l’erreur d’installation
-            matchingFallbacks += listOf("release") // Optionnel selon ton environnement
         }
     }
 
@@ -36,15 +33,22 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
 
     lint {
-        baseline = file("lint-baseline.xml") // Ajout de la configuration pour lint
+        // Optionnel : retire cette ligne si tu ne souhaites plus de baseline lint
+        baseline = file("lint-baseline.xml")
+    }
+
+    packagingOptions {
+        exclude("META-INF/com.android.build.profile/installer-profile.json")
     }
 }
 
@@ -58,8 +62,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    implementation ("it.xabaras.android:recyclerview-swipedecorator:1.2.2")
-    implementation ("androidx.recyclerview:recyclerview:1.3.1")
+    implementation("it.xabaras.android:recyclerview-swipedecorator:1.2.2")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

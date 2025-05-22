@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -24,6 +25,7 @@ public class ProfileActivity extends Activity {
     EditText editName, editEmail;
     ImageView profileImage, editNameIcon, editEmailIcon;
     Button saveButton, backButton;
+    TextView reservationCount;
 
     boolean isNameEditable = false;
     boolean isEmailEditable = false;
@@ -40,6 +42,7 @@ public class ProfileActivity extends Activity {
         profileImage = findViewById(R.id.profileImage);
         saveButton = findViewById(R.id.saveButton);
         backButton = findViewById(R.id.backButton);
+        reservationCount = findViewById(R.id.reservationCount); // <== NOUVEAU
 
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String token = prefs.getString("token", null);
@@ -47,8 +50,6 @@ public class ProfileActivity extends Activity {
         if (token != null) {
             String ip = Config.getIP(this);
             String port = Config.getPort(this);
-
-            Log.d("CONFIG", "IP récupérée via Config : " + ip + ", Port : " + port);
 
             String urlString = "https://" + ip + ":" + port + "/AirlockUnlock/client/profil.php";
             new Thread(() -> fetchUserProfile(urlString, token)).start();
@@ -103,16 +104,12 @@ public class ProfileActivity extends Activity {
             conn.setRequestProperty("Authorization", "Bearer " + token);
 
             int responseCode = conn.getResponseCode();
-            Log.d("RESPONSE_CODE", String.valueOf(responseCode));
-
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) response.append(inputLine);
                 in.close();
-
-                Log.d("PROFILE_RESPONSE", response.toString());
 
                 runOnUiThread(() -> {
                     try {
@@ -123,9 +120,11 @@ public class ProfileActivity extends Activity {
                             JSONObject user = jsonResponse.getJSONObject("user");
                             String nom = user.getString("nom");
                             String email = user.getString("email");
+                            int nbReservations = user.optInt("nombre_reservations", 0);
 
                             editName.setText(nom);
                             editEmail.setText(email);
+                            reservationCount.setText("Nombre de réservations : " + nbReservations);
                             profileImage.setImageResource(R.drawable.profile_image);
                         } else {
                             Toast.makeText(ProfileActivity.this, "Erreur de récupération du profil", Toast.LENGTH_SHORT).show();
