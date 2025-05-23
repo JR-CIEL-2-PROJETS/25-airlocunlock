@@ -137,7 +137,7 @@
 <body>
     <header class="header">
         <div class="flex items-center gap-4">
-            <img src="img/logo (2).png" alt="Logo">
+            <img src="img/logo.png" alt="Logo">
             <h1 class="text-xl font-bold">AirLockUnlock</h1>
         </div>
     </header>
@@ -167,7 +167,7 @@
                     </div>
                     <button type="submit" class="button-primary">Se connecter</button>
                     <div class="signup-link">
-                        <a href="mdp-oublier.html">Mot de passe oublié ?</a>
+                        <a href="mdp-oublier">Mot de passe oublié ?</a>
                     </div>
                 </form>
             </div>
@@ -181,13 +181,13 @@
                     </div>
                     <button type="submit" class="button-primary">Se connecter</button>
                     <div class="signup-link">
-                        <a href="forgot_password.html">Mot de passe oublié ?</a>
+                        <a href="forgot_password">Mot de passe oublié ?</a>
                     </div>
                 </form>
             </div>
 
             <div class="signup-link">
-                <p>Pas encore de compte ? <a href="signup.html">Créer un compte</a></p>
+                <p>Pas encore de compte ? <a href="signup">Créer un compte</a></p>
             </div>
         </div>
     </div>
@@ -238,7 +238,7 @@
                     messageElement.textContent = 'Connexion réussie ! Redirection...';
                     messageElement.style.display = 'block';
                     setTimeout(() => {
-                        window.location.href = 'accueil.html';
+                        window.location.href = 'accueil';
                     }, 1000);
                 } else {
                     messageElement.textContent = data.message;
@@ -289,7 +289,7 @@
                     messageElement.textContent = 'Connexion réussie ! Redirection...';
                     messageElement.style.display = 'block';
                     setTimeout(() => {
-                        window.location.href = 'accueilpro.html';
+                        window.location.href = 'accueilpro';
                     }, 1000);
                 } else {
                     messageElement.textContent = data.message;

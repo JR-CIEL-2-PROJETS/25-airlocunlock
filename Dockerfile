@@ -1,2 +1,9 @@
-FROM php:8.3-fpm-alpine
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+FROM nginx:stable-alpine
+
+COPY html/ /usr/share/nginx/html/
+
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80 443
+
+CMD ["nginx", "-g", "daemon off;"]

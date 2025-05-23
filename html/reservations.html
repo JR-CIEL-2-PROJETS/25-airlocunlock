@@ -263,22 +263,21 @@
 <body>
     <header>
         <div class="logo">
-            <img src="img/logo (2).png" alt="AirLockUnlock Logo" />
+            <img src="img/logo.png" alt="AirLockUnlock Logo" />
             <span class="logo-text">AirLockUnlock</span>
         </div>
         <nav class="nav-links">
-            <a href="accueil.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="accueil"><i class="fas fa-home"></i> Accueil</a>
         </nav>
         <div class="profile-container">
-            <a href="sign.html" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
+            <a href="signup" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
             <div class="profile">
                 <img src="img/hasbula.jpg" alt="User Icon" class="user-icon" />
                 <div class="profile-menu">
                     <ul>
-                        <li><a href="profile.html"><i class="fas fa-user"></i> Profil</a></li>
-                        <li><a href="setting.html"><i class="fas fa-cog"></i> Paramètres</a></li>
-                        <li><a href="accueilpro.html" class="owner-only"><i class="fas fa-user-tie"></i> Accueil Pro</a></li>
-                        <li><a href="signin.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                        <li><a href="profile"><i class="fas fa-user"></i> Profil</a></li>
+                        <li><a href="accueilpro" class="owner-only"><i class="fas fa-user-tie"></i> Accueil Pro</a></li>
+                        <li><a href="signin"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                     </ul>
                 </div>
             </div>
@@ -298,9 +297,9 @@
         <div class="footer-content">
             <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
             <div class="footer-links">
-                <a href="politique-confidentialite.html">Confidentialité</a>
-                <a href="conditions-utilisation.html">Conditions</a>
-                <a href="contact.html">Contact</a>
+                <a href="#">Confidentialité</a>
+                <a href="#">Conditions</a>
+                <a href="#">Contact</a>
             </div>
         </div>
     </footer>
@@ -409,7 +408,7 @@
                 `;
 
                 div.addEventListener('click', () => {
-                    window.location.href = `reservation.html?id_reservation=${reservation.id_reservation}`;
+                    window.location.href = `reservation?id_reservation=${reservation.id_reservation}`;
                 });
 
                 container.appendChild(div);

@@ -1,19 +1,14 @@
+version: '3.8'
+
 services:
   nginx:
-    image: nginx:latest
+    build: .
     container_name: nginx_server
-    # restart: always
     ports:
       - "92:80"
       - "422:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./html:/usr/share/nginx/html
-      - ./img:/usr/share/nginx/html/img  # Ajout du dossier des images
+      - ./html:/usr/share/nginx/html:ro
       - ./logs:/var/log/nginx
-      - ./nginx/ssl:/etc/nginx/ssl
-#     networks:
-#       - webnet
-
-# networks:
-#   webnet:
+      - ./nginx/ssl:/etc/nginx/ssl:ro

@@ -393,7 +393,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="img/logo (2).png" alt="AirLockUnlock Logo">
+            <img src="img/logo.png" alt="AirLockUnlock Logo">
             <span class="logo-text">AirLockUnlock</span>
         </div>
         <button id="logout-btn" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
@@ -405,17 +405,17 @@
                 <h1 id="welcome-message">Bienvenue, Utilisateur</h1>
                 <p>Gérez vos propriétés et réservations en toute simplicité</p>
             </div>
-            <a href="publier-bien.html" class="btn btn-primary"><i class="fas fa-plus"></i> Publier un bien</a>
+            <a href="publier-bien" class="btn btn-primary"><i class="fas fa-plus"></i> Publier un bien</a>
         </section>
 
         <section class="stats-cards">
-            <div class="stat-card action-card" onclick="location.href='appartements.html'">
+            <div class="stat-card action-card" onclick="location.href='appartements'">
                 <div class="action-card-icon">
                     <i class="fas fa-building"></i>
                 </div>
                 <h3 class="action-card-title">Gérer les biens</h3>
                 <p class="action-card-desc"> modifiez ou supprimez vos appartements</p>
-                <a href="gerer.html" class="btn btn-action">Voir</a>
+                <a href="gerer" class="btn btn-action">Voir</a>
             </div>
 
             <div class="stat-card action-card" onclick="window.open('https://www.tapkey.com', '_blank')">
@@ -427,13 +427,13 @@
                 <a href="https://www.tapkey.com" target="_blank" class="btn btn-action">Acheter</a>
             </div>
 
-            <div class="stat-card action-card" onclick="location.href='publier-bien.html'">
+            <div class="stat-card action-card" onclick="location.href='publier-bien'">
                 <div class="action-card-icon" style="color: var(--success);">
                     <i class="fas fa-plus-circle"></i>
                 </div>
                 <h3 class="action-card-title">Publier un Bien</h3>
                 <p class="action-card-desc">Mettez en location votre propriété</p>
-                <a href="publier-bien.html" class="btn btn-action" style="background-color: var(--success);">Publier</a>
+                <a href="publier-bien" class="btn btn-action" style="background-color: var(--success);">Publier</a>
             </div>
         </section>
 
@@ -443,9 +443,9 @@
         <div class="footer-content">
             <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
             <div class="footer-links">
-                <a href="politique-confidentialite.html">Confidentialité</a>
-                <a href="conditions-utilisation.html">Conditions</a>
-                <a href="contact.html">Contact</a>
+                <a href="#">Confidentialité</a>
+                <a href="#">Conditions</a>
+                <a href="#">Contact</a>
             </div>
         </div>
     </footer>
@@ -454,7 +454,7 @@
         // Fonction pour supprimer un cookie de manière plus robuste
         function deleteCookie(name) {
             // Supprimer le cookie avec différents chemins et domaines possibles
-            const paths = ['/', '/signin.html', ''];
+            const paths = ['/', '/signin', ''];
             const domains = [window.location.hostname, '.' + window.location.hostname, ''];
             
             paths.forEach(path => {
@@ -493,7 +493,7 @@
                 alert('Déconnexion réussie !');
                 
                 // Rediriger vers la page de connexion
-                window.location.href = 'signin.html';
+                window.location.href = 'signin';
             }
         }
 
@@ -557,7 +557,7 @@
             if (!token) {
                 // Si pas de token, rediriger vers la page de connexion
                 alert('Session expirée. Veuillez vous reconnecter.');
-                window.location.href = 'signin.html';
+                window.location.href = 'signin';
                 return false;
             }
             return true;
@@ -608,7 +608,7 @@
             const token = getCookie('auth_token');
             if (!token) {
                 alert('Session expirée. Veuillez vous reconnecter.');
-                window.location.href = 'signin.html';
+                window.location.href = 'signin';
             }
         }, 300000); // Vérifier toutes les 5 minutes
     </script>

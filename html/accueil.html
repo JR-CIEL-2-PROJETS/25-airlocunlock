@@ -582,18 +582,18 @@
 <body>
     <header>
         <div class="logo">
-            <img src="img/logo (2).png" alt="AirLockUnlock Logo">
+            <img src="img/logo.png" alt="AirLockUnlock Logo">
             <span class="logo-text">AirLockUnlock</span>
         </div>
         <div class="profile-container">
-            <a href="signup.html" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
+            <a href="signup" class="btn btn-primary"><i class="fas fa-home"></i> Devenir propriétaire</a>
             <div class="profile">
                 <img src="img/hasbula.jpg" alt="User Icon" class="user-icon">
                 <div class="profile-menu">
                     <ul>
-                        <li><a href="profile.html"><i class="fas fa-user"></i> Profil</a></li>
-                        <li><a href="accueilpro.html" class="owner-only"><i class="fas fa-user-tie"></i> Accueil Pro</a></li>
-                        <li><a href="signin.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                        <li><a href="profile"><i class="fas fa-user"></i> Profil</a></li>
+                        <li><a href="accueilpro" class="owner-only"><i class="fas fa-user-tie"></i> Accueil Pro</a></li>
+                        <li><a href="signin"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                     </ul>
                 </div>
             </div>
@@ -641,9 +641,9 @@
         <div class="footer-content">
             <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
             <div class="footer-links">
-                <a href="politique-confidentialite.html">Confidentialité</a>
-                <a href="conditions-utilisation.html">Conditions</a>
-                <a href="contact.html">Contact</a>
+                <a href="#">Confidentialité</a>
+                <a href="#">Conditions</a>
+                <a href="#">Contact</a>
             </div>
         </div>
     </footer>
@@ -729,12 +729,12 @@
         function handleLogout(event) {
             event.preventDefault(); // Empêcher le comportement par défaut du lien
             deleteCookie('auth_token'); // Supprimer le cookie contenant le token
-            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
+            window.location.href = 'signin'; // Rediriger vers la page de connexion
         }
 
         // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
-            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
+            const logoutLink = document.querySelector('.profile-menu a[href="signin"]');
             if (logoutLink) {
                 logoutLink.addEventListener('click', handleLogout);
             }
@@ -885,7 +885,7 @@
 
                 // Ajouter un événement de clic pour rediriger vers la page détaillée de l'appartement
                 propertyDiv.addEventListener('click', () => {
-                    window.location.href = `appartement.html?id_bien=${bien.id_bien}`;
+                    window.location.href = `appartement?id_bien=${bien.id_bien}`;
                 });
 
                 propertiesContainer.appendChild(propertyDiv);
@@ -923,7 +923,7 @@
                         });
 
                         marker.addListener('click', () => {
-                            window.location.href = `appartement.html?id_bien=${bien.id_bien}`;
+                            window.location.href = `appartement?id_bien=${bien.id_bien}`;
                         });
 
                         markers.push(marker);

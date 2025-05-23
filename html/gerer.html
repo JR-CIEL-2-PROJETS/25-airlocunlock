@@ -304,19 +304,19 @@
 <body>
     <header>
         <div class="logo">
-            <img src="img/logo (2).png" alt="AirLockUnlock Logo">
+            <img src="img/logo.png" alt="AirLockUnlock Logo">
             <span class="logo-text">AirLockUnlock</span>
         </div>
-        <a href="signin.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+        <a href="signin" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
     </header>
 
     <div class="container">
-        <a href="accueilpro.html" class="btn-back"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
+        <a href="accueilpro" class="btn-back"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
 
         <section class="property-section">
             <div class="section-title">
                 <h2>Gérer mes biens</h2>
-                <a href="publier-bien.html" class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter un bien</a>
+                <a href="publier-bien" class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter un bien</a>
             </div>
 
             <div class="property-grid" id="property-grid">
@@ -329,9 +329,9 @@
         <div class="footer-content">
             <p>&copy; 2025 AirLockUnlock. Tous droits réservés.</p>
             <div class="footer-links">
-                <a href="politique-confidentialite.html">Confidentialité</a>
-                <a href="conditions-utilisation.html">Conditions</a>
-                <a href="contact.html">Contact</a>
+                <a href="#">Confidentialité</a>
+                <a href="#">Conditions</a>
+                <a href="#">Contact</a>
             </div>
         </div>
     </footer>
@@ -383,7 +383,7 @@
                                 </div>
                                 <div class="property-price">${bien.prix_par_nuit} €/nuits</div>
                                 <div class="property-actions">
-                                    <a href="editer.html?id=${bien.id_bien}" class="btn-edit"><i class="fas fa-edit"></i> Modifier</a>
+                                    <a href="editer?id=${bien.id_bien}" class="btn-edit"><i class="fas fa-edit"></i> Modifier</a>
                                     <button class="btn-delete" data-id="${bien.id_bien}"><i class="fas fa-trash"></i> Supprimer</button>
                                 </div>
                             </div>
@@ -433,12 +433,12 @@
         function handleLogout(event) {
             event.preventDefault(); // Empêcher le comportement par défaut du lien
             deleteCookie('auth_token'); // Supprimer le cookie contenant le token
-            window.location.href = 'signin.html'; // Rediriger vers la page de connexion
+            window.location.href = 'signin'; // Rediriger vers la page de connexion
         }
 
         // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
-            const logoutLink = document.querySelector('.profile-menu a[href="signin.html"]');
+            const logoutLink = document.querySelector('.profile-menu a[href="signin"]');
             if (logoutLink) {
                 logoutLink.addEventListener('click', handleLogout);
             }
