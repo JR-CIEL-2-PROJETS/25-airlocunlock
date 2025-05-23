@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "📦 Ajout, commit et push Git des fichiers SQL dans code/..."
+echo "📦 Ajout, commit et push Git des fichiers SQL"
 git add .
 git commit -m "save"
 git push origin Web
