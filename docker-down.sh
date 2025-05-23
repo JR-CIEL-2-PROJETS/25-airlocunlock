@@ -10,6 +10,6 @@ git commit -m "save"
 git push origin API-1
 
 echo "🧹 Arrêt des containers..."
-docker compose-down
+docker-compose-down
 
 echo "✅ Bases sauvegardées dans, commit Git fait, containers arrêtés."
