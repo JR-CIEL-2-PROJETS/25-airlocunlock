@@ -3,7 +3,7 @@
 
 ## 🚀 Lancement des services (UP)
 
-### Script : `docker-up.sh`
+### Script : `./docker-up.sh `
 
 Ce script :
 
@@ -21,7 +21,7 @@ Ce script :
 
 ## 🛑 Arrêt des services (DOWN)
 
-### Script : `docker-down.sh`
+### Script : `./docker-down.sh`
 
 Ce script :
 
