@@ -593,7 +593,7 @@
                     <ul>
                         <li><a href="profile"><i class="fas fa-user"></i> Profil</a></li>
                         <li><a href="accueilpro" class="owner-only"><i class="fas fa-user-tie"></i> Accueil Pro</a></li>
-                        <li><a href="signin"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                        <li><a href="index"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                     </ul>
                 </div>
             </div>
@@ -729,12 +729,12 @@
         function handleLogout(event) {
             event.preventDefault(); // Empêcher le comportement par défaut du lien
             deleteCookie('auth_token'); // Supprimer le cookie contenant le token
-            window.location.href = 'signin'; // Rediriger vers la page de connexion
+            window.location.href = 'index'; // Rediriger vers la page de connexion
         }
 
         // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
-            const logoutLink = document.querySelector('.profile-menu a[href="signin"]');
+            const logoutLink = document.querySelector('.profile-menu a[href="index"]');
             if (logoutLink) {
                 logoutLink.addEventListener('click', handleLogout);
             }

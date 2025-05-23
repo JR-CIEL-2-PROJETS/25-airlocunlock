@@ -383,7 +383,7 @@
                     <li><a href="profil">Voir le profil</a></li>
                     <li><a href="reservations">Mes réservations</a></li>
                     <li><a href="parametres">Paramètres</a></li>
-                    <li><a href="signin">Déconnexion</a></li>
+                    <li><a href="index">Déconnexion</a></li>
                 </ul>
             </div>
         </div>
@@ -500,12 +500,12 @@
         function handleLogout(event) {
             event.preventDefault(); // Empêcher le comportement par défaut du lien
             deleteCookie('auth_token'); // Supprimer le cookie contenant le token
-            window.location.href = 'signin'; // Rediriger vers la page de connexion
+            window.location.href = 'index'; // Rediriger vers la page de connexion
         }
 
         // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
-            const logoutLink = document.querySelector('.profile-menu a[href="signin"]');
+            const logoutLink = document.querySelector('.profile-menu a[href="index"]');
             if (logoutLink) {
                 logoutLink.addEventListener('click', handleLogout);
             }

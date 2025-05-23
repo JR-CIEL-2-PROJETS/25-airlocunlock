@@ -454,7 +454,7 @@
         // Fonction pour supprimer un cookie de manière plus robuste
         function deleteCookie(name) {
             // Supprimer le cookie avec différents chemins et domaines possibles
-            const paths = ['/', '/signin', ''];
+            const paths = ['/', '/index', ''];
             const domains = [window.location.hostname, '.' + window.location.hostname, ''];
             
             paths.forEach(path => {
@@ -493,7 +493,7 @@
                 alert('Déconnexion réussie !');
                 
                 // Rediriger vers la page de connexion
-                window.location.href = 'signin';
+                window.location.href = 'index';
             }
         }
 
@@ -557,7 +557,7 @@
             if (!token) {
                 // Si pas de token, rediriger vers la page de connexion
                 alert('Session expirée. Veuillez vous reconnecter.');
-                window.location.href = 'signin';
+                window.location.href = 'index';
                 return false;
             }
             return true;
@@ -608,7 +608,7 @@
             const token = getCookie('auth_token');
             if (!token) {
                 alert('Session expirée. Veuillez vous reconnecter.');
-                window.location.href = 'signin';
+                window.location.href = 'index';
             }
         }, 300000); // Vérifier toutes les 5 minutes
     </script>

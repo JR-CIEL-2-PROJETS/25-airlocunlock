@@ -249,7 +249,7 @@
             <img src="img/logo.png" alt="AirLockUnlock Logo">
             <span class="logo-text">AirLockUnlock</span>
         </div>
-        <a href="signin" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+        <a href="index" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
     </header>
     <div class="container">
         <a href="gerer" class="btn-back"><i class="fas fa-arrow-left"></i> Retour à la gestion des biens</a>
@@ -345,12 +345,12 @@
         function handleLogout(event) {
             event.preventDefault(); // Empêcher le comportement par défaut du lien
             deleteCookie('auth_token'); // Supprimer le cookie contenant le token
-            window.location.href = 'signin'; // Rediriger vers la page de connexion
+            window.location.href = 'index'; // Rediriger vers la page de connexion
         }
 
         // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
-            const logoutLink = document.querySelector('.profile-menu a[href="signin"]');
+            const logoutLink = document.querySelector('.profile-menu a[href="index"]');
             if (logoutLink) {
                 logoutLink.addEventListener('click', handleLogout);
             }
@@ -416,7 +416,7 @@
     
             if (!token) {
                 alert('Session expirée, veuillez vous reconnecter');
-                window.location.href = 'signin';
+                window.location.href = 'index';
                 return;
             }
     
