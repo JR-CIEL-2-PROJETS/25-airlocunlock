@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-Projet AirlockUnlock
-=======
 
 # 📘 README - APis
 
@@ -45,4 +42,3 @@ Ce script :
 git fetch origin 
 git reset --hard origin/API-1
 ```
->>>>>>> API-1
