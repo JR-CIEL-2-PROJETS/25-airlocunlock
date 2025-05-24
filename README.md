@@ -16,16 +16,16 @@
 
 ## 📄 Documentation du projet
 
-- ✅ **[Cahier de recette]([LIEN_CAHIER_RECETTE](https://docs.google.com/document/d/1vDDtCcHqsg497sFOa_gsCi9yCpfStpRi/edit?usp=sharing&ouid=101961527445330716766&rtpof=true&sd=true))**  
+- ✅ **[LIEN_CAHIER_RECETTE](https://docs.google.com/document/d/1vDDtCcHqsg497sFOa_gsCi9yCpfStpRi/edit?usp=sharing&ouid=101961527445330716766&rtpof=true&sd=true)**  
   Liste des tests réalisés pour valider chaque fonctionnalité de l’application.
 
-- 📘 **[Rapport de projet]([LIEN_RAPPORT_PROJET](https://docs.google.com/document/d/1et7FV6Deotpfu6rFrsgkoHudzera9ngHYqaXfc82mfw/edit?usp=sharing))**  
+- 📘 **[LIEN_RAPPORT_PROJET](https://docs.google.com/document/d/1et7FV6Deotpfu6rFrsgkoHudzera9ngHYqaXfc82mfw/edit?usp=sharing)**  
   Rapport complet détaillant les objectifs, l’architecture, les choix techniques, et le développement.
 
 - 📋 **[Trello du projet]([LIEN_TRELLO](https://trello.com/b/P2KbRquX/projet-airlockunlock))**  
   Suivi de l’avancement du projet, gestion des tâches et des bugs.
 
-- 📦 **[Fichier APK]([LIEN_FICHIER_APK](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/releases/download/V1/AirlockUnlock.apk))**  
+- 📦 **[LIEN_FICHIER_APK](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/releases/download/V1/AirlockUnlock.apk)**  
   Version installable de l'application Android prête à être testée.
 
 
