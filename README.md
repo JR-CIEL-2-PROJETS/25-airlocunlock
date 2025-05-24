@@ -28,6 +28,9 @@
 - 📦 **[LIEN_FICHIER_APK](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/releases/download/V1/AirlockUnlock.apk)**  
   Version installable de l'application Android prête à être testée.
 
+- ✨ **[LIEN SITE VISITE](https://projet-airlockunlock.netlify.app/)**  
+Version installable de l'application Android prête à être testée.
+
 
 ## ✨ Auteurs
 
