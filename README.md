@@ -22,7 +22,7 @@
 - 📘 **[LIEN_RAPPORT_PROJET](https://docs.google.com/document/d/1et7FV6Deotpfu6rFrsgkoHudzera9ngHYqaXfc82mfw/edit?usp=sharing)**  
   Rapport complet détaillant les objectifs, l’architecture, les choix techniques, et le développement.
 
-- 📋 **[Trello du projet]([LIEN_TRELLO](https://trello.com/b/P2KbRquX/projet-airlockunlock))**  
+- 📋 **[LIEN_TRELLO](https://trello.com/b/P2KbRquX/projet-airlockunlock)**  
   Suivi de l’avancement du projet, gestion des tâches et des bugs.
 
 - 📦 **[LIEN_FICHIER_APK](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/releases/download/V1/AirlockUnlock.apk)**  
