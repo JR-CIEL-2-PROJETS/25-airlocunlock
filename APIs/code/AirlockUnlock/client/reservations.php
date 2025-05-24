@@ -113,6 +113,8 @@ r.nombre_personnes,
 
 r.statut,
 
+r.id_bien,
+
 b.titre,
 
 b.photos,

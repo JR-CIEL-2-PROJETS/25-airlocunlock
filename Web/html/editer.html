@@ -378,8 +378,12 @@
         }
     
         document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('auth_token'); // ou comment tu récupères ton token
+            const bienId = getIdFromUrl(); // ta fonction pour extraire l'id_bien de l'URL
+
             if (token && bienId) {
-                fetch(`https://172.16.15.74:421/AirlockUnlock/bien/biens.php?id=${bienId}`, {
+                const apiHost = window.location.hostname;
+                fetch(`https://${apiHost}:421/AirlockUnlock/bien/biens.php?id=${bienId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -390,9 +394,9 @@
                 })
                 .then(data => {
                     const bien = Array.isArray(data) ? data[0] : data;
-    
+
                     if (!bien) throw new Error('Bien non trouvé');
-    
+
                     // Remplir le formulaire avec les noms de champs adaptés
                     document.getElementById('id_bien').value = bien.id_bien || '';
                     document.getElementById('titre').value = bien.titre || '';
@@ -412,6 +416,7 @@
                 });
             }
         });
+
     
         document.getElementById('editPropertyForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -443,26 +448,28 @@
                 numero_serie_tapkey: document.getElementById('id_serrure_tapkey').value || null // Peut être vide
             };
     
-            fetch('https://172.16.15.74:421/AirlockUnlock/bien/editer.php', {
-    method: 'PUT',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
-})
-.then(response => {
-    if (!response.ok) {
-        return response.json().then(err => { throw new Error(err.message || 'Erreur serveur'); });
-    }
-    return response.json();
-})
-.then(data => {
-    if (data.success) {
-        alert('Bien mis à jour avec succès!');
+        const apiHost = window.location.hostname;
+
+        fetch(`https://${apiHost}:421/AirlockUnlock/bien/editer.php`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.message || 'Erreur serveur'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert('Bien mis à jour avec succès!');
 
         // Suppression du bien juste après la mise à jour
-        fetch('https://172.16.15.74:421/AirlockUnlock/bien/supprimer.php', {
+        fetch(`https://${apiHost}:421/AirlockUnlock/bien/supprimer.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

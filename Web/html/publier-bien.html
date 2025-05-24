@@ -471,11 +471,13 @@
                     console.log(key, value);
                 }
 
-                const response = await fetch('https://172.16.15.74:421/AirlockUnlock/bien/publier-bien.php', {
+                const apiHost = window.location.hostname;
+
+                const response = await fetch(`https://${apiHost}:421/AirlockUnlock/bien/publier-bien.php`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token
-                        // Ne PAS définir 'Content-Type' ici pour laisser le navigateur gérer le boundary
+                        // Pas de 'Content-Type', pour que le navigateur gère le boundary multipart/form-data
                     },
                     body: formData
                 });

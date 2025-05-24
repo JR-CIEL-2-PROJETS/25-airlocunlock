@@ -337,9 +337,10 @@
         data[key] = value;
       });
 
+      const apiHost = window.location.hostname;
       const url = type === 'Propriétaire'
-        ? 'https://172.16.15.74:421/AirlockUnlock/proprietaire/inscription.php'
-        : 'https://172.16.15.74:421/AirlockUnlock/client/inscription.php';
+        ? `https://${apiHost}:421/AirlockUnlock/proprietaire/inscription.php`
+        : `https://${apiHost}:421/AirlockUnlock/client/inscription.php`;
 
       try {
         const response = await fetch(url, {
