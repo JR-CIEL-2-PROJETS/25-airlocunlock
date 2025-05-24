@@ -7,7 +7,7 @@ echo "⏳ Attente du démarrage de MySQL..."
 sleep 10
 
 echo "📦 Importation des bases de données..."
-docker exec -i mysql_container mysql -u root -pROOT_PASSWORD back_airlockunlock < back_airlockunlock.sql
-docker exec -i mysql_container mysql -u root -pROOT_PASSWORD back_tapkey < back_tapkey.sql
+docker exec mysql_container mysqldump -u root -pROOT_PASSWORD back_airlockunlock < APIs/code/back_airlockunlock.sql
+docker exec mysql_container mysqldump -u root -pROOT_PASSWORD back_tapkey < APIs/code/back_tapkey.sql
 
 echo "✅ Conteneurs lancés et bases importées."
