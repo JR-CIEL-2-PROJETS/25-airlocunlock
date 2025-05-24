@@ -7,7 +7,7 @@ docker exec mysql_container mysql  -u root -proot Tapkey > APIs/code/back_tapkey
 echo "⬆️ Push Git"
 git add .
 git commit -m "sauvegarde des bases"
-git push origin deploiement
+git push origin Deploiement
 
 echo "🧨 Arrêt des conteneurs..."
 docker-compose down
