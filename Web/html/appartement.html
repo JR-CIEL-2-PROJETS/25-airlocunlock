@@ -382,9 +382,8 @@
             <img src="img/hasbula.jpg" alt="Profil">
             <div class="profile-menu">
                 <ul>
-                    <li><a href="profil">Voir le profil</a></li>
+                    <li><a href="profile">Voir le profil</a></li>
                     <li><a href="reservations">Mes réservations</a></li>
-                    <li><a href="parametres">Paramètres</a></li>
                     <li><a href="index">Déconnexion</a></li>
                 </ul>
             </div>
@@ -503,6 +502,19 @@
             deleteCookie('auth_token'); // Supprimer le cookie contenant le token
             window.location.href = 'index'; // Rediriger vers la page de connexion
         }
+
+        const profile = document.querySelector('.profile');
+        const profileMenu = document.querySelector('.profile-menu');
+
+        profile.addEventListener('click', () => {
+            profileMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
 
         // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
@@ -798,6 +810,25 @@
 
             calendar.render();
         });
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                sendConfirmationEmail(); // Envoi l'e-mail ici
+                sendReservationToAPI();  // Et réserve en base
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: totalPrice.toFixed(2)
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Transaction complétée par ' + details.payer.name.given_name);
+                    window.location.href = 'https://www.paypal.com';
+                });
+            }
+        }).render('#paypal-button-container');
     </script>
 
 </body>
