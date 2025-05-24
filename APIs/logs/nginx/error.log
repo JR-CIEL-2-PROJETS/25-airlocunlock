@@ -131,3 +131,4 @@
 2025/05/23 23:47:58 [emerg] 1#1: "server" directive is not allowed here in /etc/nginx/nginx.conf:2
 2025/05/23 23:57:20 [emerg] 1#1: "server" directive is not allowed here in /etc/nginx/nginx.conf:2
 2025/05/24 00:00:30 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
+2025/05/24 00:49:31 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
