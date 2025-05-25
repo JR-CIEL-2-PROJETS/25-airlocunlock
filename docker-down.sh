@@ -1,15 +1,31 @@
 #!/bin/bash
+echo "💾 Sauvegarde des bases de données..."
 
-echo "💾 Sauvegarde des bases de données dans APIs/code/ ..."
-docker exec mysql_container mysql  -u root -proot airlockunlock > APIs/code/back_airlockunlock.sql
-docker exec mysql_container mysql  -u root -proot Tapkey > APIs/code/back_tapkey.sql
+docker exec mysql-container mysqldump -u root -proot airlockunlock > APIs/code/back_airlockunlock.sql
+docker exec mysql-container mysqldump -u root -proot Tapkey > APIs/code/back_tapkey.sql
+
+echo "✅ Bases sauvegardées dans APIs/code/"
+
+
+echo "⏬ Arrêt des conteneurs API et Web..."
+
+# Arrêt API
+cd APIs
+docker-compose down
+cd ..
+
+# Arrêt Web
+cd Web
+docker-compose down
+cd ..
+
+
+
 
 echo "⬆️ Push Git"
-git add .
-git commit -m "sauvegarde des bases"
+
+git add APIs/code/back_airlockunlock.sql APIs/code/back_tapkey.sql
+git commit -m "Sauvegarde des bases et arrêt des conteneurs"
 git push origin Deploiement
 
-echo "🧨 Arrêt des conteneurs..."
-docker-compose down
-
-echo "✅ Bases sauvegardées et conteneurs arrêtés."
+echo "✅ Fin du script docker-down.sh"

@@ -1,6 +1,11 @@
 {
-    "require": {
-        "firebase/php-jwt": "^6.0",
-        "phpmailer/phpmailer": "^6.10"
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://repo.packagist.org"
     }
+  ],
+  "require": {
+    "firebase/php-jwt": "^6.11"
+  }
 }
