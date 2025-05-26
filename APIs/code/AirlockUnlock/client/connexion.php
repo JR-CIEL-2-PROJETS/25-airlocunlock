@@ -5,8 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include '../config.php';
-require_once '/home/airlockunlock/25-airlocunlock/APIs/code/vendor/autoload.php';
-
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;

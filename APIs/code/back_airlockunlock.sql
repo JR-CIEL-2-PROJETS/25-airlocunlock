@@ -112,7 +112,7 @@ CREATE TABLE `proprietaires` (
 
 LOCK TABLES `proprietaires` WRITE;
 /*!40000 ALTER TABLE `proprietaires` DISABLE KEYS */;
-INSERT INTO `proprietaires` VALUES (1,'Lakshan Sangaralingam','lakshan@gmail.com','$2y$10$MOdHF0Ln0Mra1FuL3Edv4.DUD96aDCdbMe0RTBOwH6DBV.eDW6k4O','2025-04-08','0698478687');
+INSERT INTO `proprietaires` VALUES (1,'Lakshan Sangaralingam','lakshan@gmail.com','$2y$10$.Ye/vpSYuVYlIpPd6kUIvuXChSAwgXlkZARfD1W7v6UnywZ3QB0Xa','2025-04-08','0698478687');
 /*!40000 ALTER TABLE `proprietaires` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-26  7:52:51
+-- Dump completed on 2025-05-26  8:08:47

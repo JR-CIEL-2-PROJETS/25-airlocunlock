@@ -16,6 +16,13 @@ fi
 
 echo "📡 Adresse IP locale détectée : $API_HOST"
 
+# Copier le certificat public pour que les clients puissent le télécharger
+SSL_PUBLIC_PATH="Web/html/ssl"
+mkdir -p $SSL_PUBLIC_PATH
+cp APIs/ssl/server.crt $SSL_PUBLIC_PATH/
+echo "📁 Certificat SSL public disponible sur : http://$API_HOST/ssl/server.crt"
+echo "👉 Pensez à importer ce certificat dans votre navigateur pour éviter les alertes HTTPS."
+
 # Lancement de l'API
 echo "🚀 Lancement des services API..."
 cd APIs
