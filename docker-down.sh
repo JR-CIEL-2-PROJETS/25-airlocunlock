@@ -27,10 +27,16 @@ cd Web && docker-compose down && cd ..
 echo "🧹 Nettoyage des fichiers non suivis dans APIs/code/vendor..."
 git clean -fd APIs/code/vendor/
 
-# Commit et push git
-echo "⬆️ Push Git"
+# Commit et push global (branche Deploiement)
+echo "⬆️ Push Git global vers Deploiement"
 git add .
-git commit -m "Sauvegarde des bases et arrêt des conteneurs"
+git commit -m "Sauvegarde des bases et arrêt des conteneurs" || echo "Rien à committer"
 git push origin Deploiement
+
+# Commit et push uniquement le dossier APIs vers la branche API-1
+echo "⬆️ Push du dossier APIs vers la branche API-1"
+git add APIs/
+git commit -m "Mise à jour APIs - sauvegarde et arrêt" || echo "Rien à committer pour APIs"
+git push origin API-1
 
 echo "✅ Fin du script docker-down.sh"
