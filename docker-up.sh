@@ -3,8 +3,8 @@
 # Génération du certificat SSL systématique (toujours)
 echo "🔐 Génération du certificat SSL..."
 openssl req -new -newkey rsa:2048 -days 365 -nodes \
-  -x509 -keyout APIs/ssl/server.key -out APIs/ssl/server.crt \
-  -config APIs/ssl/san.cnf
+  -x509 -keyout Web/nginx/ssl/server.key -out Web/nginx/ssl/server.crt \
+  -config Web/nginx/ssl/san.cnf
 echo "✅ Certificat SSL généré avec succès."
 
 # Récupération de l'adresse IP locale
