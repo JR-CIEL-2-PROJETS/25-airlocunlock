@@ -1,0 +1,18 @@
+# Ignorer les dépendances Composer dans APIs
+APIs/code/vendor/
+
+# Ignorer les fichiers de log
+APIs/logs/
+Web/logs/
+
+# Ignorer les fichiers temporaires
+*.log
+*.tmp
+*.swp
+
+# Ignorer les sauvegardes SQL locales (si pas versionnées volontairement)
+APIs/code/*.sql
+
+# Ignorer les fichiers système
+.DS_Store
+Thumbs.db
