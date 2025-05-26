@@ -36,7 +36,7 @@ git push origin Deploiement
 # Commit et push du CONTENU de APIs vers branche API-1
 echo "⬆️ Push du CONTENU de APIs vers la branche API-1"
 cd APIs
-git clean -fd
+git clean -fdx   # 🔧 Nettoie y compris les fichiers ignorés comme vendor/
 git checkout API-1
 git add .
 git commit -m "Mise à jour du contenu d'APIs" || echo "Rien à committer pour API-1"
