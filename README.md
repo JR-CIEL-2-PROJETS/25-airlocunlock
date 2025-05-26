@@ -97,7 +97,7 @@ Depuis un smartphone Android :
 
 - Cliquez sur l’icône en bas à droite 3 fois
 
-- Saisissez l’adresse IP de l’API et celle de l’ESP32 (en utlisant ip a & le moniteur série pour l'ESP 32)
+- Saisissez l’adresse IP de l’API et celle de l’ESP32 (en utlisant hostname -I & le moniteur série pour l'ESP 32)
 
 ### 6. Stopper et sauvegarder
 Lorsque vous avez terminé, exécutez :
