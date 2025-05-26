@@ -16,8 +16,9 @@ Après avoir installé l’application AirlockUnlock sur votre smartphone Androi
 1. **Ouvrez l’application AirlockUnlock sur votre téléphone.**  
 2. **Sur l’écran principal, cliquez sur le logo `3 fois` situé en bas à droite de l’interface.**  
 3. Une fenêtre de configuration s’ouvrira, vous permettant de saisir :  
-   - **L’adresse IP de l’API ainsi que son port** (le serveur qui gère les données).  
-   - **L’adresse IP de l’ESP32** (le module de contrôle de la serrure).  
+   - **L’adresse IP de l’API ainsi que son port** (le serveur qui gère les données). 
+   Utilisez cette commande : hostname -I dans le terminal.
+   - **L’adresse IP de l’ESP32** (le module de contrôle de la serrure).
 4. Entrez les adresses IP correctes en fonction de votre réseau local.  
 5. Validez les paramètres.  
 
