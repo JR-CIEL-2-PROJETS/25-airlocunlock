@@ -485,3 +485,5 @@
 172.16.15.87 - - [26/May/2025:12:03:42 +0000] "GET /img/icon.png HTTP/1.1" 200 177101 "https://172.16.15.74:422/index" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
 172.16.15.87 - - [26/May/2025:12:04:10 +0000] "GET /index HTTP/1.1" 200 13437 "https://172.16.15.74:422/accueil" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
 172.16.15.87 - - [26/May/2025:12:04:10 +0000] "GET /img/icon.png HTTP/1.1" 200 177101 "https://172.16.15.74:422/index" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
+172.16.15.87 - - [26/May/2025:12:06:14 +0000] "GET /index HTTP/1.1" 200 13437 "https://172.16.15.74:422/accueil" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
+172.16.15.87 - - [26/May/2025:12:06:14 +0000] "GET /img/icon.png HTTP/1.1" 200 177101 "https://172.16.15.74:422/index" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
