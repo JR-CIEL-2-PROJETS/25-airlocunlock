@@ -24,7 +24,7 @@ cd ..
 
 echo "⬆️ Push Git"
 
-git add APIs/code/back_airlockunlock.sql APIs/code/back_tapkey.sql
+git add .
 git commit -m "Sauvegarde des bases et arrêt des conteneurs"
 git push origin Deploiement
 
