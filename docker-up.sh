@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# Génération du certificat SSL (si nécessaire)
-if [ ! -f "APIs/ssl/server.crt" ] || [ ! -f "APIs/ssl/server.key" ]; then
-  echo "🔐 Génération du certificat SSL..."
-  openssl req -new -newkey rsa:2048 -days 365 -nodes \
-    -x509 -keyout APIs/ssl/server.key -out APIs/ssl/server.crt \
-    -config APIs/ssl/san.cnf
-  echo "✅ Certificat SSL généré avec succès."
-else
-  echo "⚡ Certificat SSL déjà existant."
-fi
+# Génération du certificat SSL systématique (toujours)
+echo "🔐 Génération du certificat SSL..."
+openssl req -new -newkey rsa:2048 -days 365 -nodes \
+  -x509 -keyout APIs/ssl/server.key -out APIs/ssl/server.crt \
+  -config APIs/ssl/san.cnf
+echo "✅ Certificat SSL généré avec succès."
 
 # Récupération de l'adresse IP locale
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
