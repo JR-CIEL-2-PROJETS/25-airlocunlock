@@ -99,15 +99,6 @@ Depuis un smartphone Android :
 
 - Saisissez l’adresse IP de l’API et celle de l’ESP32 (en utlisant ip a & le moniteur série pour l'ESP 32)
 
-## ⚠️ Accès à l’interface web  
-L'interface web est accessible via :
-
-https://{api-host}:421/
-
-**Note importante :**  
-Lors de la première connexion, vous devrez accepter manuellement le risque lié au certificat HTTPS (certificat auto-signé). Ceci est nécessaire pour accéder au site web en toute sécurité dans cet environnement de test.
-
-
 ### 6. Stopper et sauvegarder
 Lorsque vous avez terminé, exécutez :
 
