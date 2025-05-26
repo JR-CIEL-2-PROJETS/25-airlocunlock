@@ -13,17 +13,21 @@ done
 
 echo "⏳ MySQL prêt, démarrage des dumps..."
 
-docker exec mysql-container mysqldump -u root -proot airlockunlock > $BACKUP_DIR/back_airlockunlock.sql
-docker exec mysql-container mysqldump -u root -proot Tapkey > $BACKUP_DIR/back_tapkey.sql
+docker exec mysql-container mysqldump -u root -proot airlockunlock > "$BACKUP_DIR/back_airlockunlock.sql"
+docker exec mysql-container mysqldump -u root -proot Tapkey > "$BACKUP_DIR/back_tapkey.sql"
 
 echo "✅ Bases sauvegardées dans $BACKUP_DIR"
 
-# Ensuite arrêt des containers et push git
+# Arrêt des containers
 echo "⏬ Arrêt des conteneurs API et Web..."
-
 cd APIs && docker-compose down && cd ..
 cd Web && docker-compose down && cd ..
 
+# Nettoyage des fichiers non suivis dans APIs/code/vendor pour éviter conflits git
+echo "🧹 Nettoyage des fichiers non suivis dans APIs/code/vendor..."
+git clean -fd APIs/code/vendor/
+
+# Commit et push git
 echo "⬆️ Push Git"
 git add .
 git commit -m "Sauvegarde des bases et arrêt des conteneurs"
