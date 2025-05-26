@@ -1,10 +1,14 @@
 {
-  "repositories": [
-    {
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://repo.packagist.org"
+    },
+    "0": {
       "type": "composer",
       "url": "http://repo.packagist.org"
     }
-  ],
+  },
   "require": {
     "firebase/php-jwt": "^6.11"
   }
