@@ -26,41 +26,9 @@ echo "🧹 Nettoyage des fichiers non suivis (y compris ignorés comme vendor/).
 git clean -fdx
 
 echo "⬆️ Push Git global vers Deploiement"
+git checkout Deploiement || echo "Déjà sur Deploiement"
 git add .
 git commit -m "Sauvegarde des bases et arrêt des conteneurs" || echo "Rien à committer"
 git push origin Deploiement
-
-echo "⬆️ Push du CONTENU de APIs vers la branche API-1"
-cd APIs
-
-# ✅ Étape clé : revenir d'abord sur Deploiement pour éviter conflit
-git checkout Deploiement || echo "Déjà sur Deploiement"
-
-# 💡 Nettoyage global
-git clean -fdx
-
-# 🔥 Supprimer le dossier vendor manuellement s'il pose problème
-rm -rf code/vendor
-
-git checkout API-1
-git pull origin API-1
-
-git add .
-git commit -m "Mise à jour du contenu d'APIs" || echo "Rien à committer pour API-1"
-git push origin API-1
-cd ..
-
-echo "⬆️ Push du CONTENU de Web vers la branche Web-1"
-cd Web
-
-git checkout Deploiement || echo "Déjà sur Deploiement"
-git clean -fdx
-git checkout Web-1
-git pull origin Web-1
-
-git add .
-git commit -m "Mise à jour du contenu de Web" || echo "Rien à committer pour Web-1"
-git push origin Web-1
-cd ..
 
 echo "✅ Fin du script docker-down.sh"
