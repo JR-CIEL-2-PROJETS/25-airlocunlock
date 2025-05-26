@@ -9,7 +9,6 @@ services:
     volumes:
       - ./code:/var/www/html:cached 
       - ./logs/php:/var/log/php:cached
-      - vendor:/var/www/html/vendor
     networks:
       - app_network
     ports:
