@@ -22,8 +22,8 @@ echo "⏬ Arrêt des conteneurs API et Web..."
 cd APIs && docker-compose down && cd ..
 cd Web && docker-compose down && cd ..
 
-echo "🧹 Nettoyage des fichiers non suivis (mais PAS les ignorés)..."
-git clean -fd
+echo "🧹 Nettoyage des fichiers non suivis (mais PAS les fichiers ignorés comme vendor/)..."
+git clean -fd  # ⚠️ PAS de -x ici, sinon vendor/ sera supprimé
 
 echo "⬆️ Push Git global vers Deploiement"
 git checkout Deploiement || echo "Déjà sur Deploiement"
