@@ -36,8 +36,11 @@ cd APIs
 # ✅ Étape clé : revenir d'abord sur Deploiement pour éviter conflit
 git checkout Deploiement || echo "Déjà sur Deploiement"
 
-# 💡 Nettoyage avant le checkout
+# 💡 Nettoyage global
 git clean -fdx
+
+# 🔥 Supprimer le dossier vendor manuellement s'il pose problème
+rm -rf code/vendor
 
 git checkout API-1
 git pull origin API-1
@@ -50,11 +53,8 @@ cd ..
 echo "⬆️ Push du CONTENU de Web vers la branche Web-1"
 cd Web
 
-# ✅ Même logique : revenir sur Deploiement avant clean + checkout
 git checkout Deploiement || echo "Déjà sur Deploiement"
-
 git clean -fdx
-
 git checkout Web-1
 git pull origin Web-1
 
