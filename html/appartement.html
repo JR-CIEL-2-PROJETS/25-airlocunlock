@@ -382,9 +382,8 @@
             <img src="img/hasbula.jpg" alt="Profil">
             <div class="profile-menu">
                 <ul>
-                    <li><a href="profil">Voir le profil</a></li>
+                    <li><a href="profile">Voir le profil</a></li>
                     <li><a href="reservations">Mes réservations</a></li>
-                    <li><a href="parametres">Paramètres</a></li>
                     <li><a href="index">Déconnexion</a></li>
                 </ul>
             </div>
@@ -492,8 +491,7 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-
-                // Fonction pour supprimer un cookie
+        // Fonction pour supprimer un cookie
         function deleteCookie(name) {
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
         }
@@ -504,6 +502,19 @@
             deleteCookie('auth_token'); // Supprimer le cookie contenant le token
             window.location.href = 'index'; // Rediriger vers la page de connexion
         }
+
+        const profile = document.querySelector('.profile');
+        const profileMenu = document.querySelector('.profile-menu');
+
+        profile.addEventListener('click', () => {
+            profileMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!profile.contains(event.target) && !profileMenu.contains(event.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
 
         // Ajouter un gestionnaire d'événements pour la déconnexion
         document.addEventListener('DOMContentLoaded', function() {
@@ -543,25 +554,25 @@
 
         // Remplit automatiquement le nom depuis le token
         function fillNameFromToken() {
-    const token = getCookie('auth_token');
-    if (token) {
-        const decoded = decodeJWT(token);
-        if (decoded && decoded.nom) {
-            // Remplit un champ de formulaire si présent
-            const nameInput = document.getElementById('name');
-            if (nameInput) {
-                nameInput.value = decoded.nom;
-                nameInput.readOnly = true;
-            }
+            const token = getCookie('auth_token');
+            if (token) {
+                const decoded = decodeJWT(token);
+                if (decoded && decoded.nom) {
+                    // Remplit un champ de formulaire si présent
+                    const nameInput = document.getElementById('name');
+                    if (nameInput) {
+                        nameInput.value = decoded.nom;
+                        nameInput.readOnly = true;
+                    }
 
-            // Affiche le nom dans l'interface
-            const userNameDisplay = document.getElementById('user-name');
-            if (userNameDisplay) {
-                userNameDisplay.innerText = decoded.name;
+                    // Affiche le nom dans l'interface
+                    const userNameDisplay = document.getElementById('user-name');
+                    if (userNameDisplay) {
+                        userNameDisplay.innerText = decoded.name || decoded.nom;
+                    }
+                }
             }
         }
-    }
-}
 
         function getIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
@@ -576,7 +587,8 @@
             }
 
             try {
-                const response = await fetch(`https://172.16.15.74:421/AirlockUnlock/bien/biens.php?id_bien=${id_bien}`);
+                const apiHost = window.location.hostname;
+                const response = await fetch(`https://${apiHost}:421/AirlockUnlock/bien/biens.php?id_bien=${id_bien}`);
                 if (!response.ok) throw new Error('Erreur lors de la récupération du bien.');
 
                 const biens = await response.json();
@@ -674,23 +686,15 @@
             };
 
             const token = getCookie('auth_token');
+            const apiHost = window.location.hostname;
 
-            fetch('https://172.16.15.74:421/AirlockUnlock/bien/reserver.php', {
+            fetch(`https://${apiHost}:421/AirlockUnlock/bien/reserver.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': 'Bearer ' + token
                 },
                 body: new URLSearchParams(reservationData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Réservation enregistrée:', data);
-                alert('Réservation enregistrée.');
-            })
-            .catch((error) => {
-                console.error('Erreur lors de la réservation:', error);
-                alert('Erreur lors de l\'enregistrement de la réservation.');
             });
         }
 
@@ -739,18 +743,49 @@
                 });
         }
 
+        // Nouvelle version de fetchReservedDates filtrée par id_bien de l'URL
         async function fetchReservedDates() {
+            const apiHost = window.location.hostname;
+            const token = getCookie('auth_token');
+            const idBienCible = getIdFromUrl();
+
+            if (!token) {
+                console.error('Token manquant. Impossible de récupérer les réservations.');
+                return [];
+            }
+
+            if (!idBienCible) {
+                console.warn('id_bien manquant dans l’URL, aucune réservation affichée.');
+                return [];
+            }
+
             try {
-                const response = await fetch('https://172.16.15.74:421/AirlockUnlock/bien/reservations.php');
+                const response = await fetch(`https://${apiHost}:421/AirlockUnlock/client/reservations.php`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
                 if (!response.ok) throw new Error('Erreur lors de la récupération des réservations.');
 
-                const reservations = await response.json();
-                return reservations.map(reservation => ({
+                const data = await response.json();
+
+                if (data.status !== 'success' || !Array.isArray(data.reservations)) {
+                    console.error('Réponse API invalide.');
+                    return [];
+                }
+
+                // Filtrer les réservations uniquement pour le bien courant
+                const filteredReservations = data.reservations.filter(res => res.id_bien == idBienCible);
+
+                return filteredReservations.map(reservation => ({
                     start: reservation.date_arrivee,
-                    end: new Date(new Date(reservation.date_depart).setDate(new Date(reservation.date_depart).getDate() + 1)).toISOString().split('T')[0],
-                    rendering: 'background',
-                    color: '#ccc'
+                    end: new Date(new Date(reservation.date_depart).getTime() + 86400000).toISOString().split('T')[0],
+                    display: 'background',
+                    color: '#ff4d4d',
+                    title: 'Réservé'
                 }));
+
             } catch (error) {
                 console.error('Erreur:', error);
                 return [];
@@ -759,24 +794,22 @@
 
         document.addEventListener('DOMContentLoaded', async function () {
             await fetchPropertyDetails();
-            fillNameFromToken(); // Remplit automatiquement le nom depuis le token
+            fillNameFromToken();
 
-            var calendarEl = document.getElementById('calendar');
-            var reservedDates = await fetchReservedDates();
+            const calendarEl = document.getElementById('calendar');
+            const reservedDates = await fetchReservedDates();
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 events: reservedDates,
-                eventRender: function(info) {
-                    if (info.event.rendering === 'background') {
-                        info.el.style.backgroundColor = '#ccc';
-                    }
-                }
+                height: 'auto',
+                eventDisplay: 'background',
+                eventColor: '#ff4d4d', // Rouge pour réservations du bien
+                dayMaxEventRows: true,
             });
 
             calendar.render();
         });
-
         paypal.Buttons({
             createOrder: function(data, actions) {
                 sendConfirmationEmail(); // Envoi l'e-mail ici
@@ -797,5 +830,6 @@
             }
         }).render('#paypal-button-container');
     </script>
+
 </body>
 </html>

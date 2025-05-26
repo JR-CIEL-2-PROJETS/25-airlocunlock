@@ -392,7 +392,7 @@
 
     <footer>
         <p>&copy; 2023 AirLockUnlock. Tous droits réservés.</p>
-        <a href="contact">Contact</a>
+        <a href="#">Contact</a>
     </footer>
 
     <script>
@@ -459,7 +459,9 @@
                     throw new Error('Token manquant');
                 }
 
-                const response = await fetch('https://172.16.15.74:421/AirlockUnlock/client/profil.php', {
+                const apiHost = window.location.hostname;
+
+                const response = await fetch(`https://${apiHost}:421/AirlockUnlock/client/profil.php`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -564,8 +566,8 @@
         document.getElementById('profile-form').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
 
             const token = getCookie('auth_token');
             if (!token) {
@@ -573,7 +575,9 @@
                 return;
             }
 
-            fetch('https://172.16.15.74:421/AirlockUnlock/client/profil.php', {
+            const apiHost = window.location.hostname;
+
+            fetch(`https://${apiHost}:421/AirlockUnlock/client/profil.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

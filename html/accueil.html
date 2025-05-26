@@ -853,7 +853,8 @@
         // Fonction pour récupérer les biens depuis l'API
         async function fetchProperties() {
             try {
-                const response = await fetch('https://172.16.15.74:421/AirlockUnlock/bien/biens.php');
+                const apiHost = window.location.hostname;
+                const response = await fetch(`https://${apiHost}:421/AirlockUnlock/bien/biens.php`);
                 if (!response.ok) {
                     throw new Error('Erreur lors de la récupération des biens');
                 }
@@ -864,6 +865,7 @@
                 console.error('Erreur:', error);
             }
         }
+
 
         // Fonction pour afficher les biens dans la div
         function displayProperties(biens) {
@@ -906,7 +908,7 @@
                         let markerIcon;
                         if (bien.serrure_electronique) {
                             markerIcon = {
-                                url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Icône avec serrure
+                                url: 'https://cdn-icons-png.flaticon.com/512/61/61457.png', // Icône avec serrure
                                 scaledSize: new google.maps.Size(32, 32)
                             };
                         } else {

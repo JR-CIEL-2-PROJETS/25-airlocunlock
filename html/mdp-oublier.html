@@ -198,13 +198,15 @@
         return;
       }
 
-      const formData = new FormData();
-      formData.append('email', email);
+        const apiHost = window.location.hostname;
 
-      fetch('https://172.16.15.74:421/AirlockUnlock/client/changer-mdp.php', {
-        method: 'POST',
-        body: formData,
-      })
+        const formData = new FormData();
+        formData.append('email', email);
+
+        fetch(`https://${apiHost}:421/AirlockUnlock/client/changer-mdp.php`, {
+          method: 'POST',
+          body: formData,
+        })
         .then((response) => response.json())
         .then((data) => {
           if (data.status === 'success') {
@@ -241,14 +243,15 @@
         newPasswordInput.classList.remove('input-error');
         newPasswordInput.classList.add('input-valid');
       }
-
+      
+      const apiHost = window.location.hostname;
       const formData = new FormData();
       formData.append('email', emailInput.value.trim());
       formData.append('nouveau_mdp', newPassword);
-      
+        
 
 
-      fetch('https://172.16.15.74:421/AirlockUnlock/client/changer-mdp.php', {
+      fetch(`https://${apiHost}:421/AirlockUnlock/client/changer-mdp.php`, {
         method: 'POST',
         body: formData,
       })

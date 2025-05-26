@@ -360,70 +360,76 @@
     
         // Fonction pour récupérer et afficher les biens du propriétaire
         function fetchBiens(proprietaireId) {
-            console.log('Fetching biens pour ID:', proprietaireId);
-            fetch(`https://172.16.15.74:421/AirlockUnlock/bien/biens.php`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Tous les biens récupérés :', data);
-                    const propertyGrid = document.getElementById('property-grid');
-                    propertyGrid.innerHTML = '';
-    
-                    // Filtrer les biens par ID propriétaire
-                    const biensFiltres = data.filter(bien => bien.id_proprietaire == proprietaireId);
-    
-                    biensFiltres.forEach(bien => {
-                        const propertyCard = document.createElement('div');
-                        propertyCard.className = 'property-card';
-                        propertyCard.innerHTML = `
-                            <img src="${bien.photo_url}" alt="${bien.titre}" class="property-image">
-                            <div class="property-info">
-                                <h3 class="property-title">${bien.titre}</h3>
-                                <div class="property-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>${bien.adresse}</span>
-                                </div>
-                                <div class="property-price">${bien.prix_par_nuit} €/nuits</div>
-                                <div class="property-actions">
-                                    <a href="editer?id=${bien.id_bien}" class="btn-edit"><i class="fas fa-edit"></i> Modifier</a>
-                                    <button class="btn-delete" data-id="${bien.id_bien}"><i class="fas fa-trash"></i> Supprimer</button>
-                                </div>
-                            </div>
-                        `;
-                        propertyGrid.appendChild(propertyCard);
-                    });
-    
-                    // Ajouter gestion suppression
-                    document.querySelectorAll('.btn-delete').forEach(button => {
-                        button.addEventListener('click', function () {
-                            if (confirm('Êtes-vous sûr de vouloir supprimer ce bien ?')) {
-                                const bienId = this.getAttribute('data-id');
-                                
-                                fetch('https://172.16.15.74:421/AirlockUnlock/bien/supprimer.php', {
-                                        method: 'DELETE',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'Authorization': `Bearer ${auth_token}`
-                                        },
-                                        body: JSON.stringify({ id_bien: bienId })
-                                    })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        this.closest('.property-card').remove();
-                                        alert('Bien supprimé avec succès.');
-                                    } else {
-                                        alert('Erreur lors de la suppression : ' + (data.message || 'Erreur inconnue.'));
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Erreur suppression bien :', error);
-                                    alert('Erreur réseau lors de la suppression.');
-                                });
+        const apiHost = window.location.hostname;
+        console.log('Fetching biens pour ID:', proprietaireId);
+        fetch(`https://${apiHost}:421/AirlockUnlock/bien/biens.php`, {
+            headers: {
+                'Authorization': `Bearer ${auth_token}` // si tu as besoin d'authentification
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Tous les biens récupérés :', data);
+            const propertyGrid = document.getElementById('property-grid');
+            propertyGrid.innerHTML = '';
+
+            // Filtrer les biens par ID propriétaire
+            const biensFiltres = data.filter(bien => bien.id_proprietaire == proprietaireId);
+
+            biensFiltres.forEach(bien => {
+                const propertyCard = document.createElement('div');
+                propertyCard.className = 'property-card';
+                propertyCard.innerHTML = `
+                    <img src="${bien.photo_url}" alt="${bien.titre}" class="property-image">
+                    <div class="property-info">
+                        <h3 class="property-title">${bien.titre}</h3>
+                        <div class="property-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${bien.adresse}</span>
+                        </div>
+                        <div class="property-price">${bien.prix_par_nuit} €/nuits</div>
+                        <div class="property-actions">
+                            <a href="editer?id=${bien.id_bien}" class="btn-edit"><i class="fas fa-edit"></i> Modifier</a>
+                            <button class="btn-delete" data-id="${bien.id_bien}"><i class="fas fa-trash"></i> Supprimer</button>
+                        </div>
+                    </div>
+                `;
+                propertyGrid.appendChild(propertyCard);
+            });
+
+            // Gestion suppression
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function () {
+                    if (confirm('Êtes-vous sûr de vouloir supprimer ce bien ?')) {
+                        const bienId = this.getAttribute('data-id');
+
+                        fetch(`https://${apiHost}:421/AirlockUnlock/bien/supprimer.php`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${auth_token}`
+                            },
+                            body: JSON.stringify({ id_bien: bienId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                this.closest('.property-card').remove();
+                                alert('Bien supprimé avec succès.');
+                            } else {
+                                alert('Erreur lors de la suppression : ' + (data.message || 'Erreur inconnue.'));
                             }
+                        })
+                        .catch(error => {
+                            console.error('Erreur suppression bien :', error);
+                            alert('Erreur réseau lors de la suppression.');
                         });
-                    });
-                })
-                .catch(error => console.error('Erreur récupération biens :', error));
+                    }
+                });
+            });
+        })
+        .catch(error => console.error('Erreur récupération biens :', error));
+
         }
          // Fonction pour supprimer un cookie
          function deleteCookie(name) {

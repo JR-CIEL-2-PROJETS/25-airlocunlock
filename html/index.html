@@ -182,7 +182,7 @@
                     </div>
                     <button type="submit" class="button-primary">Se connecter</button>
                     <div class="signup-link">
-                        <a href="forgot_password">Mot de passe oublié ?</a>
+                        <a href="mdp-oublier">Mot de passe oublié ?</a>
                     </div>
                 </form>
             </div>
@@ -216,11 +216,13 @@
                 return;
             }
     
+            const apiHost = window.location.hostname;
+
             const formData = new FormData();
             formData.append('email', email);
             formData.append('mot_de_passe', mot_de_passe);
-    
-            fetch('https://172.16.15.74:421/AirlockUnlock/client/connexion.php', {
+
+            fetch(`https://${apiHost}:421/AirlockUnlock/client/connexion.php`, {
                 method: 'POST',
                 body: formData
             })
@@ -267,11 +269,13 @@
                 return;
             }
     
+            const apiHost = window.location.hostname;
+
             const formData = new FormData();
             formData.append('email', email);
             formData.append('mot_de_passe', mot_de_passe);
-    
-            fetch('https://172.16.15.74:421/AirlockUnlock/proprietaire/connexion.php', {
+
+            fetch(`https://${apiHost}:421/AirlockUnlock/proprietaire/connexion.php`, {
                 method: 'POST',
                 body: formData
             })
