@@ -23,7 +23,7 @@ echo "⏬ Arrêt des conteneurs API et Web..."
 cd APIs && docker-compose down && cd ..
 cd Web && docker-compose down && cd ..
 
-# Nettoyage des fichiers non suivis dans APIs/code/vendor pour éviter conflits git
+# Nettoyage des fichiers non suivis dans APIs/code/vendor
 echo "🧹 Nettoyage des fichiers non suivis dans APIs/code/vendor..."
 git clean -fd APIs/code/vendor/
 
@@ -36,11 +36,21 @@ git push origin Deploiement
 # Commit et push du CONTENU de APIs vers branche API-1
 echo "⬆️ Push du CONTENU de APIs vers la branche API-1"
 cd APIs
-git clean -fd  # 🔧 Nettoie les fichiers non suivis qui bloquent le checkout
+git clean -fd
 git checkout API-1
 git add .
 git commit -m "Mise à jour du contenu d'APIs" || echo "Rien à committer pour API-1"
 git push origin API-1
+cd ..
+
+# Commit et push du CONTENU de Web vers branche WEB-1
+echo "⬆️ Push du CONTENU de Web vers la branche WEB-1"
+cd Web
+git clean -fd
+git checkout WEB-1
+git add .
+git commit -m "Mise à jour du contenu de Web" || echo "Rien à committer pour WEB-1"
+git push origin WEB-1
 cd ..
 
 echo "✅ Fin du script docker-down.sh"
