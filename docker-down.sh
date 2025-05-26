@@ -33,10 +33,13 @@ git add .
 git commit -m "Sauvegarde des bases et arrêt des conteneurs" || echo "Rien à committer"
 git push origin Deploiement
 
-# Commit et push uniquement le dossier APIs vers la branche API-1
-echo "⬆️ Push du dossier APIs vers la branche API-1"
-git add APIs/
-git commit -m "Mise à jour APIs - sauvegarde et arrêt" || echo "Rien à committer pour APIs"
+# Commit et push du CONTENU de APIs vers branche API-1
+echo "⬆️ Push du CONTENU de APIs vers la branche API-1"
+cd APIs
+git checkout API-1
+git add .
+git commit -m "Mise à jour du contenu d'APIs" || echo "Rien à committer pour API-1"
 git push origin API-1
+cd ..
 
 echo "✅ Fin du script docker-down.sh"
