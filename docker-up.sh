@@ -1,11 +1,5 @@
 #!/bin/bash
 
-echo "🔐 Génération du certificat SSL..."
-  openssl req -new -newkey rsa:2048 -days 365 -nodes \
-  -x509 -keyout Web\nginx\ssl/server.key -out Web\nginx\ssl/server.crt \
-  -config Web\nginx\ssl/san.cnf
-echo "✅ Certificat SSL généré avec succès."
-
 echo "🚀 Lancement des services API..."
 cd APIs
 docker-compose down

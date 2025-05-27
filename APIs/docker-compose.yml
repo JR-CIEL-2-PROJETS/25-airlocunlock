@@ -55,9 +55,8 @@ services:
     volumes:
       - ./code:/var/www/html:ro
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/certs:ro
+      - ../Web/nginx/ssl:/etc/nginx/ssl:ro
       - ./logs/nginx:/var/log/nginx:cached
-      - ./ssl:/etc/ssl:ro
     ports:
       - "91:80"
       - "421:443"
