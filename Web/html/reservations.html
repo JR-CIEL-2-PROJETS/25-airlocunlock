@@ -502,9 +502,10 @@
                         <p><strong>Nombre de personnes :</strong> ${reservation.nombre_personnes}</p>
                     </div>
                 `;
-                div.addEventListener('click', () => {
-                    window.location.href = `reservation?id_reservation=${reservation.id_reservation}`;
-                });
+        // Lien désactivé :
+        // div.addEventListener('click', () => {
+        //     window.location.href = `reservation?id_reservation=${reservation.id_reservation}`;
+        // });
                 col.appendChild(div);
             });
             return col;
