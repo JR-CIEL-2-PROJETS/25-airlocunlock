@@ -22,7 +22,7 @@ echo "✅ Bases importées."
 echo "🔁 Réinstallation des dépendances PHP dans APIs/code..."
 cd APIs/code
 rm -rf vendor
-docker run --rm -v "$PWD/code:/app" -w /app composer:latest install --no-interaction --prefer-dist --no-dev
+composer install
 cd ../..
 
 echo "🌐 Lancement du frontend Web"
