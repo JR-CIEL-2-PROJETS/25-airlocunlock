@@ -137,7 +137,7 @@ Trouve ESP32Servo (par Kevin Harrington) et clique sur Installer.
 #### 📲 Étapes :
 
 1. Depuis un smartphone Android, téléchargez l’APK ici :  
-   📦 [Lien de téléchargement de l’application](#) *(à compléter)*
+   📦 [Lien de téléchargement de l’application](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/releases/download/V1/AirlockUnlock.apk)*
 
 2. Installez l'application.
 3. Connectez le smartphone au **point d’accès Wi-Fi du PC**.
