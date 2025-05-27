@@ -7,7 +7,7 @@ services:
     environment:
       - JWT_SECRET_KEY=votre_cle_secrete_sure
     volumes:
-      - ./code:/var/www/html:cached 
+      - ./code:/var/www/html:cached
       - ./logs/php:/var/log/php:cached
     networks:
       - app_network
@@ -15,6 +15,7 @@ services:
       - "9000:9000"
     depends_on:
       - mysql
+
 
   mysql:
     image: mysql:8
