@@ -3,15 +3,15 @@
 #include <WebServer.h>
 #include <ESP32Servo.h>
 
-const char* ssid = "ciel";
-const char* password = "U7803k66";
+const char* ssid = "ciel2";
+const char* password = "btsciel123";
 
 // 🔐 Token d'authentification
 const char* TOKEN = "MON_TOKEN_SECRET";
 
 WebServer server(80);
 Servo monServo;
-const int servoPin = 13;
+const int servoPin = 15;
 const int positionOn = 180;
 const int positionOff = 0;
 const int positionMid = 90;

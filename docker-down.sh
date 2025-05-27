@@ -5,7 +5,6 @@ echo "💾 Sauvegarde des bases de données..."
 
 BACKUP_DIR=$(pwd)/APIs/code
 
-# Vérifie que MySQL est prêt
 until docker exec mysql-container mysqladmin ping -h "localhost" -uroot -proot --silent; do
   echo "⏳ Attente que MySQL soit prêt..."
   sleep 3
@@ -22,13 +21,7 @@ echo "⏬ Arrêt des conteneurs API et Web..."
 cd APIs && docker-compose down && cd ..
 cd Web && docker-compose down && cd ..
 
-echo "🧹 Nettoyage des fichiers non suivis (mais PAS les fichiers ignorés comme vendor/)..."
-git clean -fd  # ⚠️ PAS de -x ici, sinon vendor/ sera supprimé
-
-echo "⬆️ Push Git global vers Deploiement"
-git checkout Deploiement || echo "Déjà sur Deploiement"
-git add .
-git commit -m "Sauvegarde des bases et arrêt des conteneurs" || echo "Rien à committer"
-git push origin Deploiement
+echo "🧹 Nettoyage des fichiers non suivis"
+git clean -fd
 
 echo "✅ Fin du script docker-down.sh"
