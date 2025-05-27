@@ -29,8 +29,17 @@
   Version installable de l'application Android prête à être testée.
 
 - ✨ **[LIEN SITE VISITE](https://projet-airlockunlock.netlify.app/)**  
-Version installable de l'application Android prête à être testée.
+  Version installable de l'application Android prête à être testée.
 
+---
+
+## 🚀 Déploiement du projet
+
+📦 **Le déploiement complet du projet est documenté dans la branche [`Deploiement`](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/tree/Deploiement).**
+
+> Retrouvez toutes les étapes (clonage, lancement Docker, configuration ESP32, installation APK, etc.) dans le fichier [`INSTALLATION.md`](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/blob/Deploiement/INSTALLATION.md) de cette branche.
+
+---
 
 ## ✨ Auteurs
 
