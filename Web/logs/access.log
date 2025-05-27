@@ -871,3 +871,7 @@
 172.19.0.1 - - [27/May/2025:17:49:49 +0000] "GET / HTTP/1.1" 200 13787 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
 172.19.0.1 - - [27/May/2025:17:49:49 +0000] "GET /img/logo.png HTTP/1.1" 200 88513 "https://192.168.1.160:422/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
 172.19.0.1 - - [27/May/2025:17:49:49 +0000] "GET /img/still-life-keys-new-home.jpg HTTP/1.1" 200 26869 "https://192.168.1.160:422/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
+172.19.0.1 - - [27/May/2025:17:56:26 +0000] "GET / HTTP/1.1" 200 13787 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
+172.19.0.1 - - [27/May/2025:17:56:26 +0000] "GET /img/logo.png HTTP/1.1" 304 0 "https://192.168.1.160:422/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
+172.19.0.1 - - [27/May/2025:17:56:26 +0000] "GET /img/still-life-keys-new-home.jpg HTTP/1.1" 304 0 "https://192.168.1.160:422/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
+172.19.0.1 - - [27/May/2025:17:56:26 +0000] "GET /img/icon.png HTTP/1.1" 200 177101 "https://192.168.1.160:422/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" "-"
