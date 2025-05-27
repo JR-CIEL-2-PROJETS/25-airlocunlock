@@ -53,7 +53,7 @@ cd 25-airlocunlock
 
 ### 2. Lancement des services avec Docker
 
-Veillez a avoir installez les dépendances Docker & Docker-compose
+Veillez a avoir installez les dépendances Docker & Docker-compose & Composer.
 Dans la racine du projet, exécutez la commande suivante :
 
 ```bash
