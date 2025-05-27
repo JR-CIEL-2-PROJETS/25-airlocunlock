@@ -65,6 +65,11 @@ Ce script va :
 - Démarrer les services suivants : **PHP API**, **MySQL**, **phpMyAdmin**, **Nginx**, **Interface Web React**.
 - Importer automatiquement les bases de données : `airlockunlock` et `tapkey`.
 
+⚠️ Si vous rencontrez un problème de permission pour exécuter le script :
+
+```bash
+chmod +x docker-up.sh
+```
 ---
 
 ### 3. Accès à l’interface Web
