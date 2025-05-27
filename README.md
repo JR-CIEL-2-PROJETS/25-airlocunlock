@@ -96,7 +96,7 @@ https://{adresse-IP-de-votre-PC}:422
 
 #### 🛠 Étapes dans l’IDE Arduino
 
-1. Ouvrez **l’IDE Arduino**.
+1. Ouvrez **Arduino**.
 2. Ouvrez le fichier dans le dossier `IoT/`.
 3. Modifiez les identifiants Wi-Fi :
 
@@ -106,11 +106,26 @@ const char* password = "MotDePasse";
 ```
 
 4. Activez le **point d’accès mobile** de votre PC (hotspot).
-5. Installez les bibliothèques nécessaires :
-   - `WiFi.h`
-   - `HTTPClient.h`
-   - `ArduinoJson`
-   - `ServoESP32`
+5. **Ouvre l’IDE Arduino**
+Ajoute cette URL dans "URL de gestionnaire de cartes supplémentaires" :
+
+```bash
+https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+```
+Va dans Outils > Type de carte > Gestionnaire de cartes
+**Installe esp32 by Espressif Systems**
+
+Sélectionne ta carte ESP32 :
+**Outils > Type de carte > ESP32 Dev Module (ou autre modèle ESP32)**
+
+Aller dans le Gestionnaire de bibliothèques
+**Clique sur Croquis > Inclure une bibliothèque > Gérer les bibliothèques...**
+
+Rechercher **ESP32Servo**
+Dans la barre de recherche, tape : ESP32Servo
+
+Installer la bibliothèque
+Trouve ESP32Servo (par Kevin Harrington) et clique sur Installer.
 
 6. Téléversez le code sur la carte ESP32.
 7. Dans le **Moniteur série**, récupérez l’adresse IP attribuée à l’ESP32.
