@@ -24,4 +24,9 @@ cd Web && docker-compose down && cd ..
 echo "🧹 Nettoyage des fichiers non suivis"
 git clean -fd
 
+echo "📤 Ajout des modifications et push Git"
+git add .
+git commit -m "🚀 Backup et arrêt des services via docker-down.sh"
+git push origin Deploiement
+
 echo "✅ Fin du script docker-down.sh"
