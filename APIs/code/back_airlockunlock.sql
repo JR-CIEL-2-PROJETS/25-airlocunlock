@@ -138,7 +138,7 @@ CREATE TABLE `reservations` (
   KEY `id_bien` (`id_bien`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_bien`) REFERENCES `biens` (`id_bien`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,1,1,'Bilal Taoufik','2025-05-04','2025-05-10',2,'2025-05-22 00:06:28','confirmée'),(2,1,4,'Bilal Taoufik','2025-06-22','2025-06-24',3,'2025-05-21 22:42:27','confirmée'),(3,1,2,'Bilal Taoufik','2025-05-18','2025-06-14',6,'2025-05-21 22:43:11','confirmée'),(4,1,6,'Bilal Taoufik','2024-12-01','2024-12-07',4,'2025-05-22 00:11:10','confirmée');
+INSERT INTO `reservations` VALUES (1,1,1,'Bilal Taoufik','2025-05-04','2025-05-10',2,'2025-05-22 00:06:28','confirmée'),(2,1,4,'Bilal Taoufik','2025-06-22','2025-06-24',3,'2025-05-21 22:42:27','confirmée'),(3,1,2,'Bilal Taoufik','2025-05-18','2025-06-14',6,'2025-05-21 22:43:11','confirmée'),(4,1,6,'Bilal Taoufik','2024-12-01','2024-12-07',4,'2025-05-22 00:11:10','confirmée'),(39,1,1,'Bilal Taoufik','2025-05-27','2025-06-01',2,'2025-05-27 13:29:58','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-27  9:39:23
+-- Dump completed on 2025-05-27 13:56:56

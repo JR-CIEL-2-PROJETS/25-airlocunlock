@@ -40,7 +40,7 @@ services:
       PMA_PORT: 3306
       PMA_PASSWORD: root
     ports:
-      - "8081:80"
+      - "8087:80"
     depends_on:
       - mysql
     networks:
