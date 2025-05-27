@@ -209,3 +209,4 @@
 2025/05/27 18:02:51 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
 2025/05/27 18:31:36 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
 2025/05/27 18:31:53 [error] 32#32: *2 directory index of "/var/www/html/" is forbidden, client: 172.18.0.1, server: localhost, request: "GET / HTTP/2.0", host: "192.168.1.160:421"
+2025/05/27 22:38:53 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
