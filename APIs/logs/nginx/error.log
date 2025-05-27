@@ -195,3 +195,4 @@
 2025/05/27 10:22:25 [error] 32#32: *19 directory index of "/var/www/html/" is forbidden, client: 172.16.15.87, server: localhost, request: "GET / HTTP/2.0", host: "172.16.15.65:421"
 2025/05/27 13:55:25 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
 2025/05/27 13:57:09 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
+2025/05/27 14:05:13 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:36
