@@ -1,27 +1,27 @@
 FROM php:8.3-fpm
 
-# Installer dépendances système et extensions PHP
+# Installer les prérequis nécessaires à composer et extensions PHP
 RUN apt-get update && apt-get install -y unzip git zip libzip-dev \
     && docker-php-ext-install pdo pdo_mysql mysqli \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Définir le répertoire de travail
-WORKDIR /var/www/html
-
-# Copier les sources
-COPY code/ .
-
-# Copier composer depuis l'image officielle composer
+# Installer Composer (si besoin)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Ne PAS exécuter composer install ici (pour laisser la liberté de l'exécuter au démarrage)
+WORKDIR /var/www/html
 
-# Créer dossier photos et régler permissions
-RUN mkdir -p /var/www/html/AirlockUnlock/bien/photos \
-    && chown -R www-data:www-data /var/www/html/AirlockUnlock/bien/photos \
-    && chmod -R 755 /var/www/html/AirlockUnlock/bien/photos
+# Copier les fichiers composer.json et composer.lock d'abord (pour optimiser le cache Docker)
+COPY code/composer.json code/composer.lock ./
+
+
+# Installer les dépendances composer dans le dossier vendor/
+RUN composer install --no-dev --optimize-autoloader
+
+# Copier le reste du code de l'application
+COPY . .
+
+# Permissions, dossier photos etc. si besoin
+RUN mkdir -p AirlockUnlock/bien/photos && chown -R www-data:www-data AirlockUnlock/bien/photos && chmod -R 755 AirlockUnlock/bien/photos
 
 EXPOSE 9000
-
-# Par défaut, lancer php-fpm
 CMD ["php-fpm"]
