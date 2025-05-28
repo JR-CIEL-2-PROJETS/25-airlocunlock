@@ -54,7 +54,7 @@ CREATE TABLE `biens` (
 
 LOCK TABLES `biens` WRITE;
 /*!40000 ALTER TABLE `biens` DISABLE KEYS */;
-INSERT INTO `biens` VALUES (1,1,'Appartement','Studio moderne au centre-ville',85.00,'Studio lumineux avec toutes commodités.',30,1,2,'13 Rue Lafayette, 75009 Paris','photo1.jpg',0,0,0,0,0,0,1,'TK-001-XYZ'),(2,1,'Maison','Maison avec jardin à Lyon',120.00,'Maison familiale avec grand jardin, parfaite pour les vacances.',120,5,6,'8 Chemin des Prés, 69008 Lyon','photo2.jpg',1,1,1,1,1,1,1,'TK-001-XYZ'),(3,1,'Bureau','Espace de coworking à Bordeaux',60.00,'Bureau moderne idéal pour freelances et startups.',50,2,4,'22 Rue Sainte-Catherine, 33000 Bordeaux','photo3.jpg',1,0,1,1,0,1,1,'TK-001-XYZ'),(4,1,'Appartement','Appartement cosy à Marseille',75.00,'Appartement avec vue mer à deux pas du Vieux-Port.',45,2,3,'5 Quai du Port, 13002 Marseille','photo4.jpg',1,0,1,1,1,1,0,NULL),(5,1,'Maison','Villa en Provence avec piscine',200.00,'Villa avec piscine privée dans un cadre paisible.',180,6,8,'99 Route des Vignes, 84110 Vaison-la-Romaine','photo5.jpg',1,1,1,1,1,1,0,NULL),(6,1,'Appartement','Loft design à Lille',95.00,'Grand loft avec mezzanine et espace détente.',70,3,4,'18 Rue de la Monnaie, 59000 Lille','photo6.jpg',1,1,1,1,1,1,0,NULL);
+INSERT INTO `biens` VALUES (1,1,'Appartement','Studio moderne au centre-ville',85.00,'Studio lumineux avec toutes commodités.',30,1,2,'13 Rue Lafayette, 75009 Paris','photo1.jpg',0,0,0,0,0,0,1,'TK-001-XYZ'),(2,1,'Maison','Maison avec jardin à Lyon',120.00,'Maison familiale avec grand jardin, parfaite pour les vacances.',120,5,6,'8 Chemin des Prés, 69008 Lyon','photo2.jpg',1,1,1,1,1,1,1,'TK-002-XYZ'),(3,1,'Bureau','Espace de coworking à Bordeaux',60.00,'Bureau moderne idéal pour freelances et startups.',50,2,4,'22 Rue Sainte-Catherine, 33000 Bordeaux','photo3.jpg',1,0,1,1,0,1,1,'TK-003-XYZ'),(4,1,'Appartement','Appartement cosy à Marseille',75.00,'Appartement avec vue mer à deux pas du Vieux-Port.',45,2,3,'5 Quai du Port, 13002 Marseille','photo4.jpg',1,0,1,1,1,1,0,NULL),(5,1,'Maison','Villa en Provence avec piscine',200.00,'Villa avec piscine privée dans un cadre paisible.',180,6,8,'99 Route des Vignes, 84110 Vaison-la-Romaine','photo5.jpg',1,1,1,1,1,1,0,NULL),(6,1,'Appartement','Loft design à Lille',95.00,'Grand loft avec mezzanine et espace détente.',70,3,4,'18 Rue de la Monnaie, 59000 Lille','photo6.jpg',1,1,1,1,1,1,0,NULL);
 /*!40000 ALTER TABLE `biens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `reservations` (
   KEY `id_bien` (`id_bien`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_bien`) REFERENCES `biens` (`id_bien`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,1,1,'Bilal Taoufik','2025-05-04','2025-05-10',2,'2025-05-22 00:06:28','confirmée'),(2,1,4,'Bilal Taoufik','2025-06-22','2025-06-24',3,'2025-05-21 22:42:27','confirmée'),(3,1,2,'Bilal Taoufik','2025-05-18','2025-06-14',6,'2025-05-21 22:43:11','confirmée'),(4,1,6,'Bilal Taoufik','2024-12-01','2024-12-07',4,'2025-05-22 00:11:10','confirmée'),(39,1,1,'Bilal Taoufik','2025-05-27','2025-06-01',2,'2025-05-27 13:29:58','confirmée');
+INSERT INTO `reservations` VALUES (2,1,4,'Bilal Taoufik','2025-06-22','2025-06-24',3,'2025-05-21 22:42:27','confirmée'),(3,1,2,'Bilal Taoufik','2025-05-18','2025-06-14',6,'2025-05-21 22:43:11','confirmée'),(4,1,6,'Bilal Taoufik','2024-12-01','2024-12-07',4,'2025-05-22 00:11:10','confirmée'),(40,1,1,'Bilal Taoufik','2025-05-26','2025-06-08',2,'2025-05-28 11:25:25','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-27 22:39:40
+-- Dump completed on 2025-05-28 15:56:46

@@ -29,9 +29,7 @@ $token = null;
 
 if (isset($_COOKIE['auth_token']) && !empty($_COOKIE['auth_token'])) {
     $token = $_COOKIE['auth_token'];
-}
-
-if (!$token) {
+} else {
     $headers = getallheaders();
     if (isset($headers['Authorization'])) {
         $authHeader = $headers['Authorization'];
@@ -58,15 +56,16 @@ try {
     $decoded = JWT::decode($token, new Key($key, 'HS256'));
     $id_client = $decoded->id_client;
 
-    // Récupérer l'id_reservation depuis la requête DELETE
-    // Pour DELETE, on lit souvent le corps JSON, ou sinon query string
-    parse_str(file_get_contents("php://input"), $delete_vars);
-    
-    if (!isset($delete_vars['id_reservation']) || !is_numeric($delete_vars['id_reservation'])) {
-        echo json_encode(['status' => 'error', 'message' => 'ID de réservation manquant ou invalide.']);
+    // Lire le body JSON
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id_reservation = $data['id_reservation'] ?? null;
+
+    if (!$id_reservation || !is_numeric($id_reservation)) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'id_reservation manquant ou invalide']);
         exit;
     }
-    $id_reservation = (int)$delete_vars['id_reservation'];
+    $id_reservation = (int)$id_reservation;
 
     // Vérifier que la réservation appartient bien à ce client avant suppression
     $sql_check = "SELECT id_reservation FROM reservations WHERE id_reservation = :id_reservation AND id_client = :id_client";
