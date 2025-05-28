@@ -20,10 +20,9 @@ docker exec -i mysql-container mysql -u root -proot Tapkey < APIs/code/back_tapk
 echo "✅ Bases importées."
 
 echo "🔁 Réinstallation des dépendances PHP dans APIs/code..."
-cd APIs/code
-rm -rf vendor
-composer install
-cd ../..
+docker exec php-container rm -rf vendor
+docker exec php-container composer install --no-dev --optimize-autoloader
+echo "✅ Dépendances installées dans le conteneur."
 
 echo "🌐 Lancement du frontend Web"
 cd Web
