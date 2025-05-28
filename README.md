@@ -109,7 +109,6 @@ https://{adresse-IP-de-votre-PC}:422
 const char* ssid = "NomDuReseau";
 const char* password = "MotDePasse";
 
-```cpp
 const char* backendHost = "192.168.1.160";
 ```
 
