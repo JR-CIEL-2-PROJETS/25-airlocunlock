@@ -53,7 +53,7 @@ cd 25-airlocunlock
 
 ### 2. Lancement des services avec Docker
 
-Veillez a avoir installez les dépendances Docker & Docker-compose & Composer.
+**Veillez a avoir installez les dépendances Docker & Docker-compose & Composer.**
 Dans la racine du projet, exécutez la commande suivante :
 
 ```bash
@@ -62,7 +62,7 @@ Dans la racine du projet, exécutez la commande suivante :
 
 Ce script va :
 - Détecter automatiquement l’adresse IP locale (pour l’API et le Web).
-- Démarrer les services suivants : **PHP API**, **MySQL**, **phpMyAdmin**, **Nginx**, **Interface Web React**.
+- Démarrer les services suivants : **PHP API**, **MySQL**, **phpMyAdmin**, **Nginx**, **Site Web**.
 - Importer automatiquement les bases de données : `airlockunlock` et `tapkey`.
 
 ⚠️ Si vous rencontrez un problème de permission pour exécuter le script :
@@ -100,18 +100,22 @@ https://{adresse-IP-de-votre-PC}:422
 📸 *(![Branchement ESP 32](IoT/circuit.png))*
 
 #### 🛠 Étapes dans l’IDE Arduino
-
-1. Ouvrez **Arduino**.
-2. Ouvrez le fichier dans le dossier `IoT/`.
-3. Modifiez les identifiants Wi-Fi :
+1. Activez le **point d’accès mobile** de votre PC (hotspot).
+2. Ouvrez le logiciel **Arduino**.
+3. Copier le fichier **arduino.h** du dossier `IoT/`.
+4. Modifiez les identifiants Wi-Fi & l'adresse IP :
 
 ```cpp
 const char* ssid = "NomDuReseau";
 const char* password = "MotDePasse";
+
+```cpp
+const char* backendHost = "192.168.1.160";
 ```
 
-4. Activez le **point d’accès mobile** de votre PC (hotspot).
-5. **Ouvre l’IDE Arduino**
+**Configuration des biblihotèques**
+
+6. **Ouvre l’IDE Arduino**
 Ajoute cette URL dans "URL de gestionnaire de cartes supplémentaires" :
 
 ```bash
@@ -135,6 +139,11 @@ Trouve ESP32Servo (par Kevin Harrington) et clique sur Installer.
 6. Téléversez le code sur la carte ESP32.
 7. Dans le **Moniteur série**, récupérez l’adresse IP attribuée à l’ESP32.
 
+```bash
+✅ Wi-Fi connecté !
+Adresse IP : XXX.XXX.XXX.XXX
+```
+
 ---
 
 ### 5. Installation et configuration de l’application mobile
@@ -144,9 +153,9 @@ Trouve ESP32Servo (par Kevin Harrington) et clique sur Installer.
 1. Depuis un smartphone Android, téléchargez l’APK ici :  
    📦 [Lien de téléchargement de l’application](https://github.com/JR-CIEL-2-PROJETS/25-airlocunlock/releases/download/V1/AirlockUnlock.apk)*
 
-2. Installez l'application.
+2. Installez l'application sur votre Android.
 3. Connectez le smartphone au **point d’accès Wi-Fi du PC**.
-4. Ouvrez l'application et cliquez **3 fois sur l’icône engrenage** en bas à droite.
+4. Ouvrez l'application et cliquez **3 fois sur le logo** en bas à droite.
 5. Renseignez les champs :
    - **Adresse IP de l’API** : Adresse IP du PC (vue à l’étape 3)
    - **Port de l’API** : `421`
