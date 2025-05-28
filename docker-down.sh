@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Se placer dans la racine du projet (répertoire du script)
+cd "$(dirname "$0")"
+
 echo "💾 Sauvegarde des bases de données..."
 
 BACKUP_DIR=$(pwd)/APIs/code
@@ -18,13 +21,13 @@ docker exec mysql-container mysqldump -u root -proot Tapkey > "$BACKUP_DIR/back_
 echo "✅ Bases sauvegardées dans $BACKUP_DIR"
 
 echo "⏬ Arrêt des conteneurs API et Web..."
-cd APIs && docker-compose down && cd ..
-cd Web && docker-compose down && cd ..
+docker-compose -f APIs/docker-compose.yml down
+docker-compose -f Web/docker-compose.yml down
 
-echo "🧹 Nettoyage des fichiers non suivis"
+echo "🧹 Nettoyage des fichiers non suivis..."
 git clean -fd
 
-echo "📤 Ajout des modifications et push Git"
+echo "📤 Ajout des modifications et push Git..."
 git add .
 git commit -m "🚀 Backup et arrêt des services via docker-down.sh"
 git push origin Deploiement
