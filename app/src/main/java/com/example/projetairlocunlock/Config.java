@@ -8,12 +8,12 @@ public class Config {
     private static final String PREFS_NAME = "config_prefs";
     private static final String KEY_IP = "server_ip";
     private static final String KEY_PORT = "server_port";
-    private static final String KEY_ESP_IP = "esp_ip"; // <- Nouvelle clé
+    private static final String KEY_ESP_IP = "esp_ip";
 
     // Valeurs par défaut
-    private static final String DEFAULT_IP = "172.16.15.63";
-    private static final String DEFAULT_PORT = "8080";
-    private static final String DEFAULT_ESP_IP = "192.168.138.1"; // <- Valeur par défaut raisonnable pour un ESP32 en AP
+    private static final String DEFAULT_IP = "172.16.15.74";
+    private static final String DEFAULT_PORT = "421";
+    private static final String DEFAULT_ESP_IP = "192.168.138.1";
 
     public static String getIP(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);

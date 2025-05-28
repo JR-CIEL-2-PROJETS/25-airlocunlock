@@ -42,7 +42,7 @@ public class ProfileActivity extends Activity {
         profileImage = findViewById(R.id.profileImage);
         saveButton = findViewById(R.id.saveButton);
         backButton = findViewById(R.id.backButton);
-        reservationCount = findViewById(R.id.reservationCount); // <== NOUVEAU
+        reservationCount = findViewById(R.id.reservationCount);
 
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String token = prefs.getString("token", null);

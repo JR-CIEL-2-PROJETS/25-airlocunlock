@@ -147,7 +147,7 @@ public class LoginActivity extends Activity {
 
         final EditText espIpInput = new EditText(this);
         espIpInput.setHint("Adresse IP ESP32");
-        espIpInput.setText(Config.getEspIP(this)); // <-- Nouvelle méthode à ajouter
+        espIpInput.setText(Config.getEspIP(this));
         layout.addView(espIpInput);
 
         builder.setView(layout);
@@ -159,7 +159,7 @@ public class LoginActivity extends Activity {
 
             Config.setIP(this, ip);
             Config.setPort(this, port);
-            Config.setEspIP(this, espIp); // <-- Nouvelle méthode à ajouter
+            Config.setEspIP(this, espIp);
 
             Log.d(TAG, "Configuration enregistrée : IP=" + ip + ", Port=" + port + ", ESP=" + espIp);
             Toast.makeText(this, "Configuration enregistrée", Toast.LENGTH_SHORT).show();

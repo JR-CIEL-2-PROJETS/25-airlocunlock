@@ -290,9 +290,14 @@ public class HomeActivity extends Activity {
                 instructionsButton.setEnabled(true);
                 instructionsButton.setAlpha(1f);
                 instructionsButton.setOnClickListener(v -> {
+                    SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    String token = prefs.getString("token", null);
+
                     Intent intent = new Intent(HomeActivity.this, InstructionsActivity.class);
                     intent.putExtra("reservationTitle", title);
                     intent.putExtra("reservationDate", dates);
+                    intent.putExtra("tapkeySerial", numeroSerie);
+                    intent.putExtra("token", token);
                     startActivity(intent);
                 });
             } else {
@@ -350,7 +355,7 @@ public class HomeActivity extends Activity {
                     URL url = new URL(urlString);
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
+                    conn.setRequestMethod("DELETE");
                     conn.setRequestProperty("Authorization", "Bearer " + token);
                     conn.setRequestProperty("Content-Type", "application/json");
                     conn.setDoOutput(true);
