@@ -3,8 +3,6 @@
 #include <WebServer.h>
 #include <ESP32Servo.h>
 
-// A adapté selon votre point d'accès Wi-Fi et mot de passe
-// Assurez-vous que le SSID et le mot de passe sont corrects
 const char* ssid = "pc-bilal";
 const char* password = "azerty123";
 
@@ -19,7 +17,6 @@ const int positionMid = 90;
 
 WiFiClientSecure client;
 
-// Remplacez l'adresse IP par l'adresse de votre serveur backend
 const char* backendHost = "192.168.1.160";
 const int backendPort = 421;
 const char* backendPath = "/airlockunlock/verif/verif-tapkey.php";
