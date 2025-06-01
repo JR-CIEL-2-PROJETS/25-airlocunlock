@@ -73,7 +73,6 @@ try {
     }
 
     // Vérifier la réservation valide pour ce client ET serial correct
-
     $sql = "SELECT r.id_reservation, r.date_arrivee, r.date_depart, b.numero_serie_tapkey
             FROM reservations r
             INNER JOIN biens b ON r.id_bien = b.id_bien
@@ -103,8 +102,14 @@ try {
         exit;
     }
 
-    // Tout est OK
-    echo json_encode(['status' => 'success', 'message' => 'OK']);
+    // Différencier la réponse selon User-Agent pour ESP32 (réponse plus simple)
+    $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    if (strpos($userAgent, 'ESP32') !== false) {
+        echo "OK";
+    } else {
+        echo json_encode(['status' => 'success', 'message' => 'OK']);
+    }
+
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Erreur serveur : ' . $e->getMessage()]);
 }
