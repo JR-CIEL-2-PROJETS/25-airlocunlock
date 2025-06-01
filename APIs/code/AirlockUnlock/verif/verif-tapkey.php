@@ -79,7 +79,7 @@ try {
             INNER JOIN biens b ON r.id_bien = b.id_bien
             WHERE r.id_client = :id_client
             AND b.numero_serie_tapkey = :serial
-            AND r.statut = 'confirmée'";  // exemple: statut confirmée, adapter selon besoin
+            AND r.statut = 'confirmée'";
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
