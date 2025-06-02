@@ -275,7 +275,7 @@
             formData.append('email', email);
             formData.append('mot_de_passe', mot_de_passe);
 
-            fetch(`http://${apiHost}:91/AirlockUnlock/proprietaire/connexion.php`, {
+            fetch(`https://${apiHost}:421/AirlockUnlock/proprietaire/connexion.php`, {
                 method: 'POST',
                 body: formData
             })

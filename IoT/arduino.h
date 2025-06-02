@@ -17,9 +17,9 @@ const int positionMid = 90;
 
 WiFiClientSecure client;
 
-const char* backendHost = "192.168.1.160";
+const char* backendHost = "172.16.15.74";
 const int backendPort = 421;
-const char* backendPath = "/airlockunlock/verif/verif-tapkey.php";
+const char* backendPath = "/AirlockUnlock/verif/verif-tapkey.php";
 
 bool isAuthorized() {
   if (!server.hasHeader("Authorization")) {
