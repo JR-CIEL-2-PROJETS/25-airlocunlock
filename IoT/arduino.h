@@ -3,8 +3,8 @@
 #include <WebServer.h>
 #include <ESP32Servo.h>
 
-const char* ssid = "pc-bilal";
-const char* password = "azerty123";
+const char* ssid = "ciel2";
+const char* password = "btsciel123";
 
 const String SERIAL_AUTORISE = "TK-001-XYZ";
 
