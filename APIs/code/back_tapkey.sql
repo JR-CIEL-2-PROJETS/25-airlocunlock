@@ -30,7 +30,7 @@ CREATE TABLE `cles_electroniques` (
   `statut` enum('active','inactive') DEFAULT 'active',
   PRIMARY KEY (`id_cle`),
   UNIQUE KEY `numero_serie` (`numero_serie`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `cles_electroniques` (
 
 LOCK TABLES `cles_electroniques` WRITE;
 /*!40000 ALTER TABLE `cles_electroniques` DISABLE KEYS */;
-INSERT INTO `cles_electroniques` VALUES (1,'TK-001-XYZ','Lakshan Sangaralingam','2025-04-08 09:38:37','active'),(2,'TK-002-XYZ','Lakshan Sangaralingam','2025-05-04 12:22:40','active'),(3,'TK-003-XYZ','Lakshan Sangaralingam','2025-05-05 12:23:22','active');
+INSERT INTO `cles_electroniques` VALUES (1,'TK-001-XYZ','Lakshan Sangaralingam','2025-04-08 09:38:37','active'),(2,'TK-002-XYZ','Lakshan Sangaralingam','2025-05-04 12:22:40','active'),(3,'TK-003-XYZ','Lakshan Sangaralingam','2025-05-05 12:23:22','active'),(4,'TK-004-XYZ','Lakshan Sangaralingam','2025-06-03 11:28:19','active');
 /*!40000 ALTER TABLE `cles_electroniques` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-02 10:36:13
+-- Dump completed on 2025-06-03 11:34:15
