@@ -22,6 +22,9 @@
 - 📘 **[LIEN_RAPPORT_PROJET](https://docs.google.com/document/d/1et7FV6Deotpfu6rFrsgkoHudzera9ngHYqaXfc82mfw/edit?usp=sharing)**  
   Rapport complet détaillant les objectifs, l’architecture, les choix techniques, et le développement.
 
+- 📘 **[LIEN_DOCUMENTATION POSTMAN](https://documenter.getpostman.com/view/33712718/2sB2qi7dBa)**  
+Rapport complet détaillant les objectifs, l’architecture, les choix techniques, et le développement.
+
 - 📋 **[LIEN_TRELLO](https://trello.com/b/P2KbRquX/projet-airlockunlock)**  
   Suivi de l’avancement du projet, gestion des tâches et des bugs.
 
