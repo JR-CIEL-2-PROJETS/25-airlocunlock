@@ -199,7 +199,7 @@
           <input type="text" placeholder="Prénom" class="input-field" name="username" required />
           <input type="email" placeholder="Adresse e-mail" class="input-field" name="email" required />
           <div style="position: relative;">
-            <input type="password" placeholder="Mot de passe" class="input-field" id="password" name="password" required oninput="validatePassword('client')" />
+            <input type="password" placeholder="Mot de passe" class="input-field" id="password" name="mot_de_passe" required oninput="validatePassword('client')" />
             <img id="eyeIcon" src="https://img.icons8.com/ios-filled/50/000000/invisible.png" alt="Voir le mot de passe" class="eye-icon" onclick="togglePasswordVisibility('client')" />
           </div>
           <div class="password-rules">
@@ -211,7 +211,7 @@
               <li id="client-special" class="rule-invalid">Au moins un caractère spécial</li>
             </ul>
           </div>
-          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="phone" required />
+          <input type="tel" placeholder="Numéro de téléphone" class="input-field" name="telephone" required />
           <div id="clientError" class="error-message"></div>
           <button type="button" class="button-primary" onclick="validateAndRegister('Client')">S'inscrire</button>
         </form>
@@ -270,23 +270,23 @@
     function validatePassword(type) {
       const password = document.getElementById(type === 'client' ? 'password' : 'password-owner').value;
       const prefix = type === 'client' ? 'client-' : 'owner-';
-      
+
       // Vérifier la longueur
       const lengthValid = password.length >= 8;
       document.getElementById(prefix + 'length').className = lengthValid ? 'rule-valid' : 'rule-invalid';
-      
+
       // Vérifier les majuscules
       const uppercaseValid = /[A-Z]/.test(password);
       document.getElementById(prefix + 'uppercase').className = uppercaseValid ? 'rule-valid' : 'rule-invalid';
-      
+
       // Vérifier les chiffres
       const numberValid = /[0-9]/.test(password);
       document.getElementById(prefix + 'number').className = numberValid ? 'rule-valid' : 'rule-invalid';
-      
+
       // Vérifier les caractères spéciaux
       const specialValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
       document.getElementById(prefix + 'special').className = specialValid ? 'rule-valid' : 'rule-invalid';
-      
+
       return lengthValid && uppercaseValid && numberValid && specialValid;
     }
 
@@ -294,11 +294,11 @@
       const formId = type === 'Client' ? 'clientForm' : 'ownerForm';
       const form = document.getElementById(formId);
       const errorElement = document.getElementById(type === 'Client' ? 'clientError' : 'ownerError');
-      
-      // Valider tous les champs
+
+      // Valider tous les champs obligatoires
       let isValid = true;
       const inputs = form.querySelectorAll('input[required]');
-      
+
       inputs.forEach(input => {
         if (!input.value.trim()) {
           isValid = false;
@@ -307,22 +307,24 @@
           input.style.borderColor = '#cbd5e0';
         }
       });
-      
+
       // Valider spécifiquement le mot de passe
       const passwordValid = validatePassword(type === 'Client' ? 'client' : 'owner');
-      
+
       if (!isValid) {
         errorElement.textContent = 'Veuillez remplir tous les champs obligatoires';
+        errorElement.style.color = '#e53e3e';
         errorElement.style.display = 'block';
         return;
       }
-      
+
       if (!passwordValid) {
         errorElement.textContent = 'Le mot de passe ne respecte pas les règles requises';
+        errorElement.style.color = '#e53e3e';
         errorElement.style.display = 'block';
         return;
       }
-      
+
       errorElement.style.display = 'none';
       register(type);
     }
@@ -336,6 +338,14 @@
       formData.forEach((value, key) => {
         data[key] = value;
       });
+
+      // Concaténer prénom (username) + nom dans nom
+      if (data.username && data.nom) {
+        data.nom = data.username.trim() + " " + data.nom.trim();
+      }
+
+      // Supprimer le champ prénom (username) car on l’a fusionné dans nom
+      delete data.username;
 
       const apiHost = window.location.hostname;
       const url = type === 'Propriétaire'
@@ -352,19 +362,16 @@
         });
 
         const result = await response.json();
-        
+
         if (response.ok) {
-          // Redirection vers la page de connexion après 2 secondes
-          setTimeout(() => {
-            window.location.href = 'index?registered=true';
-          }, 2000);
-          
-          // Afficher un message de succès
           errorElement.textContent = 'Inscription réussie ! Redirection en cours...';
           errorElement.style.color = '#38a169';
           errorElement.style.display = 'block';
+
+          setTimeout(() => {
+            window.location.href = 'index?registered=true';
+          }, 2000);
         } else {
-          // Afficher l'erreur retournée par le serveur
           errorElement.textContent = result.message || `Erreur lors de l'inscription: ${response.statusText}`;
           errorElement.style.color = '#e53e3e';
           errorElement.style.display = 'block';
@@ -379,7 +386,7 @@
     function togglePasswordVisibility(type) {
       const passwordField = document.getElementById(type === 'client' ? 'password' : 'password-owner');
       const eyeIcon = document.getElementById(type === 'client' ? 'eyeIcon' : 'eyeIcon-owner');
-      
+
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
         eyeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
@@ -389,5 +396,6 @@
       }
     }
   </script>
+
 </body>
 </html>
