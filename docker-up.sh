@@ -7,6 +7,10 @@ docker-compose build
 docker-compose up -d
 cd ..
 
+echo "🔧 Correction des permissions du dossier photos..."
+chmod -R 777 /home/airlockunlock/25-airlocunlock/APIs/code/AirlockUnlock/bien/photos
+echo "✅ Permissions corrigées."
+
 echo "⏳ Attente que MySQL soit prêt..."
 until docker exec mysql-container mysqladmin ping -h "localhost" -uroot -proot --silent; do
   printf '.'
