@@ -1,60 +1,80 @@
 <?php
-include '../config.php'; // Assurez-vous que le fichier config.php est dans le même répertoire
+include '../config.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Vérifier si les données nécessaires existent
-    if (!isset($_POST['nom'], $_POST['email'], $_POST['mot_de_passe'], $_POST['telephone'])) {
-        echo 'Erreur: Tous les champs sont requis.';
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header('Content-Type: application/json; charset=utf-8');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Pour debug : active l'affichage des erreurs (uniquement en dev)
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
+    $inputJSON = file_get_contents('php://input');
+    $data = json_decode($inputJSON, true);
+
+    if (!$data || !isset($data['nom'], $data['email'], $data['mot_de_passe'], $data['telephone'])) {
+        echo json_encode(['message' => 'Tous les champs sont requis.']);
         exit();
     }
 
-    // Récupérer les données envoyées par le propriétaire
-    $nom = $_POST['nom'];
-    $email = $_POST['email'];
-    $mot_de_passe = $_POST['mot_de_passe'];
-    $telephone = $_POST['telephone'];
+    $nom = trim($data['nom']);
+    $email = trim($data['email']);
+    $mot_de_passe = $data['mot_de_passe'];
+    $telephone = trim($data['telephone']);
 
-    // Validation des données
     if (empty($nom) || empty($email) || empty($mot_de_passe) || empty($telephone)) {
-        echo 'Erreur: Tous les champs sont requis.';
+        echo json_encode(['message' => 'Tous les champs sont requis.']);
         exit();
     }
 
-    // Vérification de la validité de l'email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo 'Erreur: Adresse email invalide.';
+        echo json_encode(['message' => 'Adresse email invalide.']);
         exit();
     }
 
-    // Vérification de la validité du téléphone
     if (!preg_match('/^[0-9]{10,15}$/', $telephone)) {
-        echo 'Erreur: Le numéro de téléphone doit être valide (10-15 chiffres).';
+        echo json_encode(['message' => 'Le numéro de téléphone doit être valide (10-15 chiffres).']);
         exit();
     }
 
-    // Hashage du mot de passe
-    $mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_BCRYPT);
-
-    // Préparer la requête d'insertion
-    $sql = "INSERT INTO proprietaires (nom, email, mot_de_passe, telephone) VALUES (:nom, :email, :mot_de_passe, :telephone)";
     try {
-        // Préparer la déclaration
-        $stmt = $pdo->prepare($sql);
+        $checkEmailSql = "SELECT COUNT(*) FROM proprietaires WHERE email = :email";
+        $stmtCheck = $pdo->prepare($checkEmailSql);
+        $stmtCheck->bindParam(':email', $email);
+        $stmtCheck->execute();
+        $emailExists = $stmtCheck->fetchColumn();
 
-        // Lier les paramètres
+        if ($emailExists > 0) {
+            echo json_encode(['message' => 'Cette adresse email est déjà utilisée.']);
+            exit();
+        }
+
+        $mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_BCRYPT);
+
+        $sql = "INSERT INTO proprietaires (nom, email, mot_de_passe, telephone) VALUES (:nom, :email, :mot_de_passe, :telephone)";
+        $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':mot_de_passe', $mot_de_passe_hash);
         $stmt->bindParam(':telephone', $telephone);
 
-        // Exécuter la requête
-        if ($stmt->execute()) {
-            echo 'Propriétaire inscrit avec succès.';
+        $executed = $stmt->execute();
+
+        if ($executed) {
+            echo json_encode(['message' => 'Inscription réussie !']);
         } else {
-            echo 'Erreur lors de l\'inscription.';
+            $errorInfo = $stmt->errorInfo();
+            echo json_encode([
+                'message' => 'Erreur lors de l\'inscription.',
+                'errorInfo' => $errorInfo
+            ]);
         }
     } catch (PDOException $e) {
-        echo 'Erreur lors de l\'exécution de la requête : ' . $e->getMessage();
+        echo json_encode(['message' => 'Erreur lors de l\'exécution de la requête : ' . $e->getMessage()]);
     }
+} else {
+    echo json_encode(['message' => 'Méthode HTTP non autorisée']);
 }
-?>

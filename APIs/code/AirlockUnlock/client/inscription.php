@@ -40,10 +40,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_BCRYPT);
-
-    $sql = "INSERT INTO clients (nom, email, mot_de_passe, telephone) VALUES (:nom, :email, :mot_de_passe, :telephone)";
     try {
+        // Vérifier si l'email existe déjà
+        $checkEmailSql = "SELECT COUNT(*) FROM clients WHERE email = :email";
+        $stmtCheck = $pdo->prepare($checkEmailSql);
+        $stmtCheck->bindParam(':email', $email);
+        $stmtCheck->execute();
+        $emailExists = $stmtCheck->fetchColumn();
+
+        if ($emailExists > 0) {
+            echo json_encode(['message' => 'Cette adresse email est déjà utilisée.']);
+            exit();
+        }
+
+        // Hasher le mot de passe
+        $mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_BCRYPT);
+
+        // Insérer le nouveau client
+        $sql = "INSERT INTO clients (nom, email, mot_de_passe, telephone) VALUES (:nom, :email, :mot_de_passe, :telephone)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':email', $email);
