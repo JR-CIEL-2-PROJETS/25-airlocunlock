@@ -74,7 +74,7 @@ CREATE TABLE `clients` (
   `telephone` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id_client`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +83,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'Bilal Taoufik','bll.taoufik@gmail.com','$2y$10$ZdVUg9Bb92unjfpitayeyu6wUaSEZTG1PSVs2yU5GPZSK1wosuXrm','2025-04-08 09:31:07','0626266252'),(2,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357');
+INSERT INTO `clients` VALUES (1,'Bilal Taoufik','bll.taoufik@gmail.com','$2y$10$ZdVUg9Bb92unjfpitayeyu6wUaSEZTG1PSVs2yU5GPZSK1wosuXrm','2025-04-08 09:31:07','0626266252'),(2,'Adel Aichi','adel@gmail.com','$2y$10$1VZPPJ9t3feNhFQE3bPVGOGt7lYaKlNm24CxDbPj.HQ9UEvuWuBq2','2025-04-08 09:31:07','0624589357'),(30,'Taoufik Bilal','bilal.taoufik@lycee-jeanrostand.fr','$2y$10$7pTdck1AxbYBNjbJ/3bFHeqnzv35C3GJWkKI/shVv3.KYM9v4pKL6','2025-06-04 12:07:48','0767061969');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `reservations` (
   KEY `id_bien` (`id_bien`),
   CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`),
   CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`id_bien`) REFERENCES `biens` (`id_bien`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (2,1,4,'Bilal Taoufik','2025-06-22','2025-06-24',3,'2025-05-21 22:42:27','confirmée'),(3,1,2,'Bilal Taoufik','2025-05-18','2025-06-14',6,'2025-05-21 22:43:11','confirmée'),(4,1,6,'Bilal Taoufik','2024-12-01','2024-12-07',4,'2025-05-22 00:11:10','confirmée'),(40,1,1,'Bilal Taoufik','2025-05-26','2025-06-08',2,'2025-05-28 11:25:25','confirmée');
+INSERT INTO `reservations` VALUES (2,1,4,'Bilal Taoufik','2025-06-22','2025-06-24',3,'2025-05-21 22:42:27','confirmée'),(3,1,2,'Bilal Taoufik','2025-05-18','2025-06-14',6,'2025-05-21 22:43:11','confirmée'),(4,1,6,'Bilal Taoufik','2024-12-01','2024-12-07',4,'2025-05-22 00:11:10','confirmée'),(40,1,1,'Bilal Taoufik','2025-05-26','2025-06-08',2,'2025-05-28 11:25:25','confirmée'),(43,30,4,'Taoufik Bilal','2025-06-04','2025-06-05',1,'2025-06-04 12:10:43','confirmée');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-04 10:38:26
+-- Dump completed on 2025-06-04 12:52:11
