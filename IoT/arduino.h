@@ -3,6 +3,8 @@
 #include <WebServer.h>
 #include <ESP32Servo.h>
 
+
+//Adapter les nom & mot de passe selon votre poitn d'accès
 const char* ssid = "ciel2";
 const char* password = "btsciel123";
 
@@ -17,6 +19,7 @@ const int positionMid = 90;
 
 WiFiClientSecure client;
 
+//Adapter l'adresse IP 
 const char* backendHost = "172.16.15.74";
 const int backendPort = 421;
 const char* backendPath = "/AirlockUnlock/verif/verif-tapkey.php";

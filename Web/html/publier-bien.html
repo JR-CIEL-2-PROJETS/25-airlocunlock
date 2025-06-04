@@ -453,6 +453,25 @@
             return null;
         }
 
+        const fileInput = document.getElementById('photos');
+        const previewContainer = document.getElementById('previewContainer');
+
+        fileInput.addEventListener('change', function () {
+            previewContainer.innerHTML = ''; // vider ancien aperçu
+            const files = Array.from(this.files);
+
+            files.forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.style.maxWidth = '150px';
+                img.style.marginRight = '10px';
+                img.onload = () => URL.revokeObjectURL(img.src);
+                previewContainer.appendChild(img);
+            });
+        });
+
         document.getElementById('publishForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
@@ -465,28 +484,32 @@
                 return;
             }
 
-            try {
-                // Affichage pour debug
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
+            // Validation Tapkey si case cochée
+            const serrureElectroniqueCheckbox = document.getElementById('serrure_electronique');
+            const tapkeyNum = formData.get('numero_serie_tapkey').trim();
 
+            if (serrureElectroniqueCheckbox.checked && tapkeyNum === '') {
+                alert('Le numéro de série Tapkey est obligatoire si la serrure électronique est cochée.');
+                return;
+            }
+
+            try {
                 const apiHost = window.location.hostname;
 
                 const response = await fetch(`https://${apiHost}:421/AirlockUnlock/bien/publier-bien.php`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token
-                        // Pas de 'Content-Type', pour que le navigateur gère le boundary multipart/form-data
+                        // Pas de Content-Type pour laisser le navigateur gérer le multipart/form-data
                     },
                     body: formData
                 });
 
-                const contentType = response.headers.get('content-type');
-
                 if (!response.ok) {
                     throw new Error(`Erreur HTTP : ${response.status}`);
                 }
+
+                const contentType = response.headers.get('content-type');
 
                 if (contentType && contentType.includes('application/json')) {
                     const result = await response.json();
@@ -496,31 +519,34 @@
                     } else {
                         alert(result.message);
                         form.reset();
+                        previewContainer.innerHTML = '';
+                        window.location.href = 'gerer'; // redirection après succès
                     }
                 } else {
                     const text = await response.text();
                     console.warn('Réponse non JSON :', text);
                     alert('Réponse inattendue : ' + text);
                 }
-
             } catch (error) {
                 console.error('Erreur :', error);
                 alert('Erreur lors de l\'envoi : ' + error.message);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const serrureElectroniqueCheckbox = document.getElementById('serrure_electronique');
             const tapkeyField = document.getElementById('tapkeyField');
 
-            serrureElectroniqueCheckbox.addEventListener('change', function() {
+            serrureElectroniqueCheckbox.addEventListener('change', function () {
                 if (this.checked) {
                     tapkeyField.style.display = 'block';
                 } else {
                     tapkeyField.style.display = 'none';
+                    document.getElementById('numero_serie_tapkey').value = '';
                 }
             });
         });
+
     </script>
 </body>
 </html>
